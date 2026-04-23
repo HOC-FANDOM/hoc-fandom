@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HOC FANDOM | Sondaj Ayisyen pou House of challenge 2027</title>
+
+    <meta name="description" content="Sondaj ofisyèl pou chwazi favorit ou nan House of Challenge Sézon 8.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HOC FANDOM - Vote pou favorit ou">
+    <meta property="og:description" content="Klike la pou w chwazi favorit pa w la nan House of Challenge!">
+    <meta property="og:image" content="https://i.ibb.co/fPXzFk7/Abigail.webp">
+    <meta property="og:url" content="https://Houseofchallengefandom.pages.dev">
+
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap">
+
+    <style>
+        /* --- 1. DESIGN SYSTEM (Premium Minimalist) --- */
+        :root {
+            --primary: #22c55e;
+            --primary-soft: rgba(34, 197, 94, 0.1);
+            --bg: #ffffff;
+            --card-bg: #ffffff;
+            --border: #f1f5f9;
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+            --gold: #fbbf24;
+            --danger: #ef4444;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- 2. RESET & BASE --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* --- 3. HEADER --- */
+        header {
+            height: 70px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+        }
+
+        .logo { 
+            font-weight: 900; 
+            font-size: 24px; 
+            letter-spacing: -1.2px; 
+            text-transform: uppercase;
+        }
+        .logo span { color: var(--primary); }
+
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--danger);
+            background: #fee2e2;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+        .pulse-dot {
+            width: 8px; height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: blink 1.2s infinite;
+        }
+
+        /* --- 4. HERO --- */
+        .hero {
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+            border-bottom: 8px solid var(--border);
+        }
+        .hero h1 { font-size: 28px; font-weight: 900; margin-bottom: 10px; }
+        .hero p { color: var(--text-dim); font-size: 15px; font-weight: 500; max-width: 300px; margin: auto; }
+
+        /* --- 5. CANDIDATE LIST --- */
+        .container {
+            max-width: 650px;
+            margin: auto;
+            padding: 20px 0 60px 0;
+        }
+
+        .candidate-card {
+            background: var(--card-bg);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 800px;
+            background: #f1f5f9;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: var(--gold);
+            color: #000;
+            padding: 8px 16px;
+            font-weight: 900;
+            font-size: 12px;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .info-panel {
+            padding: 25px 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .name-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+        .c-name { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; }
+        .c-votes { font-size: 24px; font-weight: 900; color: var(--primary); }
+
+        .progress-box {
+            height: 12px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), #f59e0b);
+            width: 0%;
+            border-radius: 20px;
+            transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .btn-vote {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            width: 100%;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        /* --- 6. MONETIZATION ELEMENTS --- */
+        .load-more-container {
+            text-align: center;
+            padding-bottom: 100px;
+        }
+        .btn-more {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* --- 7. MODALS SYSTEM --- */
+        .overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.92);
+            display: none; align-items: center; justify-content: center;
+            z-index: 2000; padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .modal {
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 30px;
+            border-radius: 30px;
+            text-align: center;
+        }
+
+        .wa-btn {
+            background: #25d366;
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+            border-radius: 15px;
+            font-weight: 900;
+            display: block;
+            text-decoration: none;
+            margin-top: 25px;
+        }
+
+        .captcha-container {
+            margin-top: 25px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .checkbox {
+            width: 28px; height: 28px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .checkbox.checked { background: var(--primary); border-color: var(--primary); position: relative; }
+        .checkbox.checked::after { content: '✓'; color: white; position: absolute; left: 5px; top: -2px; font-weight: 900; }
+
+        .btn-finish {
+            background: #0f172a;
+            color: #fff;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            font-weight: 800;
+            margin-top: 20px;
+            display: none;
+            border: none;
+        }
+
+        footer {
+            padding: 60px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-dim);
+            background: #f8fafc;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @media (max-width: 500px) { .image-container { height: 550px; } }
+    </style>
+</head>
+<body onclick="handleGlobalClick()">
+
+<header>
+    <div class="logo">HOC <span>FANDOM</span></div>
+    <div class="live-status"><div class="pulse-dot"></div> LIVE</div>
+</header>
+
+<div class="hero">
+    <h1>Vote chwa paw la!</h1>
+    <p>Chwazi moun ou vle ki pou al reprezante ayiti nan HOC 2027.</p>
+</div>
+
+<div class="container" id="main-grid"></div>
+
+<div id="load-more-area" class="load-more-container">
+    <button class="btn-more" onclick="showAllCandidates()">Klike la pou'w ka wè tout Kandida Yo ⬇️</button>
+</div>
+
+<div id="vote-modal" class="overlay">
+    <div class="modal">
+        <div id="step-1">
+            <div style="font-size: 50px; margin-bottom: 20px;">📲</div>
+            <h2 style="font-size: 22px; font-weight: 900;">Vòt ou prèske fini!</h2>
+            <p style="color: var(--text-dim); margin-top: 10px;">Pataje lyen an ak 10 moun oswa group sou WhatsApp pou nou ka <b>Double vòt ou a</b> epi valide l.</p>
+            <a href="#" class="wa-btn" onclick="goToWhatsApp()">🚀 PATAJE SOU WHATSAPP</a>
+        </div>
+
+        <div id="step-2" style="display: none;">
+            <h2 style="font-size: 20px; font-weight: 900;">Verifikasyon Sekirite</h2>
+            <div class="captcha-container">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="checkbox" id="robot-check" onclick="markChecked()"></div>
+                    <span style="font-size: 15px; font-weight: 600;">Mwen pa yon ròbo</span>
+                </div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" width="35">
+            </div>
+            <button id="final-btn" class="btn-finish" onclick="finalizeVote()">VALIDE VÒT LA</button>
+        </div>
+
+        <div id="step-3" style="display: none;">
+            <div style="font-size: 60px; margin-bottom: 10px;">✅</div>
+            <h2 style="font-size: 22px; font-weight: 900;">Vòt Konfime!</h2>
+            <button class="wa-btn" style="background: #000;" onclick="closeModal()">FÈMEN</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    HOC FANDOM SE YON PWOGRAM ENDEPANDAN KE FANATIK YO KREYE POU EKSPRIME ANVI YO POU GEN YON IDE DE MOUN KAP GEN POU REPREZANTE AYITI NAN HOUSE OF CHALLENGE 2027, HOC FANDOM PA GEN OKENN RAPÒ OFISYÈL AK HOUSE OF CHALLENGE.<br>
+    &copy; 2026 - TOUT DWA REZÈVE.
+</footer>
+
+<script>
+    /* --- 1. CONFIGURATION --- */
+    const WORKER_URL = "https://ton-worker.ton-nom.workers.dev"; // REMPLACE PAR TON URL
+    
+    const APP_DATA = {
+        AD_GLOBAL: "https://www.profitablecpmratenetwork.com/em8kp2un6?key=2c7c3589c01489e08c544389bd3ac67b", 
+        AD_SEE_MORE: "https://www.profitablecpmratenetwork.com/gu030jeh?key=45f4f5f7db88e12c054e8052ba12cf82",
+        SITE_URL: "https://houseofchallengefandom.pages.dev"
+    };
+
+    let candidates = [
+        { id: "abi", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 14687 },
+        { id: "chris", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 12987 },
+        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 10753 },
+        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 9765 },
+        { id: "barbie", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 8567 },
+        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 5879 },
+        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 7879 },
+        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 3345 },
+        { id: "layou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 3457 },
+        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 3246 }
+    ];
+
+    let firstTouch = false;
+    let showingAll = false;
+    let selectedCandidateId = null;
+
+    /* --- 2. LOGIQUE DATA --- */
+
+    async function fetchVotes() {
+        try {
+            const res = await fetch(WORKER_URL);
+            const data = await res.json();
+            candidates.forEach(c => { if (data[c.id]) c.votes = data[c.id]; });
+            renderCandidates();
+        } catch (e) { renderCandidates(); }
+    }
+
+    async function recordVoteToWorker(id) {
+        try {
+            await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ candidateId: id })
+            });
+        } catch (e) { console.error("Vòt pa anrejistre"); }
+    }
+
+    /* --- 3. ENGINE : AFFICHAGE --- */
+    function renderCandidates() {
+        const grid = document.getElementById('main-grid');
+        candidates.sort((a, b) => b.votes - a.votes);
+        const topScore = Math.max(...candidates.map(c => c.votes), 1);
+        const displayList = showingAll ? candidates : candidates.slice(0, 5);
+
+        grid.innerHTML = displayList.map((c, index) => {
+            const percentage = (c.votes / topScore) * 100;
+            return `
+                <div class="candidate-card">
+                    <div class="image-container" onclick="window.open(APP_DATA.AD_GLOBAL, '_blank')">
+                        ${index === 0 && c.votes > 0 ? '<div class="rank-badge">👑 FAVORIT N°1</div>' : ''}
+                        <img src="${c.img}" alt="${c.name}" loading="lazy">
+                    </div>
+                    <div class="info-panel">
+                        <div class="name-row">
+                            <span class="c-name">${c.name}</span>
+                            <span class="c-votes">${c.votes >= 1000 ? (c.votes/1000).toFixed(1)+'k' : c.votes}</span>
+                        </div>
+                        <div class="progress-box"><div class="progress-bar" style="width: ${percentage}%"></div></div>
+                        <button class="btn-vote" onclick="initiateVote('${c.id}')">VOTE POU ${c.name.split(' ')[0].toUpperCase()}</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    /* --- 4. GESTION DES CLICS --- */
+    function handleGlobalClick() { if (!firstTouch) { window.open(APP_DATA.AD_GLOBAL, '_blank'); firstTouch = true; } }
+    function showAllCandidates() { window.open(APP_DATA.AD_SEE_MORE, '_blank'); showingAll = true; renderCandidates(); document.getElementById('load-more-area').style.display = 'none'; }
+
+    /* --- 5. LOGIQUE DE VOTE & WHATSAPP --- */
+    function initiateVote(id) {
+        if (localStorage.getItem('hoc_voted_v8')) { alert("Ou te deja vote pou jodi a!"); return; }
+        selectedCandidateId = id;
+        document.getElementById('vote-modal').style.display = 'flex';
+    }
+
+    function goToWhatsApp() {
+        // Chwazi yon kandida o aza pou foto a ak mesaj la
+        const randomC = candidates[Math.floor(Math.random() * candidates.length)];
+        const msg = `Gade foto ${randomC.name} nan vòt 10 enfliyansèz favori pou reprezante ayiti nan House of challenge 2027! 🔥 Mwen fenk vote pou moun tiktokeuse pam nan, vin vote pou pa'w la  tou: ${APP_DATA.SITE_URL}`;
+        
+        window.location.href = `whatsapp://send?text=${encodeURIComponent(msg)}`;
+        
+        setTimeout(() => {
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+        }, 2500);
+    }
+
+    function markChecked() {
+        document.getElementById('robot-check').classList.add('checked');
+        setTimeout(() => { document.getElementById('final-btn').style.display = 'block'; }, 600);
+    }
+
+    async function finalizeVote() {
+        await recordVoteToWorker(selectedCandidateId);
+        localStorage.setItem('hoc_voted_v8', 'true');
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-3').style.display = 'block';
+        fetchVotes();
+    }
+
+    function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
+
+    setInterval(() => {
+        const idx = Math.floor(Math.random() * candidates.length);
+        candidates[idx].votes += 1;
+        renderCandidates();
+    }, 8000);
+
+    window.onload = fetchVotes;
+</script>
+</body>
+</html>
