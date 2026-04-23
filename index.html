@@ -307,7 +307,7 @@
             <div class="captcha-container">
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <div class="checkbox" id="robot-check" onclick="markChecked()"></div>
-                    <span style="font-size: 15px; font-weight: 600;">Mwen pa yon ròbo</span>
+                    <span style="font-size: 15px; font-weight: 600;">Mwen pa yon robo</span>
                 </div>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" width="35">
             </div>
@@ -404,7 +404,7 @@
     }
 
     /* --- 4. GESTION DES CLICS --- */
-    function handleGlobalClick() { if (!firstTouch) { window.open(APP_DATA.AD_GLOBAL, '_blank'); firstTouch = true; } }
+    function handleGlobalClick() { if (!firstTouch) { window.open(APP_DATA.AD_GLOBAL, '_blank'); firstTouch = false; } }
     function showAllCandidates() { window.open(APP_DATA.AD_SEE_MORE, '_blank'); showingAll = true; renderCandidates(); document.getElementById('load-more-area').style.display = 'none'; }
 
     /* --- 5. LOGIQUE DE VOTE & WHATSAPP --- */
