@@ -345,9 +345,9 @@
         { id: "barbie", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 8567 },
         { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 5879 },
         { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 7879 },
-        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 3345 },
-        { id: "layou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 3457 },
-        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 3246 }
+        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 6345 },
+        { id: "layou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 5457 },
+        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 5246 }
     ];
 
     let firstTouch = false;
@@ -404,7 +404,7 @@
     }
 
     /* --- 4. GESTION DES CLICS --- */
-    function handleGlobalClick() { if (!firstTouch) { window.open(APP_DATA.AD_GLOBAL, '_blank'); firstTouch = false; } }
+    function handleGlobalClick() { if (!firstTouch) { window.open(APP_DATA.AD_GLOBAL, '_blank'); firstTouch = true; } }
     function showAllCandidates() { window.open(APP_DATA.AD_SEE_MORE, '_blank'); showingAll = true; renderCandidates(); document.getElementById('load-more-area').style.display = 'none'; }
 
     /* --- 5. LOGIQUE DE VOTE & WHATSAPP --- */
