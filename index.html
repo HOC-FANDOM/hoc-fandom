@@ -386,7 +386,7 @@
             const percentage = (c.votes / topScore) * 100;
             return `
                 <div class="candidate-card">
-                    <div class="image-container" onclick="window.open(APP_DATA.AD_GLOBAL, '_blank')">
+        
                         ${index === 0 && c.votes > 0 ? '<div class="rank-badge">👑 FAVORIT N°1</div>' : ''}
                         <img src="${c.img}" alt="${c.name}" loading="lazy">
                     </div>
@@ -404,7 +404,7 @@
     }
 
     /* --- 4. GESTION DES CLICS --- */
-    
+    function handleGlobalClick() { if (!firstTouch) { window.open(APP_DATA.AD_GLOBAL, '_blank'); firstTouch = true; } }
     function showAllCandidates() { window.open(APP_DATA.AD_SEE_MORE, '_blank'); showingAll = true; renderCandidates(); document.getElementById('load-more-area').style.display = 'none'; }
 
     /* --- 5. LOGIQUE DE VOTE & WHATSAPP --- */
@@ -417,7 +417,7 @@
     function goToWhatsApp() {
         // Chwazi yon kandida o aza pou foto a ak mesaj la
         const randomC = candidates[Math.floor(Math.random() * candidates.length)];
-        const msg = `Gade foto ${randomC.name} nan vòt 10 enfliyansèz favori pou reprezante ayiti nan House of challenge 2027! 🔥 Mwen fenk vote pou moun tiktokeuse pam nan, vin vote pou pa'w la  tou: ${APP_DATA.SITE_URL}`;
+        const msg = `Gade foto ${randomC.name} nan vòt 10 enfliyansèz favori pou reprezante ayiti nan House of challenge 2027! 🔥 Mwen fenk vote pou tiktokeuse pam nan, vin vote pou pa'w la  tou: ${APP_DATA.SITE_URL}`;
         
         window.location.href = `whatsapp://send?text=${encodeURIComponent(msg)}`;
         
