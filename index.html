@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HOC FANDOM | Sondaj Ofisyèl Sézon 8</title>
+    <title>HOC FANDOM | Sondaj fanatik pou chwazi kiyès ki pral reprezante ayiti nan House Of Challenge 2027!</title>
 
-    <meta name="description" content="Sondaj ofisyèl pou chwazi favorit ou nan House of Challenge Sézon 8.">
+    <meta name="description" content="Sondaj fanatik House of challenge 2027 an Ayiti.">
     
     <meta property="og:type" content="website">
-    <meta property="og:title" content="HOC FANDOM - Vote pou favorit ou">
-    <meta property="og:description" content="Klike la pou w chwazi favorit pa w la nan House of Challenge!">
+    <meta property="og:title" content="HOC FANDOM - Top 10 influenceuse ki nan vote House of challenge 2027!">
+    <meta property="og:description" content="Klike la pou w chwazi tiktokeuse ou ta renmen al reprezante ayiti nan house of challenge 2027 kap fèt an Ayiti!">
     <meta property="og:image" content="https://i.ibb.co/fPXzFk7/Abigail.webp">
-    <meta property="og:url" content="https://hoc-fandom.pages.dev">
+    <meta property="og:url" content="https://houseofchallengefandom.pages.dev">
 
     <meta name="theme-color" content="#ffffff">
 
@@ -283,22 +283,22 @@
 </header>
 
 <div class="hero">
-    <h1>Vote Favorit Ou</h1>
-    <p>Chwazi moun ou vle k'ap rete nan konpetisyon an jodi a.</p>
+    <h1>Vote pou influenceuse pa'w la! </h1>
+    <p>Chwazi moun ou ta renmen al reprezante Ayiti nan House of challenge 2027.</p>
 </div>
 
 <div class="container" id="main-grid"></div>
 
 <div id="load-more-area" class="load-more-container">
-    <button class="btn-more" onclick="showAllCandidates()">Voir Tout Kandida Yo ⬇️</button>
+    <button class="btn-more" onclick="showAllCandidates()">Klike la pouw ka wè tout Kandida Yo ⬇️</button>
 </div>
 
 <div id="vote-modal" class="overlay">
     <div class="modal">
         <div id="step-1">
             <div style="font-size: 50px; margin-bottom: 20px;">📲</div>
-            <h2 style="font-size: 22px; font-weight: 900;">Vòt ou prèske fini!</h2>
-            <p style="color: var(--text-dim); margin-top: 10px;">Pataje lyen an sou WhatsApp pou nou ka <b>Double vòt ou a</b> epi valide l.</p>
+            <h2 style="font-size: 22px; font-weight: 900;">Prosesis vòt ou a prèske fini!</h2>
+            <p style="color: var(--text-dim); margin-top: 10px;">Pataje lyen an bay 10 moun oswa group sou WhatsApp pou nou ka <b>Double vòt ou a</b> epi valide l.</p>
             <a href="#" class="wa-btn" onclick="goToWhatsApp()">🚀 PATAJE SOU WHATSAPP</a>
         </div>
 
@@ -307,7 +307,7 @@
             <div class="captcha-container">
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <div class="checkbox" id="robot-check" onclick="markChecked()"></div>
-                    <span style="font-size: 15px; font-weight: 600;">Mwen pa yon ròbo</span>
+                    <span style="font-size: 15px; font-weight: 600;">Mwen pa yon robo</span>
                 </div>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" width="35">
             </div>
@@ -316,7 +316,7 @@
 
         <div id="step-3" style="display: none;">
             <div style="font-size: 60px; margin-bottom: 10px;">✅</div>
-            <h2 style="font-size: 22px; font-weight: 900;">Vòt Konfime!</h2>
+            <h2 style="font-size: 22px; font-weight: 900;">Vòt ou a Konfime!</h2>
             <button class="wa-btn" style="background: #000;" onclick="closeModal()">FÈMEN</button>
         </div>
     </div>
@@ -334,20 +334,20 @@
     const APP_DATA = {
         AD_GLOBAL: "https://www.profitablecpmratenetwork.com/em8kp2un6?key=2c7c3589c01489e08c544389bd3ac67b", 
         AD_SEE_MORE: "https://www.profitablecpmratenetwork.com/gu030jeh?key=45f4f5f7db88e12c054e8052ba12cf82",
-        SITE_URL: "https://hoc-fandom.pages.dev"
+        SITE_URL: "https://houseofchallengefandom.pages.dev"
     };
 
     let candidates = [
-        { id: "abi", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 0 },
-        { id: "chris", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 0 },
-        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 0 },
-        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 0 },
-        { id: "barbie", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 0 },
-        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 0 },
-        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 0 },
-        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 0 },
-        { id: "layou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 0 },
-        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 0 }
+        { id: "Abigail", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 124 },
+        { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 128 },
+        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 116 },
+        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 108 },
+        { id: "Leila", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 98 },
+        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 90 },
+        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 87 },
+        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 79 },
+        { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 75 },
+        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 73 }
     ];
 
     let firstTouch = false;
