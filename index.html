@@ -294,6 +294,13 @@
 <div id="vote-modal" class="overlay">
     <div class="modal">
 
+        <div id="step-already-voted" style="display: none;">
+            <div style="font-size: 60px; margin-bottom: 10px;">🚫</div>
+            <h2 style="font-size: 22px; font-weight: 900; color: var(--danger);">Ou deja vote pou jodi a!</h2>
+            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Sistèm nan detekte ke ou te deja bay vòt ou. Ou ka tounen demen!</p>
+            <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">RETOUNEN NAN LIS LA</button>
+        </div>
+
         <div id="step-2">
             <h2 style="font-size: 20px; font-weight: 900;">Verifikasyon Sekirite</h2>
             <div class="captcha-container">
@@ -321,7 +328,7 @@
 
 <footer>
     HOC FANDOM est une plateforme communautaire indépendante gérée par des fans. Ce site n'est ni affilié, ni approuvé, ni associé officiellement à la production de 'House of Challenge'. Toutes les marques et noms de programmes cités appartiennent à leurs propriétaires respectifs. Ce sondage n'est qu'un outil d'expression pour la communauté et n'influence pas les décisions officielles de la production. En utilisant ce site, vous acceptez que les résultats soient purement indicatifs.<br>
-    © 2026 - Tous droits réservés.
+    &copy; © 2026 - Tous droits réservés.
 </footer>
 
 <script>
@@ -356,11 +363,9 @@
     async function fetchVotes() {
         try {
             const res = await fetch(WORKER_URL + "/results", {
-    method: "GET",
-    headers: {
-        "Cache-Control": "max-age=5"
-    }
-});
+                method: "GET",
+                headers: { "Cache-Control": "max-age=5" }
+            });
             const data = await res.json();
             candidates.forEach(c => { if (data[c.id]) c.votes = data[c.id]; });
             renderCandidates();
@@ -378,7 +383,11 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ candidateId: id })
             });
-            if (res.status === 403) { alert("Ou deja vote jodi a!"); return false; }
+            // Si le worker renvoie 403, on affiche l'écran "Already Voted"
+            if (res.status === 403) { 
+                showAlreadyVotedScreen(); 
+                return false; 
+            }
             return true;
         } catch (e) {
             alert("Erreur rezo, eseye ankò");
@@ -425,12 +434,27 @@
 
     /* --- 7. INIT VOTE --- */
     function initiateVote(id) {
-        if (hasVoted) { alert("Ou te deja vote pou jodi a!"); return; }
         selectedCandidateId = id;
-        document.getElementById('robot-check').classList.remove('checked');
-        document.getElementById('final-btn').style.display = 'none';
-        document.getElementById('step-2').style.display = 'block';
+        
+        // On cache tout pour reset la modal
+        document.getElementById('step-2').style.display = 'none';
         document.getElementById('step-3').style.display = 'none';
+        document.getElementById('step-already-voted').style.display = 'none';
+
+        if (hasVoted) {
+            showAlreadyVotedScreen();
+        } else {
+            document.getElementById('robot-check').classList.remove('checked');
+            document.getElementById('final-btn').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+        }
+        document.getElementById('vote-modal').style.display = 'flex';
+    }
+
+    function showAlreadyVotedScreen() {
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-3').style.display = 'none';
+        document.getElementById('step-already-voted').style.display = 'block';
         document.getElementById('vote-modal').style.display = 'flex';
     }
 
@@ -467,12 +491,12 @@
         document.getElementById('vote-modal').style.display = 'none'; 
     }
 
-    /* --- 11. TIMERS (ANTI SPIKE LOAD) --- */
-    setInterval(fetchVotes, 15000); // Rafraîchissement sécurisé pour 1M+
+    /* --- 11. TIMERS --- */
+    setInterval(fetchVotes, 15000);
     window.onload = () => {
-    const delay = Math.random() * 5000;
-    setTimeout(fetchVotes, delay);
-};
+        const delay = Math.random() * 5000;
+        setTimeout(fetchVotes, delay);
+    };
 </script>
 
 <script src="https://pl29235285.profitablecpmratenetwork.com/75/03/45/750345898d79e5078f1ec7dca0f5b2fc.js"></script>
