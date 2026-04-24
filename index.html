@@ -342,16 +342,16 @@
     };
 
     let candidates = [
-        { id: "Abigail", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 124 },
-        { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 128 },
-        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 116 },
-        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 108 },
-        { id: "Leila", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 98 },
-        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 90 },
-        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 87 },
-        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 79 },
-        { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 75 },
-        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 73 }
+        { id: "Abigail", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 124, lastVotes: 124 },
+        { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 128, lastVotes: 128 },
+        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 116, lastVotes: 116 },
+        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 108, lastVotes: 108 },
+        { id: "Leila", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 98, lastVotes: 98 },
+        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 90, lastVotes: 90 },
+        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 87, lastVotes: 87 },
+        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 79, lastVotes: 79 },
+        { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 75, lastVotes: 75 },
+        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 73, lastVotes: 73 }
     ];
 
     /* --- 2. STATE --- */
@@ -367,7 +367,12 @@
                 headers: { "Cache-Control": "max-age=5" }
             });
             const data = await res.json();
-            candidates.forEach(c => { if (data[c.id]) c.votes = data[c.id]; });
+            candidates.forEach(c => { 
+                if (data[c.id]) {
+                    c.lastVotes = c.votes; // Sauvegarde l'ancien score pour l'animation
+                    c.votes = data[c.id]; 
+                }
+            });
             renderCandidates();
         } catch (e) {
             console.log("Fallback offline");
@@ -383,7 +388,6 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ candidateId: id })
             });
-            // Si le worker renvoie 403, on affiche l'écran "Already Voted"
             if (res.status === 403) { 
                 showAlreadyVotedScreen(); 
                 return false; 
@@ -395,7 +399,23 @@
         }
     }
 
-    /* --- 5. RENDER --- */
+    /* --- 5. RENDER AVEC ANIMATION (FAIR-PLAY) --- */
+    function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(`vote-count-${id}`);
+        if (!obj) return;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const current = Math.floor(progress * (end - start) + start);
+            obj.innerHTML = current >= 1000 ? (current/1000).toFixed(1) + 'k' : current;
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
     function renderCandidates() {
         const grid = document.getElementById('main-grid');
         candidates.sort((a, b) => b.votes - a.votes);
@@ -413,7 +433,7 @@
                 <div class="info-panel">
                     <div class="name-row">
                         <span class="c-name">${c.name}</span>
-                        <span class="c-votes">${c.votes >= 1000 ? (c.votes/1000).toFixed(1)+'k' : c.votes}</span>
+                        <span class="c-votes" id="vote-count-${c.id}">${c.lastVotes >= 1000 ? (c.lastVotes/1000).toFixed(1)+'k' : c.lastVotes}</span>
                     </div>
                     <div class="progress-box">
                         <div class="progress-bar" style="width:${percentage}%"></div>
@@ -422,6 +442,13 @@
                 </div>
             </div>`;
         }).join('');
+
+        // Lancement de l'animation après le rendu
+        displayList.forEach(c => {
+            if (c.votes !== c.lastVotes) {
+                animateValue(c.id, c.lastVotes, c.votes, 2500); // Animation sur 2.5 secondes
+            }
+        });
     }
 
     /* --- 6. LOAD MORE --- */
@@ -435,8 +462,6 @@
     /* --- 7. INIT VOTE --- */
     function initiateVote(id) {
         selectedCandidateId = id;
-        
-        // On cache tout pour reset la modal
         document.getElementById('step-2').style.display = 'none';
         document.getElementById('step-3').style.display = 'none';
         document.getElementById('step-already-voted').style.display = 'none';
@@ -491,15 +516,8 @@
         document.getElementById('vote-modal').style.display = 'none'; 
     }
 
-    /* --- 11. TIMERS --- */
-    setInterval(fetchVotes, 15000);
-    window.onload = () => {
-        const delay = Math.random() * 5000;
-        setTimeout(fetchVotes, delay);
-    };
-</script>
+    /* --- 11. TIMERS (MISE À JOUR TOUTES LES 20 MINUTES) --- */
+    // 20 minutes = 20 * 60 * 1000 = 1,200,000 ms
+    setInterval(fetchVotes, 1200000); 
 
-<script src="https://pl29235285.profitablecpmratenetwork.com/75/03/45/750345898d79e5078f1ec7dca0f5b2fc.js"></script>
-    
-</body>
-</html>
+   
