@@ -355,7 +355,12 @@
     /* --- 3. FETCH RESULTS (OPTIMISÉ 1M+) --- */
     async function fetchVotes() {
         try {
-            const res = await fetch(WORKER_URL + "/results", { method: "GET", cache: "force-cache" });
+            const res = await fetch(WORKER_URL + "/results", {
+    method: "GET",
+    headers: {
+        "Cache-Control": "max-age=5"
+    }
+});
             const data = await res.json();
             candidates.forEach(c => { if (data[c.id]) c.votes = data[c.id]; });
             renderCandidates();
