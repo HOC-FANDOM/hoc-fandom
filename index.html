@@ -120,7 +120,6 @@
             height: 800px;
             background: #f1f5f9;
             overflow: hidden;
-            cursor: pointer;
             position: relative;
         }
         .image-container img {
@@ -221,7 +220,6 @@
         }
 
         .wa-btn {
-            background: #25d366;
             color: #fff;
             width: 100%;
             padding: 20px;
@@ -229,11 +227,10 @@
             font-weight: 900;
             display: block;
             text-decoration: none;
-            margin-top: 25px;
         }
 
         .captcha-container {
-            margin-top: 25px;
+            margin-top: 15px;
             border: 1px solid #e2e8f0;
             background: #f8fafc;
             padding: 15px;
@@ -261,6 +258,7 @@
             margin-top: 20px;
             display: none;
             border: none;
+            cursor: pointer;
         }
 
         footer {
@@ -275,7 +273,7 @@
         @media (max-width: 500px) { .image-container { height: 550px; } }
     </style>
 </head>
-<body onclick="handleGlobalClick()">
+<body>
 
 <header>
     <div class="logo">HOC <span>FANDOM</span></div>
@@ -295,14 +293,8 @@
 
 <div id="vote-modal" class="overlay">
     <div class="modal">
-        <div id="step-1">
-            <div style="font-size: 50px; margin-bottom: 20px;">📲</div>
-            <h2 style="font-size: 22px; font-weight: 900;">Prosesis vòt ou a prèske fini!</h2>
-            <p style="color: var(--text-dim); margin-top: 10px;">Pataje lyen an bay 10 moun oswa group sou WhatsApp pou nou ka <b>Double vòt ou a</b> epi valide l.</p>
-            <a href="#" class="wa-btn" onclick="goToWhatsApp()">🚀 PATAJE SOU WHATSAPP</a>
-        </div>
 
-        <div id="step-2" style="display: none;">
+        <div id="step-2">
             <h2 style="font-size: 20px; font-weight: 900;">Verifikasyon Sekirite</h2>
             <div class="captcha-container">
                 <div style="display: flex; align-items: center; gap: 15px;">
@@ -317,7 +309,12 @@
         <div id="step-3" style="display: none;">
             <div style="font-size: 60px; margin-bottom: 10px;">✅</div>
             <h2 style="font-size: 22px; font-weight: 900;">Vòt ou a Konfime!</h2>
-            <button class="wa-btn" style="background: #000;" onclick="closeModal()">FÈMEN</button>
+            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Mèsi pou sipò w! Pataje sondaj la ak zanmi w pou kandida w la ka genyen.</p>
+            
+            <a href="#" class="wa-btn" style="background: #25d366; margin-bottom: 15px;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
+            <a href="#" class="wa-btn" style="background: #1877f2; margin-bottom: 20px;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
+            
+            <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">FÈMEN</button>
         </div>
     </div>
 </div>
@@ -350,7 +347,6 @@
         { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 73 }
     ];
 
-    let firstTouch = false;
     let showingAll = false;
     let selectedCandidateId = null;
 
@@ -386,7 +382,7 @@
             const percentage = (c.votes / topScore) * 100;
             return `
                 <div class="candidate-card">
-                    <div class="image-container" onclick="window.open(APP_DATA.AD_GLOBAL, '_blank')">
+                    <div class="image-container">
                         ${index === 0 && c.votes > 0 ? '<div class="rank-badge">👑 FAVORIT N°1</div>' : ''}
                         <img src="${c.img}" alt="${c.name}" loading="lazy">
                     </div>
@@ -404,27 +400,20 @@
     }
 
     /* --- 4. GESTION DES CLICS --- */
-    function handleGlobalClick() { if (!firstTouch) { window.open(APP_DATA.AD_GLOBAL, '_blank'); firstTouch = true; } }
     function showAllCandidates() { window.open(APP_DATA.AD_SEE_MORE, '_blank'); showingAll = true; renderCandidates(); document.getElementById('load-more-area').style.display = 'none'; }
 
-    /* --- 5. LOGIQUE DE VOTE & WHATSAPP --- */
+    /* --- 5. LOGIQUE DE VOTE & PARTAGE --- */
     function initiateVote(id) {
         if (localStorage.getItem('hoc_voted_v8')) { alert("Ou te deja vote pou jodi a!"); return; }
         selectedCandidateId = id;
+        
+        // Reset l'état de la modal au cas où
+        document.getElementById('robot-check').classList.remove('checked');
+        document.getElementById('final-btn').style.display = 'none';
+        
+        document.getElementById('step-2').style.display = 'block';
+        document.getElementById('step-3').style.display = 'none';
         document.getElementById('vote-modal').style.display = 'flex';
-    }
-
-    function goToWhatsApp() {
-        // Chwazi yon kandida o aza pou foto a ak mesaj la
-        const randomC = candidates[Math.floor(Math.random() * candidates.length)];
-        const msg = `Gade foto ${randomC.name} nan HOC Sézon 8! 🔥 Mwen fenk vote pou li, vin ede l genyen tou: ${APP_DATA.SITE_URL}`;
-        
-        window.location.href = `whatsapp://send?text=${encodeURIComponent(msg)}`;
-        
-        setTimeout(() => {
-            document.getElementById('step-1').style.display = 'none';
-            document.getElementById('step-2').style.display = 'block';
-        }, 2500);
     }
 
     function markChecked() {
@@ -438,6 +427,17 @@
         document.getElementById('step-2').style.display = 'none';
         document.getElementById('step-3').style.display = 'block';
         fetchVotes();
+    }
+
+    function shareWhatsApp() {
+        const selectedC = candidates.find(c => c.id === selectedCandidateId) || candidates[0];
+        const msg = `Mwen fenk vote pou ${selectedC.name} nan HOC 2027! 🔥 Vin ede l genyen tou: ${APP_DATA.SITE_URL}`;
+        window.location.href = `whatsapp://send?text=${encodeURIComponent(msg)}`;
+    }
+
+    function shareFacebook() {
+        const url = encodeURIComponent(APP_DATA.SITE_URL);
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
     }
 
     function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
