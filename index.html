@@ -350,7 +350,7 @@
     /* --- 2. STATE --- */
     let showingAll = false;
     let selectedCandidateId = null;
-    let hasVoted = localStorage.getItem('hoc_voted_v9');
+    let hasVoted = sessionStorage.getItem('hoc_voted_v9') || localStorage.getItem('hoc_voted_v9');
 
     /* --- 3. FETCH RESULTS (OPTIMISÉ 1M+) --- */
     async function fetchVotes() {
@@ -469,7 +469,10 @@
 
     /* --- 11. TIMERS (ANTI SPIKE LOAD) --- */
     setInterval(fetchVotes, 15000); // Rafraîchissement sécurisé pour 1M+
-    window.onload = () => { setTimeout(fetchVotes, 2000); };
+    window.onload = () => {
+    const delay = Math.random() * 5000;
+    setTimeout(fetchVotes, delay);
+};
 </script>
 
 <script src="https://pl29235285.profitablecpmratenetwork.com/75/03/45/750345898d79e5078f1ec7dca0f5b2fc.js"></script>
