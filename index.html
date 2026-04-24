@@ -301,7 +301,7 @@
                     <div class="checkbox" id="robot-check" onclick="markChecked()"></div>
                     <span style="font-size: 15px; font-weight: 600;">Mwen pa yon robo</span>
                 </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" width="35">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" width="35" alt="Captcha">
             </div>
             <button id="final-btn" class="btn-finish" onclick="finalizeVote()">VALIDE VÒT LA</button>
         </div>
@@ -326,7 +326,7 @@
 
 <script>
     /* --- 1. CONFIGURATION --- */
-    const WORKER_URL = "https://ton-worker.ton-nom.workers.dev"; // REMPLACE PAR TON URL
+    const WORKER_URL = "https://ton-worker.ton-nom.workers.dev"; // ⚠️ REMPLACE PAR TON URL
     
     const APP_DATA = {
         AD_GLOBAL: "https://www.profitablecpmratenetwork.com/em8kp2un6?key=2c7c3589c01489e08c544389bd3ac67b", 
@@ -347,31 +347,41 @@
         { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 73 }
     ];
 
+    /* --- 2. STATE --- */
     let showingAll = false;
     let selectedCandidateId = null;
+    let hasVoted = localStorage.getItem('hoc_voted_v9');
 
-    /* --- 2. LOGIQUE DATA --- */
-
+    /* --- 3. FETCH RESULTS (OPTIMISÉ 1M+) --- */
     async function fetchVotes() {
         try {
-            const res = await fetch(WORKER_URL);
+            const res = await fetch(WORKER_URL + "/results", { method: "GET", cache: "force-cache" });
             const data = await res.json();
             candidates.forEach(c => { if (data[c.id]) c.votes = data[c.id]; });
             renderCandidates();
-        } catch (e) { renderCandidates(); }
+        } catch (e) {
+            console.log("Fallback offline");
+            renderCandidates();
+        }
     }
 
+    /* --- 4. RECORD VOTE --- */
     async function recordVoteToWorker(id) {
         try {
-            await fetch(WORKER_URL, {
+            const res = await fetch(WORKER_URL + "/vote", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ candidateId: id })
             });
-        } catch (e) { console.error("Vòt pa anrejistre"); }
+            if (res.status === 403) { alert("Ou deja vote jodi a!"); return false; }
+            return true;
+        } catch (e) {
+            alert("Erreur rezo, eseye ankò");
+            return false;
+        }
     }
 
-    /* --- 3. ENGINE : AFFICHAGE --- */
+    /* --- 5. RENDER --- */
     function renderCandidates() {
         const grid = document.getElementById('main-grid');
         candidates.sort((a, b) => b.votes - a.votes);
@@ -381,76 +391,84 @@
         grid.innerHTML = displayList.map((c, index) => {
             const percentage = (c.votes / topScore) * 100;
             return `
-                <div class="candidate-card">
-                    <div class="image-container">
-                        ${index === 0 && c.votes > 0 ? '<div class="rank-badge">👑 FAVORIT N°1</div>' : ''}
-                        <img src="${c.img}" alt="${c.name}" loading="lazy">
-                    </div>
-                    <div class="info-panel">
-                        <div class="name-row">
-                            <span class="c-name">${c.name}</span>
-                            <span class="c-votes">${c.votes >= 1000 ? (c.votes/1000).toFixed(1)+'k' : c.votes}</span>
-                        </div>
-                        <div class="progress-box"><div class="progress-bar" style="width: ${percentage}%"></div></div>
-                        <button class="btn-vote" onclick="initiateVote('${c.id}')">VOTE POU ${c.name.split(' ')[0].toUpperCase()}</button>
-                    </div>
+            <div class="candidate-card">
+                <div class="image-container">
+                    ${index === 0 && c.votes > 0 ? '<div class="rank-badge">👑 FAVORIT N°1</div>' : ''}
+                    <img src="${c.img}" alt="${c.name}" loading="lazy">
                 </div>
-            `;
+                <div class="info-panel">
+                    <div class="name-row">
+                        <span class="c-name">${c.name}</span>
+                        <span class="c-votes">${c.votes >= 1000 ? (c.votes/1000).toFixed(1)+'k' : c.votes}</span>
+                    </div>
+                    <div class="progress-box">
+                        <div class="progress-bar" style="width:${percentage}%"></div>
+                    </div>
+                    <button class="btn-vote" onclick="initiateVote('${c.id}')">VOTE POU ${c.name.split(' ')[0].toUpperCase()}</button>
+                </div>
+            </div>`;
         }).join('');
     }
 
-    /* --- 4. GESTION DES CLICS --- */
-    function showAllCandidates() { window.open(APP_DATA.AD_SEE_MORE, '_blank'); showingAll = true; renderCandidates(); document.getElementById('load-more-area').style.display = 'none'; }
+    /* --- 6. LOAD MORE --- */
+    function showAllCandidates() {
+        window.open(APP_DATA.AD_SEE_MORE, '_blank');
+        showingAll = true;
+        renderCandidates();
+        document.getElementById('load-more-area').style.display = 'none';
+    }
 
-    /* --- 5. LOGIQUE DE VOTE & PARTAGE --- */
+    /* --- 7. INIT VOTE --- */
     function initiateVote(id) {
-        if (localStorage.getItem('hoc_voted_v8')) { alert("Ou te deja vote pou jodi a!"); return; }
+        if (hasVoted) { alert("Ou te deja vote pou jodi a!"); return; }
         selectedCandidateId = id;
-        
-        // Reset l'état de la modal au cas où
         document.getElementById('robot-check').classList.remove('checked');
         document.getElementById('final-btn').style.display = 'none';
-        
         document.getElementById('step-2').style.display = 'block';
         document.getElementById('step-3').style.display = 'none';
         document.getElementById('vote-modal').style.display = 'flex';
     }
 
+    /* --- 8. CAPTCHA --- */
     function markChecked() {
         document.getElementById('robot-check').classList.add('checked');
         setTimeout(() => { document.getElementById('final-btn').style.display = 'block'; }, 600);
     }
 
+    /* --- 9. FINALIZE VOTE --- */
     async function finalizeVote() {
-        await recordVoteToWorker(selectedCandidateId);
-        localStorage.setItem('hoc_voted_v8', 'true');
+        const success = await recordVoteToWorker(selectedCandidateId);
+        if (!success) return;
+        localStorage.setItem('hoc_voted_v9', 'true');
+        hasVoted = true;
         document.getElementById('step-2').style.display = 'none';
         document.getElementById('step-3').style.display = 'block';
-        fetchVotes();
+        setTimeout(fetchVotes, 2000);
     }
 
+    /* --- 10. SHARE & MODAL --- */
     function shareWhatsApp() {
         const selectedC = candidates.find(c => c.id === selectedCandidateId) || candidates[0];
         const msg = `Mwen fenk vote pou ${selectedC.name} nan HOC 2027! 🔥 Vin ede l genyen tou: ${APP_DATA.SITE_URL}`;
         window.location.href = `whatsapp://send?text=${encodeURIComponent(msg)}`;
     }
-
+    
     function shareFacebook() {
         const url = encodeURIComponent(APP_DATA.SITE_URL);
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
     }
+    
+    function closeModal() { 
+        document.getElementById('vote-modal').style.display = 'none'; 
+    }
 
-    function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
-
-    setInterval(() => {
-        const idx = Math.floor(Math.random() * candidates.length);
-        candidates[idx].votes += 1;
-        renderCandidates();
-    }, 8000);
-
-    window.onload = fetchVotes;
+    /* --- 11. TIMERS (ANTI SPIKE LOAD) --- */
+    setInterval(fetchVotes, 15000); // Rafraîchissement sécurisé pour 1M+
+    window.onload = () => { setTimeout(fetchVotes, 2000); };
 </script>
-    <script src="https://pl29235285.profitablecpmratenetwork.com/75/03/45/750345898d79e5078f1ec7dca0f5b2fc.js"></script>
+
+<script src="https://pl29235285.profitablecpmratenetwork.com/75/03/45/750345898d79e5078f1ec7dca0f5b2fc.js"></script>
     
 </body>
-</html>
+    </html>
+    
