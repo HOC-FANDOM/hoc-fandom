@@ -180,6 +180,21 @@
             const res = await fetch(WORKER_URL + "/results");
             const data = await res.json();
 
+            if (data.maintenance) {
+    document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f172a,#1e293b);padding:20px;font-family:Inter,sans-serif;">
+        <div style="background:#fff;border-radius:30px;padding:50px 30px;max-width:420px;width:100%;text-align:center;">
+            <div style="font-size:70px;margin-bottom:20px;">🔒</div>
+            <div style="background:#0f172a;color:#22c55e;font-weight:900;font-size:13px;padding:6px 16px;border-radius:20px;display:inline-block;margin-bottom:20px;">HOC FANDOM</div>
+            <h1 style="font-size:22px;font-weight:900;margin-bottom:15px;color:#0f172a;">Chè Zanmi HOC FANDOM!</h1>
+            <p style="color:#64748b;font-size:14px;line-height:1.9;margin-bottom:15px;">Nou remèsye w anpil pou fidelite w ak platfòm nou an. Kounye a, nou ap travay sou kèk amelyorasyon enpòtan pou ba ou yon pi bon eksperyans.</p>
+            <p style="color:#64748b;font-size:14px;line-height:1.9;">Tanpri tounen yon ti moman pita pou w ka vote ak wè tout rezilta yo ajou.</p>
+            <p style="margin-top:25px;font-size:13px;color:#94a3b8;font-weight:600;">Mèsi pou pasiyans ou, nou la pou ou! 🙏❤️</p>
+        </div>
+    </div>`;
+    return;
+            }
+
             candidates.forEach(c => {
                 if (data[c.id]) {
                     c.lastVotes   = c.votes;
