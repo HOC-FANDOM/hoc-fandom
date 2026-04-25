@@ -207,14 +207,18 @@
             }
 
             candidates.forEach(c => {
-                if (data[c.id]) {
-                    c.lastVotes   = c.votes;
-                    c.votes       = data[c.id].votes;       // ✅ Nouveau format
-                    c.percentage  = data[c.id].percentage;  // ✅ Pourcentage
-                }
-            });
+    if (data[c.id]) {
+        c.lastVotes = c.votes;
+        c.votes = data[c.id].votes;
+        c.percentage = data[c.id].percentage;
+    }
+});
+renderCandidates();
 
-            renderCandidates();
+// Animation douce pour chaque candidat
+candidates.forEach(c => {
+    animateValue(c.id, c.lastVotes, c.votes, 3000);
+});
         } catch (e) {
             console.log("Offline mode");
             renderCandidates();
