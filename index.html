@@ -50,31 +50,18 @@
         .candidate-card { background: var(--card-bg); margin-bottom: 50px; position: relative; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .candidate-card.visible { opacity: 1; transform: translateY(0); }
 
-        /* OPTIMISATION MOBILE : Plus de 800px fixe ! Utilisation de aspect-ratio */
-        /* Suppression du aspect-ratio fixe qui coupait tes images */
-.image-container { 
-    width: 100%; 
-    background: #f1f5f9; 
-    overflow: hidden; 
-    position: relative; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-container img { 
-    width: 100%; 
-    height: auto; /* Laisse l'image prendre sa hauteur réelle */
-    display: block;
-    object-fit: contain; /* Assure que toute l'image est visible sans être coupée */
-}
-
+        .image-container { width: 100%; aspect-ratio: 4 / 5; max-height: 70vh; background: #f1f5f9; overflow: hidden; position: relative; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; }
         
         .rank-badge { position: absolute; top: 25px; left: 25px; background: var(--gold); color: #000; padding: 8px 16px; font-weight: 900; font-size: 12px; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10; }
         .info-panel { padding: 25px 20px; border-bottom: 2px solid var(--border); }
-        .name-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .name-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
         .c-name { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; }
         .c-votes { font-size: 24px; font-weight: 900; color: var(--primary); }
+
+        /* Ligne pourcentage */
+        .c-percentage { font-size: 13px; font-weight: 700; color: var(--text-dim); text-align: right; margin-bottom: 15px; }
+
         .progress-box { height: 12px; background: #f1f5f9; border-radius: 20px; margin-bottom: 25px; overflow: hidden; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), #f59e0b); width: 0%; border-radius: 20px; transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
         
@@ -91,7 +78,6 @@
         
         .btn-finish { background: #0f172a; color: #fff; width: 100%; padding: 18px; border-radius: 12px; font-weight: 800; margin-top: 20px; display: none; border: none; cursor: pointer; }
         
-        /* ESPACE PUB PREMIUM POST-VOTE */
         .premium-ad-zone { margin: 20px 0; padding: 15px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; font-size: 12px; color: #94a3b8;}
 
         footer { padding: 60px 20px; text-align: center; font-size: 12px; color: var(--text-dim); background: #f8fafc; }
@@ -139,75 +125,76 @@
         <div id="step-3" style="display: none;">
             <div style="font-size: 60px; margin-bottom: 10px;">✅</div>
             <h2 style="font-size: 22px; font-weight: 900;">Vòt ou a Konfime!</h2>
-            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Ou ka miltipliye vòt ou a x2! Pataje ak 5 zanmi oswa gwoup sou WhatsApp pou vòt la konte double.</p>
+            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Mèsi pou sipò w! Pataje sondaj la ak zanmi w.</p>
             
             <div class="premium-ad-zone">Espace Pub Sponsorisé (Adsterra)</div>
 
-            <div id="share-progress-container" style="margin-bottom: 15px;">
-                <p id="share-text" style="font-weight: bold; margin-bottom: 5px; color: var(--danger);">Pataje ak gwoup yo: 0/5</p>
-                <div style="height: 10px; background: #f1f5f9; border-radius: 10px; overflow: hidden;">
-                    <div id="share-bar" style="height: 100%; background: #25d366; width: 0%; transition: width 0.3s;"></div>
-                </div>
-            </div>
-
-            <a href="#" class="wa-btn" id="btn-share-wa" style="background: #25d366;" onclick="shareWhatsAppToDouble(event)">📲 PATAJE POU DOUBLE VÒT LA</a>
-            <button class="wa-btn" id="btn-close-modal" style="background: #0f172a; display: none;" onclick="closeModal()">FÈMEN</button>
+            <a href="#" class="wa-btn" style="background: #25d366;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
+            <a href="#" class="wa-btn" style="background: #1877f2;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
+            <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">FÈMEN</button>
         </div>
     </div>
 </div>
 
 <footer>
     HOC FANDOM est une plateforme communautaire indépendante gérée par des fans. Ce site n'est ni affilié, ni approuvé, ni associé officiellement à la production de 'House of Challenge'.<br><br>
-    © 2026 - Tous droits réservés.
+    © 2026 Ziltroniq Media Group - Tous droits réservés.
 </footer>
 
 <script>
-    const WORKER_URL = "https://hoc-fandom-engine.joasleonard01.workers.dev"; // ⚠️ TON WORKER
+    const WORKER_URL = "https://hoc-fandom-engine.joasleonard01.workers.dev"; // ⚠️ TON WORKER URL ICI
     const APP_DATA = {
         AD_SEE_MORE: "https://www.profitablecpmratenetwork.com/gu030jeh?key=45f4f5f7db88e12c054e8052ba12cf82",
         SITE_URL: "https://houseofchallengefandom.pages.dev"
     };
 
     let candidates = [
-        { id: "Abigail", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 0, lastVotes: 0 },
-        { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 0, lastVotes: 0 },
-        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 0, lastVotes: 0 },
-        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 0, lastVotes: 0 },
-        { id: "Leila", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 0, lastVotes: 0 },
-        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 0, lastVotes: 0 },
-        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 0, lastVotes: 0 },
-        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 0, lastVotes: 0 },
-        { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 0, lastVotes: 0 },
-        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 0, lastVotes: 0 }
+        { id: "Abigail",   name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp",      votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "chrisTell", name: "Christ-Tell",        img: "https://i.ibb.co/fY444jsX/Christell.webp",   votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "mcdk",      name: "MC DK",              img: "https://i.ibb.co/1fDvCBvL/mc.jpg",           votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "meetch",    name: "Meetch",             img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg",       votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "Leila",     name: "Barbie Leila",       img: "https://i.ibb.co/hRN90sL8/Leila.webp",       votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "jalia",     name: "Jalia Magnian",      img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg",        votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "manie",     name: "Manie",              img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg",        votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "natha",     name: "Natha",              img: "https://i.ibb.co/jvRF2dqp/Natha.jpg",        votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "layouyou",  name: "Layouyou",           img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg",     votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "abee",      name: "Abee",               img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg",         votes: 0, percentage: "0.00", lastVotes: 0 }
     ];
 
     let showingAll = false;
     let selectedCandidateId = null;
-    let turnstileToken = null; 
+    let turnstileToken = null;
     let hasVoted = localStorage.getItem('hoc_voted_final');
-    
-    // NOUVEAU : Compteur de partage
-    let shareCount = 0;
 
+    // Intersection Observer pour animations au scroll
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('visible');
         });
     }, { threshold: 0.1 });
 
+    // ── FETCH VOTES ──────────────────────────────────────────
     async function fetchVotes() {
         try {
-            const res = await fetch(WORKER_URL + "/results", { headers: { "Cache-Control": "max-age=15" } });
+            const res = await fetch(WORKER_URL + "/results");
             const data = await res.json();
-            candidates.forEach(c => { 
-                if (data[c.id]) { c.lastVotes = c.votes; c.votes = data[c.id]; }
+
+            candidates.forEach(c => {
+                if (data[c.id]) {
+                    c.lastVotes   = c.votes;
+                    c.votes       = data[c.id].votes;       // ✅ Nouveau format
+                    c.percentage  = data[c.id].percentage;  // ✅ Pourcentage
+                }
             });
+
             renderCandidates();
-        } catch (e) { console.log("Offline mode"); renderCandidates(); }
+        } catch (e) {
+            console.log("Offline mode");
+            renderCandidates();
+        }
     }
 
+    // ── RENDER ───────────────────────────────────────────────
     function renderCandidates() {
         const grid = document.getElementById('main-grid');
         candidates.sort((a, b) => b.votes - a.votes);
@@ -215,7 +202,7 @@
         const displayList = showingAll ? candidates : candidates.slice(0, 5);
 
         grid.innerHTML = displayList.map((c, index) => {
-            const percentage = (c.votes / topScore) * 100;
+            const barWidth = (c.votes / topScore) * 100;
             return `
             <div class="candidate-card" id="card-${c.id}">
                 <div class="image-container">
@@ -225,10 +212,11 @@
                 <div class="info-panel">
                     <div class="name-row">
                         <span class="c-name">${c.name}</span>
-                        <span class="c-votes" id="vote-count-${c.id}">${c.lastVotes >= 1000 ? (c.lastVotes/1000).toFixed(1)+'k' : c.lastVotes}</span>
+                        <span class="c-votes" id="vote-count-${c.id}">${formatVotes(c.lastVotes)}</span>
                     </div>
+                    <div class="c-percentage" id="pct-${c.id}">${c.percentage}% des votes</div>
                     <div class="progress-box">
-                        <div class="progress-bar" style="width:${percentage}%"></div>
+                        <div class="progress-bar" style="width:${barWidth}%"></div>
                     </div>
                     <button class="btn-vote" onclick="initiateVote('${c.id}')">VOTE POU ${c.name.split(' ')[0].toUpperCase()}</button>
                 </div>
@@ -242,6 +230,10 @@
         });
     }
 
+    function formatVotes(n) {
+        return n >= 1000 ? (n / 1000).toFixed(1) + 'k' : n;
+    }
+
     function animateValue(id, start, end, duration) {
         const obj = document.getElementById(`vote-count-${id}`);
         if (!obj) return;
@@ -250,18 +242,21 @@
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             const current = Math.floor(progress * (end - start) + start);
-            obj.innerHTML = current >= 1000 ? (current/1000).toFixed(1) + 'k' : current;
+            obj.innerHTML = formatVotes(current);
             if (progress < 1) window.requestAnimationFrame(step);
         };
         window.requestAnimationFrame(step);
     }
 
+    // ── VOIR PLUS ─────────────────────────────────────────────
     function showAllCandidates() {
         window.open(APP_DATA.AD_SEE_MORE, '_blank');
-        showingAll = true; renderCandidates();
+        showingAll = true;
+        renderCandidates();
         document.getElementById('load-more-area').style.display = 'none';
     }
 
+    // ── VOTE ──────────────────────────────────────────────────
     function initiateVote(id) {
         selectedCandidateId = id;
         document.getElementById('step-2').style.display = 'none';
@@ -273,7 +268,7 @@
         } else {
             document.getElementById('final-btn').style.display = 'none';
             document.getElementById('step-2').style.display = 'block';
-            if(typeof turnstile !== 'undefined') turnstile.reset();
+            if (typeof turnstile !== 'undefined') turnstile.reset();
         }
         document.getElementById('vote-modal').style.display = 'flex';
     }
@@ -284,73 +279,64 @@
     }
 
     async function finalizeVote() {
-        if (!turnstileToken) return; 
+        if (!turnstileToken) return;
         
-        document.getElementById('final-btn').innerHTML = "TRAITEMENT...";
+        const btn = document.getElementById('final-btn');
+        btn.innerHTML = "TRAITEMENT...";
+        btn.disabled = true;
         
         try {
             const res = await fetch(WORKER_URL + "/vote", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ candidateId: selectedCandidateId, token: turnstileToken })
+                credentials: 'include', // ✅ Nécessaire pour envoyer/recevoir les cookies
+                body: JSON.stringify({
+                    candidateId: selectedCandidateId,
+                    token: turnstileToken
+                })
             });
             
-            if (res.status === 403 || res.status === 429) { 
+            // Déjà voté (cookie détecté côté serveur) ou rate limit
+            if (res.status === 429 || res.status === 403) {
                 document.getElementById('step-2').style.display = 'none';
                 document.getElementById('step-already-voted').style.display = 'block';
+                localStorage.setItem('hoc_voted_final', 'true');
+                hasVoted = true;
                 return;
             }
+
+            if (!res.ok) {
+                throw new Error("Erreur serveur");
+            }
             
+            // ✅ Vote accepté
             localStorage.setItem('hoc_voted_final', 'true');
             hasVoted = true;
             document.getElementById('step-2').style.display = 'none';
             document.getElementById('step-3').style.display = 'block';
             setTimeout(fetchVotes, 2000);
             
-            // Réinitialiser le compteur de partage au cas où
-            shareCount = 0; 
-            document.getElementById('share-text').innerText = `Pataje ak gwoup yo: 0/5`;
-            document.getElementById('share-bar').style.width = `0%`;
-            
         } catch (e) {
             alert("Erreur de connexion. Veuillez réessayer.");
-            document.getElementById('final-btn').innerHTML = "VALIDE VÒT LA";
+            btn.innerHTML = "VALIDE VÒT LA";
+            btn.disabled = false;
         }
     }
 
-    // NOUVELLE LOGIQUE DE SIMULATION VIRALE
-    function shareWhatsAppToDouble(event) {
-        event.preventDefault(); // Empêche le comportement par défaut
-        
+    // ── PARTAGE ───────────────────────────────────────────────
+    function shareWhatsApp() {
         const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
-        // Ouvre WhatsApp
         window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mwen fenk vote pou ${c.name} nan HOC 2027! 🔥 Vin ede l genyen tou: ${APP_DATA.SITE_URL}`)}`;
-
-        // Incrémente le compteur
-        shareCount++;
-
-        // Met à jour l'interface avec un léger délai pour simuler le retour sur l'app
-        setTimeout(() => {
-            document.getElementById('share-text').innerText = `Pataje ak gwoup yo: ${shareCount}/5`;
-            document.getElementById('share-bar').style.width = `${(shareCount / 5) * 100}%`;
-
-            // Si 5 partages atteints
-            if (shareCount >= 5) {
-                document.getElementById('step-3').innerHTML = `
-                    <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
-                    <h2 style="font-size: 22px; font-weight: 900; color: #25d366;">Vòt Double Konfime!</h2>
-                    <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Felisitasyon! Vòt ou a konte an doub pou ${c.name}. Mèsi pou sipò w!</p>
-                    <div class="premium-ad-zone">Espace Pub Sponsorisé (Adsterra)</div>
-                    <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">FÈMEN</button>
-                `;
-            }
-        }, 1500);
+    }
+    function shareFacebook() {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank');
+    }
+    function closeModal() {
+        document.getElementById('vote-modal').style.display = 'none';
     }
 
-    function shareFacebook() { window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank'); }
-    function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
-
-    setInterval(fetchVotes, 1200000); 
+    // Refresh toutes les 20 minutes
+    setInterval(fetchVotes, 1200000);
     window.onload = fetchVotes;
 </script>
 
