@@ -115,7 +115,7 @@
             <h2 style="font-size: 20px; font-weight: 900; margin-bottom:15px;">Verifikasyon Sekirite</h2>
             <p style="font-size:13px; color:#64748b; margin-bottom:20px;">Prouve ou se yon moun reyèl pou vòt la konte.</p>
             
-            <div class="cf-turnstile" data-sitekey="METS_TA_CLE_SITE_TURNSTILE_ICI" data-callback="turnstileSuccess"></div>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAADCpLqQgHa8tJMGA" data-callback="turnstileSuccess"></div>
             
             <button id="final-btn" class="btn-finish" onclick="finalizeVote()">VALIDE VÒT LA</button>
         </div>
@@ -123,13 +123,19 @@
         <div id="step-3" style="display: none;">
             <div style="font-size: 60px; margin-bottom: 10px;">✅</div>
             <h2 style="font-size: 22px; font-weight: 900;">Vòt ou a Konfime!</h2>
-            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Mèsi pou sipò w! Pataje sondaj la ak zanmi w.</p>
+            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Ou ka miltipliye vòt ou a x2! Pataje ak 5 zanmi oswa gwoup sou WhatsApp pou vòt la konte double.</p>
             
             <div class="premium-ad-zone">Espace Pub Sponsorisé (Adsterra)</div>
 
-            <a href="#" class="wa-btn" style="background: #25d366;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
-            <a href="#" class="wa-btn" style="background: #1877f2;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
-            <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">FÈMEN</button>
+            <div id="share-progress-container" style="margin-bottom: 15px;">
+                <p id="share-text" style="font-weight: bold; margin-bottom: 5px; color: var(--danger);">Pataje ak gwoup yo: 0/5</p>
+                <div style="height: 10px; background: #f1f5f9; border-radius: 10px; overflow: hidden;">
+                    <div id="share-bar" style="height: 100%; background: #25d366; width: 0%; transition: width 0.3s;"></div>
+                </div>
+            </div>
+
+            <a href="#" class="wa-btn" id="btn-share-wa" style="background: #25d366;" onclick="shareWhatsAppToDouble(event)">📲 PATAJE POU DOUBLE VÒT LA</a>
+            <button class="wa-btn" id="btn-close-modal" style="background: #0f172a; display: none;" onclick="closeModal()">FÈMEN</button>
         </div>
     </div>
 </div>
@@ -140,7 +146,7 @@
 </footer>
 
 <script>
-    const WORKER_URL = "https://ton-worker.ton-nom.workers.dev"; // ⚠️ TON WORKER
+    const WORKER_URL = "https://hoc-fadom-engine.joasleonard01.workers.dev/"; // ⚠️ TON WORKER
     const APP_DATA = {
         AD_SEE_MORE: "https://www.profitablecpmratenetwork.com/gu030jeh?key=45f4f5f7db88e12c054e8052ba12cf82",
         SITE_URL: "https://houseofchallengefandom.pages.dev"
@@ -161,10 +167,12 @@
 
     let showingAll = false;
     let selectedCandidateId = null;
-    let turnstileToken = null; // Stocke le token de validation
+    let turnstileToken = null; 
     let hasVoted = localStorage.getItem('hoc_voted_final');
+    
+    // NOUVEAU : Compteur de partage
+    let shareCount = 0;
 
-    // PERFORMANCE: Intersection Observer pour les animations au scroll
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -249,20 +257,18 @@
         } else {
             document.getElementById('final-btn').style.display = 'none';
             document.getElementById('step-2').style.display = 'block';
-            // Reset Turnstile au cas où la modale avait été fermée avant
             if(typeof turnstile !== 'undefined') turnstile.reset();
         }
         document.getElementById('vote-modal').style.display = 'flex';
     }
 
-    // Callback déclenché par Turnstile quand l'utilisateur a réussi le test
     function turnstileSuccess(token) {
         turnstileToken = token;
         document.getElementById('final-btn').style.display = 'block';
     }
 
     async function finalizeVote() {
-        if (!turnstileToken) return; // Sécurité supplémentaire
+        if (!turnstileToken) return; 
         
         document.getElementById('final-btn').innerHTML = "TRAITEMENT...";
         
@@ -285,16 +291,46 @@
             document.getElementById('step-3').style.display = 'block';
             setTimeout(fetchVotes, 2000);
             
+            // Réinitialiser le compteur de partage au cas où
+            shareCount = 0; 
+            document.getElementById('share-text').innerText = `Pataje ak gwoup yo: 0/5`;
+            document.getElementById('share-bar').style.width = `0%`;
+            
         } catch (e) {
             alert("Erreur de connexion. Veuillez réessayer.");
             document.getElementById('final-btn').innerHTML = "VALIDE VÒT LA";
         }
     }
 
-    function shareWhatsApp() {
+    // NOUVELLE LOGIQUE DE SIMULATION VIRALE
+    function shareWhatsAppToDouble(event) {
+        event.preventDefault(); // Empêche le comportement par défaut
+        
         const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
+        // Ouvre WhatsApp
         window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mwen fenk vote pou ${c.name} nan HOC 2027! 🔥 Vin ede l genyen tou: ${APP_DATA.SITE_URL}`)}`;
+
+        // Incrémente le compteur
+        shareCount++;
+
+        // Met à jour l'interface avec un léger délai pour simuler le retour sur l'app
+        setTimeout(() => {
+            document.getElementById('share-text').innerText = `Pataje ak gwoup yo: ${shareCount}/5`;
+            document.getElementById('share-bar').style.width = `${(shareCount / 5) * 100}%`;
+
+            // Si 5 partages atteints
+            if (shareCount >= 5) {
+                document.getElementById('step-3').innerHTML = `
+                    <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
+                    <h2 style="font-size: 22px; font-weight: 900; color: #25d366;">Vòt Double Konfime!</h2>
+                    <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Felisitasyon! Vòt ou a konte an doub pou ${c.name}. Mèsi pou sipò w!</p>
+                    <div class="premium-ad-zone">Espace Pub Sponsorisé (Adsterra)</div>
+                    <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">FÈMEN</button>
+                `;
+            }
+        }, 1500);
     }
+
     function shareFacebook() { window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank'); }
     function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
 
