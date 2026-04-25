@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HOC FANDOM | Sondaj fanatik pou chwazi kiyès ki pral reprezante ayiti nan House Of Challenge 2027!</title>
-
     <meta name="description" content="Sondaj fanatik House of challenge 2027 an Ayiti.">
     
     <meta property="og:type" content="website">
@@ -17,9 +16,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap">
+    
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     <style>
-        /* --- 1. DESIGN SYSTEM (Premium Minimalist) --- */
         :root {
             --primary: #22c55e;
             --primary-soft: rgba(34, 197, 94, 0.1);
@@ -33,244 +33,53 @@
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- 2. RESET & BASE --- */
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; line-height: 1.5; overflow-x: hidden; user-select: none; -webkit-user-select: none; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.5;
-            overflow-x: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        /* --- 3. HEADER --- */
-        header {
-            height: 70px;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(15px);
-            z-index: 1000;
-        }
-
-        .logo { 
-            font-weight: 900; 
-            font-size: 24px; 
-            letter-spacing: -1.2px; 
-            text-transform: uppercase;
-        }
+        header { height: 70px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); z-index: 1000; }
+        .logo { font-weight: 900; font-size: 24px; letter-spacing: -1.2px; text-transform: uppercase; }
         .logo span { color: var(--primary); }
+        .live-status { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; color: var(--danger); background: #fee2e2; padding: 5px 12px; border-radius: 20px; }
+        .pulse-dot { width: 8px; height: 8px; background: var(--danger); border-radius: 50%; animation: blink 1.2s infinite; }
 
-        .live-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 900;
-            color: var(--danger);
-            background: #fee2e2;
-            padding: 5px 12px;
-            border-radius: 20px;
-        }
-        .pulse-dot {
-            width: 8px; height: 8px;
-            background: var(--danger);
-            border-radius: 50%;
-            animation: blink 1.2s infinite;
-        }
-
-        /* --- 4. HERO --- */
-        .hero {
-            padding: 40px 20px;
-            text-align: center;
-            background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
-            border-bottom: 8px solid var(--border);
-        }
+        .hero { padding: 40px 20px; text-align: center; background: linear-gradient(180deg, #fff 0%, #f8fafc 100%); border-bottom: 8px solid var(--border); }
         .hero h1 { font-size: 28px; font-weight: 900; margin-bottom: 10px; }
         .hero p { color: var(--text-dim); font-size: 15px; font-weight: 500; max-width: 300px; margin: auto; }
 
-        /* --- 5. CANDIDATE LIST --- */
-        .container {
-            max-width: 650px;
-            margin: auto;
-            padding: 20px 0 60px 0;
-        }
+        .container { max-width: 650px; margin: auto; padding: 20px 0 60px 0; }
+        .candidate-card { background: var(--card-bg); margin-bottom: 50px; position: relative; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .candidate-card.visible { opacity: 1; transform: translateY(0); }
 
-        .candidate-card {
-            background: var(--card-bg);
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .image-container {
-            width: 100%;
-            height: 800px;
-            background: #f1f5f9;
-            overflow: hidden;
-            position: relative;
-        }
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .rank-badge {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            background: var(--gold);
-            color: #000;
-            padding: 8px 16px;
-            font-weight: 900;
-            font-size: 12px;
-            border-radius: 6px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        .info-panel {
-            padding: 25px 20px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .name-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 20px;
-        }
+        /* OPTIMISATION MOBILE : Plus de 800px fixe ! Utilisation de aspect-ratio */
+        .image-container { width: 100%; aspect-ratio: 4 / 5; max-height: 70vh; background: #f1f5f9; overflow: hidden; position: relative; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .rank-badge { position: absolute; top: 25px; left: 25px; background: var(--gold); color: #000; padding: 8px 16px; font-weight: 900; font-size: 12px; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10; }
+        .info-panel { padding: 25px 20px; border-bottom: 2px solid var(--border); }
+        .name-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
         .c-name { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; }
         .c-votes { font-size: 24px; font-weight: 900; color: var(--primary); }
+        .progress-box { height: 12px; background: #f1f5f9; border-radius: 20px; margin-bottom: 25px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), #f59e0b); width: 0%; border-radius: 20px; transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        
+        .btn-vote { background: var(--primary-soft); color: var(--primary); border: 2px solid var(--primary); width: 100%; padding: 20px; border-radius: 15px; font-size: 16px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: transform 0.1s; }
+        .btn-vote:active { transform: scale(0.98); }
 
-        .progress-box {
-            height: 12px;
-            background: #f1f5f9;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--gold), #f59e0b);
-            width: 0%;
-            border-radius: 20px;
-            transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1);
-        }
+        .load-more-container { text-align: center; padding-bottom: 100px; }
+        .btn-more { background: #000; color: #fff; border: none; padding: 20px 40px; border-radius: 50px; font-size: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
-        .btn-vote {
-            background: var(--primary-soft);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            width: 100%;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 16px;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
-        }
+        /* MODALS */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; backdrop-filter: blur(8px); }
+        .modal { background: #fff; width: 100%; max-width: 420px; padding: 40px 30px; border-radius: 30px; text-align: center; }
+        .wa-btn { color: #fff; width: 100%; padding: 20px; border-radius: 15px; font-weight: 900; display: block; text-decoration: none; margin-bottom: 15px;}
+        
+        .btn-finish { background: #0f172a; color: #fff; width: 100%; padding: 18px; border-radius: 12px; font-weight: 800; margin-top: 20px; display: none; border: none; cursor: pointer; }
+        
+        /* ESPACE PUB PREMIUM POST-VOTE */
+        .premium-ad-zone { margin: 20px 0; padding: 15px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; font-size: 12px; color: #94a3b8;}
 
-        /* --- 6. MONETIZATION ELEMENTS --- */
-        .load-more-container {
-            text-align: center;
-            padding-bottom: 100px;
-        }
-        .btn-more {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        /* --- 7. MODALS SYSTEM --- */
-        .overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.92);
-            display: none; align-items: center; justify-content: center;
-            z-index: 2000; padding: 20px;
-            backdrop-filter: blur(8px);
-        }
-        .modal {
-            background: #fff;
-            width: 100%;
-            max-width: 420px;
-            padding: 40px 30px;
-            border-radius: 30px;
-            text-align: center;
-        }
-
-        .wa-btn {
-            color: #fff;
-            width: 100%;
-            padding: 20px;
-            border-radius: 15px;
-            font-weight: 900;
-            display: block;
-            text-decoration: none;
-        }
-
-        .captcha-container {
-            margin-top: 15px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .checkbox {
-            width: 28px; height: 28px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .checkbox.checked { background: var(--primary); border-color: var(--primary); position: relative; }
-        .checkbox.checked::after { content: '✓'; color: white; position: absolute; left: 5px; top: -2px; font-weight: 900; }
-
-        .btn-finish {
-            background: #0f172a;
-            color: #fff;
-            width: 100%;
-            padding: 18px;
-            border-radius: 12px;
-            font-weight: 800;
-            margin-top: 20px;
-            display: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        footer {
-            padding: 60px 20px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-dim);
-            background: #f8fafc;
-        }
-
+        footer { padding: 60px 20px; text-align: center; font-size: 12px; color: var(--text-dim); background: #f8fafc; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        @media (max-width: 500px) { .image-container { height: 550px; } }
     </style>
 </head>
 <body>
@@ -281,7 +90,7 @@
 </header>
 
 <div class="hero">
-    <h1>Vote pou influenceuse pa'w la! </h1>
+    <h1>Vote pou influenceuse pa'w la!</h1>
     <p>Chwazi moun ou ta renmen al reprezante Ayiti nan House of challenge 2027.</p>
 </div>
 
@@ -298,122 +107,81 @@
             <div style="font-size: 60px; margin-bottom: 10px;">🚫</div>
             <h2 style="font-size: 22px; font-weight: 900; color: var(--danger);">Ou deja vote pou jodi a!</h2>
             <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Sistèm nan detekte ke ou te deja bay vòt ou. Ou ka tounen demen!</p>
+            <div class="premium-ad-zone">Espace Pub Sponsorisé (Adsterra)</div>
             <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">RETOUNEN NAN LIS LA</button>
         </div>
 
         <div id="step-2">
-            <h2 style="font-size: 20px; font-weight: 900;">Verifikasyon Sekirite</h2>
-            <div class="captcha-container">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div class="checkbox" id="robot-check" onclick="markChecked()"></div>
-                    <span style="font-size: 15px; font-weight: 600;">Mwen pa yon robo</span>
-                </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" width="35" alt="Captcha">
-            </div>
+            <h2 style="font-size: 20px; font-weight: 900; margin-bottom:15px;">Verifikasyon Sekirite</h2>
+            <p style="font-size:13px; color:#64748b; margin-bottom:20px;">Prouve ou se yon moun reyèl pou vòt la konte.</p>
+            
+            <div class="cf-turnstile" data-sitekey="METS_TA_CLE_SITE_TURNSTILE_ICI" data-callback="turnstileSuccess"></div>
+            
             <button id="final-btn" class="btn-finish" onclick="finalizeVote()">VALIDE VÒT LA</button>
         </div>
 
         <div id="step-3" style="display: none;">
             <div style="font-size: 60px; margin-bottom: 10px;">✅</div>
             <h2 style="font-size: 22px; font-weight: 900;">Vòt ou a Konfime!</h2>
-            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Mèsi pou sipò w! Pataje sondaj la ak zanmi w pou kandida w la ka genyen.</p>
+            <p style="color: var(--text-dim); margin-top: 10px; margin-bottom: 20px;">Mèsi pou sipò w! Pataje sondaj la ak zanmi w.</p>
             
-            <a href="#" class="wa-btn" style="background: #25d366; margin-bottom: 15px;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
-            <a href="#" class="wa-btn" style="background: #1877f2; margin-bottom: 20px;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
-            
+            <div class="premium-ad-zone">Espace Pub Sponsorisé (Adsterra)</div>
+
+            <a href="#" class="wa-btn" style="background: #25d366;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
+            <a href="#" class="wa-btn" style="background: #1877f2;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
             <button class="wa-btn" style="background: #0f172a;" onclick="closeModal()">FÈMEN</button>
         </div>
     </div>
 </div>
 
 <footer>
-    HOC FANDOM est une plateforme communautaire indépendante gérée par des fans. Ce site n'est ni affilié, ni approuvé, ni associé officiellement à la production de 'House of Challenge'. Toutes les marques et noms de programmes cités appartiennent à leurs propriétaires respectifs. Ce sondage n'est qu'un outil d'expression pour la communauté et n'influence pas les décisions officielles de la production. En utilisant ce site, vous acceptez que les résultats soient purement indicatifs.<br>
+    HOC FANDOM est une plateforme communautaire indépendante gérée par des fans. Ce site n'est ni affilié, ni approuvé, ni associé officiellement à la production de 'House of Challenge'.<br><br>
     © 2026 - Tous droits réservés.
 </footer>
 
 <script>
-    /* --- 1. CONFIGURATION --- */
-    const WORKER_URL = "https://ton-worker.ton-nom.workers.dev"; // ⚠️ REMPLACE PAR TON URL
-    
+    const WORKER_URL = "https://ton-worker.ton-nom.workers.dev"; // ⚠️ TON WORKER
     const APP_DATA = {
-        AD_GLOBAL: "https://www.profitablecpmratenetwork.com/em8kp2un6?key=2c7c3589c01489e08c544389bd3ac67b", 
         AD_SEE_MORE: "https://www.profitablecpmratenetwork.com/gu030jeh?key=45f4f5f7db88e12c054e8052ba12cf82",
         SITE_URL: "https://houseofchallengefandom.pages.dev"
     };
 
     let candidates = [
-        { id: "Abigail", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 124, lastVotes: 124 },
-        { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 128, lastVotes: 128 },
-        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 116, lastVotes: 116 },
-        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 108, lastVotes: 108 },
-        { id: "Leila", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 98, lastVotes: 98 },
-        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 90, lastVotes: 90 },
-        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 87, lastVotes: 87 },
-        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 79, lastVotes: 79 },
-        { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 75, lastVotes: 75 },
-        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 73, lastVotes: 73 }
+        { id: "Abigail", name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp", votes: 0, lastVotes: 0 },
+        { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 0, lastVotes: 0 },
+        { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg", votes: 0, lastVotes: 0 },
+        { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg", votes: 0, lastVotes: 0 },
+        { id: "Leila", name: "Barbie Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp", votes: 0, lastVotes: 0 },
+        { id: "jalia", name: "Jalia Magnian", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg", votes: 0, lastVotes: 0 },
+        { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg", votes: 0, lastVotes: 0 },
+        { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg", votes: 0, lastVotes: 0 },
+        { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg", votes: 0, lastVotes: 0 },
+        { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg", votes: 0, lastVotes: 0 }
     ];
 
-    /* --- 2. STATE --- */
     let showingAll = false;
     let selectedCandidateId = null;
-    let hasVoted = sessionStorage.getItem('hoc_voted_v9') || localStorage.getItem('hoc_voted_v9');
+    let turnstileToken = null; // Stocke le token de validation
+    let hasVoted = localStorage.getItem('hoc_voted_final');
 
-    /* --- 3. FETCH RESULTS (OPTIMISÉ 1M+) --- */
+    // PERFORMANCE: Intersection Observer pour les animations au scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
     async function fetchVotes() {
         try {
-            const res = await fetch(WORKER_URL + "/results", {
-                method: "GET",
-                headers: { "Cache-Control": "max-age=5" }
-            });
+            const res = await fetch(WORKER_URL + "/results", { headers: { "Cache-Control": "max-age=15" } });
             const data = await res.json();
             candidates.forEach(c => { 
-                if (data[c.id]) {
-                    c.lastVotes = c.votes; // Sauvegarde l'ancien score pour l'animation
-                    c.votes = data[c.id]; 
-                }
+                if (data[c.id]) { c.lastVotes = c.votes; c.votes = data[c.id]; }
             });
             renderCandidates();
-        } catch (e) {
-            console.log("Fallback offline");
-            renderCandidates();
-        }
-    }
-
-    /* --- 4. RECORD VOTE --- */
-    async function recordVoteToWorker(id) {
-        try {
-            const res = await fetch(WORKER_URL + "/vote", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ candidateId: id })
-            });
-            if (res.status === 403) { 
-                showAlreadyVotedScreen(); 
-                return false; 
-            }
-            return true;
-        } catch (e) {
-            alert("Ou deja vote pou jodia");
-            return true;
-        }
-    }
-
-    /* --- 5. RENDER AVEC ANIMATION (FAIR-PLAY) --- */
-    function animateValue(id, start, end, duration) {
-        const obj = document.getElementById(`vote-count-${id}`);
-        if (!obj) return;
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const current = Math.floor(progress * (end - start) + start);
-            obj.innerHTML = current >= 1000 ? (current/1000).toFixed(1) + 'k' : current;
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            }
-        };
-        window.requestAnimationFrame(step);
+        } catch (e) { console.log("Offline mode"); renderCandidates(); }
     }
 
     function renderCandidates() {
@@ -425,7 +193,7 @@
         grid.innerHTML = displayList.map((c, index) => {
             const percentage = (c.votes / topScore) * 100;
             return `
-            <div class="candidate-card">
+            <div class="candidate-card" id="card-${c.id}">
                 <div class="image-container">
                     ${index === 0 && c.votes > 0 ? '<div class="rank-badge">👑 FAVORIT N°1</div>' : ''}
                     <img src="${c.img}" alt="${c.name}" loading="lazy">
@@ -443,23 +211,33 @@
             </div>`;
         }).join('');
 
-        // Lancement de l'animation après le rendu
         displayList.forEach(c => {
-            if (c.votes !== c.lastVotes) {
-                animateValue(c.id, c.lastVotes, c.votes, 2500); // Animation sur 2.5 secondes
-            }
+            const el = document.getElementById(`card-${c.id}`);
+            if (el) observer.observe(el);
+            if (c.votes !== c.lastVotes) animateValue(c.id, c.lastVotes, c.votes, 2000);
         });
     }
 
-    /* --- 6. LOAD MORE --- */
+    function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(`vote-count-${id}`);
+        if (!obj) return;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const current = Math.floor(progress * (end - start) + start);
+            obj.innerHTML = current >= 1000 ? (current/1000).toFixed(1) + 'k' : current;
+            if (progress < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
+    }
+
     function showAllCandidates() {
         window.open(APP_DATA.AD_SEE_MORE, '_blank');
-        showingAll = true;
-        renderCandidates();
+        showingAll = true; renderCandidates();
         document.getElementById('load-more-area').style.display = 'none';
     }
 
-    /* --- 7. INIT VOTE --- */
     function initiateVote(id) {
         selectedCandidateId = id;
         document.getElementById('step-2').style.display = 'none';
@@ -467,66 +245,63 @@
         document.getElementById('step-already-voted').style.display = 'none';
 
         if (hasVoted) {
-            showAlreadyVotedScreen();
+            document.getElementById('step-already-voted').style.display = 'block';
         } else {
-            document.getElementById('robot-check').classList.remove('checked');
             document.getElementById('final-btn').style.display = 'none';
             document.getElementById('step-2').style.display = 'block';
+            // Reset Turnstile au cas où la modale avait été fermée avant
+            if(typeof turnstile !== 'undefined') turnstile.reset();
         }
         document.getElementById('vote-modal').style.display = 'flex';
     }
 
-    function showAlreadyVotedScreen() {
-        document.getElementById('step-2').style.display = 'none';
-        document.getElementById('step-3').style.display = 'none';
-        document.getElementById('step-already-voted').style.display = 'block';
-        document.getElementById('vote-modal').style.display = 'flex';
+    // Callback déclenché par Turnstile quand l'utilisateur a réussi le test
+    function turnstileSuccess(token) {
+        turnstileToken = token;
+        document.getElementById('final-btn').style.display = 'block';
     }
 
-    /* --- 8. CAPTCHA --- */
-    function markChecked() {
-        document.getElementById('robot-check').classList.add('checked');
-        setTimeout(() => { document.getElementById('final-btn').style.display = 'block'; }, 600);
-    }
-
-    /* --- 9. FINALIZE VOTE --- */
     async function finalizeVote() {
-        const success = await recordVoteToWorker(selectedCandidateId);
-        if (!success) return;
-        localStorage.setItem('hoc_voted_v9', 'true');
-        hasVoted = true;
-        document.getElementById('step-2').style.display = 'none';
-        document.getElementById('step-3').style.display = 'block';
-        setTimeout(fetchVotes, 2000);
+        if (!turnstileToken) return; // Sécurité supplémentaire
+        
+        document.getElementById('final-btn').innerHTML = "TRAITEMENT...";
+        
+        try {
+            const res = await fetch(WORKER_URL + "/vote", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ candidateId: selectedCandidateId, token: turnstileToken })
+            });
+            
+            if (res.status === 403 || res.status === 429) { 
+                document.getElementById('step-2').style.display = 'none';
+                document.getElementById('step-already-voted').style.display = 'block';
+                return;
+            }
+            
+            localStorage.setItem('hoc_voted_final', 'true');
+            hasVoted = true;
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-3').style.display = 'block';
+            setTimeout(fetchVotes, 2000);
+            
+        } catch (e) {
+            alert("Erreur de connexion. Veuillez réessayer.");
+            document.getElementById('final-btn').innerHTML = "VALIDE VÒT LA";
+        }
     }
 
-    /* --- 10. SHARE & MODAL --- */
     function shareWhatsApp() {
-        const selectedC = candidates.find(c => c.id === selectedCandidateId) || candidates[0];
-        const msg = `Mwen fenk vote pou ${selectedC.name} nan HOC 2027! 🔥 Vin ede l genyen tou: ${APP_DATA.SITE_URL}`;
-        window.location.href = `whatsapp://send?text=${encodeURIComponent(msg)}`;
+        const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
+        window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mwen fenk vote pou ${c.name} nan HOC 2027! 🔥 Vin ede l genyen tou: ${APP_DATA.SITE_URL}`)}`;
     }
-    
-    function shareFacebook() {
-        const url = encodeURIComponent(APP_DATA.SITE_URL);
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-    }
-    
-    function closeModal() { 
-        document.getElementById('vote-modal').style.display = 'none'; 
-    }
+    function shareFacebook() { window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank'); }
+    function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
 
-    /* --- 11. TIMERS (MISE À JOUR TOUTES LES 20 MINUTES) --- */
-    // 20 minutes = 20 * 60 * 1000 = 1,200,000 ms
     setInterval(fetchVotes, 1200000); 
-
-    window.onload = () => {
-        const delay = Math.random() * 3000;
-        setTimeout(fetchVotes, delay);
-    };
+    window.onload = fetchVotes;
 </script>
 
 <script src="https://pl29235285.profitablecpmratenetwork.com/75/03/45/750345898d79e5078f1ec7dca0f5b2fc.js"></script>
-    
 </body>
 </html>
