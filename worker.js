@@ -60,14 +60,12 @@ export default {
 
       let totalDisplay = 0;
       const results = {};
-
       CANDIDATES.forEach((id, i) => {
-        const val = values[i] || "0";
-        const baseScore = parseFloat(val) * VOTE_WEIGHT;
-        const timeFactor = Math.floor((now % 60000) / 60);
-        const candidateOffset = id.length * 13;
-        results[id] = Math.floor(baseScore + ((timeFactor + candidateOffset) % 1000));
-        totalDisplay += results[id];
+      const val = values[i] || "0";
+      const baseScore = parseFloat(val) * VOTE_WEIGHT;
+      const candidateOffset = id.length * 13;
+      results[id] = Math.floor(baseScore + candidateOffset);
+      totalDisplay += results[id];
       });
 
       const output = {};
