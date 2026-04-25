@@ -30,6 +30,13 @@ export default {
     }
 
     const url = new URL(request.url);
+    // MODE MAINTENANCE
+    if (env.MAINTENANCE === "true") {
+      return new Response(JSON.stringify({ maintenance: true }), {
+        status: 503,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+       });
+      }
 
     // ============================================================
     // GET /results — Cache 30s + lectures KV parallèles
