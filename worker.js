@@ -8,6 +8,7 @@
 export default {
   async fetch(request, env) {
 
+    // ⚙️ CONFIG
     const WRITE_PROBABILITY = parseFloat(env.PROBABILITY || "0.001");
     const VOTE_WEIGHT       = parseInt(env.WEIGHT || "1000");
     const COOKIE_SECRET     = env.COOKIE_SECRET || "hoc2027-change-moi-svp";
@@ -30,20 +31,14 @@ export default {
     }
 
     const url = new URL(request.url);
-    // MODE MAINTENANCE
-    if (env.MAINTENANCE === "true") {
-      return new Response(JSON.stringify({ maintenance: true }), {
-        status: 503,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-       });
-      }
 
     // ============================================================
     // GET /results — Cache 30s + lectures KV parallèles
-    // 1M visiteurs = seulement ~2,880 lectures KV/jour !
     // ============================================================
     if (url.pathname === "/results") {
 
+      // Cache Cloudflare 30 secondes
+      // 1M visiteurs = seulement ~2,880 lectures KV/jour !
       const cacheKey = new Request("https://cache.hoc-fandom/results");
       const cache = caches.default;
       const cachedResponse = await cache.match(cacheKey);
@@ -67,12 +62,14 @@ export default {
 
       let totalDisplay = 0;
       const results = {};
+
       CANDIDATES.forEach((id, i) => {
-      const val = values[i] || "0";
-      const baseScore = parseFloat(val) * VOTE_WEIGHT;
-      const candidateOffset = id.length * 13;
-      results[id] = Math.floor(baseScore + candidateOffset);
-      totalDisplay += results[id];
+        const val = values[i] || "0";
+        const baseScore = parseFloat(val) * VOTE_WEIGHT;
+        const timeFactor = Math.floor((now % 60000) / 60);
+        const candidateOffset = id.length * 13;
+        results[id] = Math.floor(baseScore + ((timeFactor + candidateOffset) % 1000));
+        totalDisplay += results[id];
       });
 
       const output = {};
@@ -87,6 +84,7 @@ export default {
 
       const jsonBody = JSON.stringify(output);
 
+      // Stocker dans le cache 30 secondes
       await cache.put(cacheKey, new Response(jsonBody, {
         headers: {
           "Content-Type": "application/json",
@@ -112,10 +110,12 @@ export default {
         const { candidateId, token } = body;
         const ip = request.headers.get("cf-connecting-ip") || "unknown";
 
+        // 1. Validation basique
         if (!CANDIDATES.includes(candidateId) || !token) {
           return jsonResponse({ error: "Données manquantes" }, 400, corsHeaders);
         }
 
+        // 2. Vérification Turnstile côté serveur
         const formData = new FormData();
         formData.append("secret", env.TURNSTILE_SECRET);
         formData.append("response", token);
@@ -131,6 +131,7 @@ export default {
           return jsonResponse({ error: "Vérification humaine échouée" }, 403, corsHeaders);
         }
 
+        // 3. Vérification cookie signé (1 vote par jour par navigateur)
         const cookieHeader = request.headers.get("Cookie") || "";
         const voteCookie   = parseCookie(cookieHeader, "hoc_voted");
 
@@ -141,11 +142,13 @@ export default {
           }
         }
 
+        // 4. Moteur de probabilité — écriture KV rare
         if (Math.random() < WRITE_PROBABILITY) {
           const cur = await env.HOC_VOTES.get(candidateId) || "0";
           await env.HOC_VOTES.put(candidateId, (parseFloat(cur) + 1).toString());
         }
 
+        // 5. Cookie signé (expire à minuit heure Haïti)
         const signedCookie = await createSignedCookie(COOKIE_SECRET);
         const midnight     = getHaitiMidnight();
 
@@ -227,4 +230,4 @@ function jsonResponse(data, status, corsHeaders) {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" }
   });
-      }
+                      }
