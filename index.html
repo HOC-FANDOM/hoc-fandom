@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🔥 Kiyès ki pral reprezante Ayiti? Vote kounye a!</title>
     <meta name="description" content="⚡ Vòt ou a konte! Chwazi tiktokeuse ou ta renmen wè reprezante Ayiti nan HOC 2027.">
-    
     <meta property="og:type" content="website">
     <meta property="og:title" content="🔥 Kiyès ki pral ale HOC 2027? Se OU ki deside! Vote kounye a!">
     <meta property="og:description" content="⚡ Kandida favori ou a bezwen ou! Bay vòt ou jodi a — yon sèl vòt pa jou. Ansanm nou ka fè l genyen! 🇭🇹❤️">
@@ -24,11 +23,9 @@
             --haiti-red: #D21034;
             --haiti-gold: #FFD700;
             --bg: #f0f4ff;
-            --card-bg: #ffffff;
             --text-main: #0a0f2c;
             --text-dim: #64748b;
-            --shadow-card: 0 8px 32px rgba(0,48,135,0.12);
-            --radius: 20px;
+            --radius: 24px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -37,14 +34,92 @@
             background: var(--bg);
             color: var(--text-main); 
             font-family: 'Nunito', sans-serif; 
-            line-height: 1.5; 
             overflow-x: hidden; 
             user-select: none; 
             -webkit-user-select: none;
-            min-height: 100vh;
         }
 
-        /* ── HEADER ── */
+        /* ══════════════════════════════════
+           SPLASH SCREEN
+        ══════════════════════════════════ */
+        #splash {
+            position: fixed;
+            inset: 0;
+            background: var(--haiti-blue);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        #splash.hide {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+        .splash-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            letter-spacing: 4px;
+            color: white;
+        }
+        .splash-logo span { color: var(--haiti-gold); }
+        
+        .splash-ring {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .splash-ring::before, .splash-ring::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+        .splash-ring::before {
+            border-top-color: var(--haiti-gold);
+            border-right-color: var(--haiti-gold);
+            animation: spin 1s linear infinite;
+        }
+        .splash-ring::after {
+            border-bottom-color: var(--haiti-red);
+            border-left-color: var(--haiti-red);
+            animation: spin 1.5s linear infinite reverse;
+            inset: 8px;
+        }
+        .splash-dot {
+            position: absolute;
+            inset: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse-dot 1s ease-in-out infinite;
+        }
+        .splash-text {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            animation: blink 1.5s ease infinite;
+        }
+        .splash-flag {
+            font-size: 40px;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse-dot { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1} 50%{transform:translate(-50%,-50%) scale(1.3);opacity:0.7} }
+        @keyframes blink { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+        /* ══════════════════════════════════
+           HEADER
+        ══════════════════════════════════ */
         header { 
             height: 64px; 
             padding: 0 16px; 
@@ -55,9 +130,8 @@
             top: 0; 
             z-index: 1000;
             background: var(--haiti-blue);
-            box-shadow: 0 4px 20px rgba(0,48,135,0.3);
+            box-shadow: 0 4px 20px rgba(0,48,135,0.4);
         }
-        
         .logo { 
             font-family: 'Bebas Neue', sans-serif;
             font-size: 28px; 
@@ -65,7 +139,6 @@
             color: white;
         }
         .logo span { color: var(--haiti-gold); }
-        
         .live-badge { 
             display: flex; 
             align-items: center; 
@@ -85,10 +158,12 @@
             animation: blink 1.2s infinite; 
         }
 
-        /* ── HERO ── */
+        /* ══════════════════════════════════
+           HERO
+        ══════════════════════════════════ */
         .hero { 
-            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a237e 50%, var(--haiti-red) 100%);
-            padding: 36px 20px 40px;
+            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a237e 60%, var(--haiti-red) 100%);
+            padding: 36px 20px 44px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -96,15 +171,16 @@
         .hero::before {
             content: '🇭🇹';
             position: absolute;
-            font-size: 200px;
+            font-size: 220px;
             opacity: 0.05;
-            top: -30px;
-            right: -30px;
+            top: -40px;
+            right: -40px;
+            pointer-events: none;
         }
         .hero-tag {
             display: inline-block;
-            background: rgba(255,215,0,0.2);
-            border: 1px solid rgba(255,215,0,0.4);
+            background: rgba(255,215,0,0.15);
+            border: 1px solid rgba(255,215,0,0.35);
             color: var(--haiti-gold);
             font-size: 11px;
             font-weight: 800;
@@ -116,7 +192,7 @@
         }
         .hero h1 { 
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 42px; 
+            font-size: 46px; 
             color: white;
             line-height: 1.1;
             margin-bottom: 12px;
@@ -129,17 +205,17 @@
             font-weight: 600;
             max-width: 280px; 
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        /* ── STATS BAR ── */
+        /* Stats bar */
         .stats-bar {
             background: white;
             padding: 14px 20px;
             display: flex;
             justify-content: space-around;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
             border-bottom: 3px solid var(--bg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .stat-item { text-align: center; }
         .stat-num { 
@@ -156,65 +232,49 @@
             text-transform: uppercase;
         }
 
-        /* ── CONTAINER ── */
+        /* ══════════════════════════════════
+           CONTAINER + CARDS
+        ══════════════════════════════════ */
         .container { 
-            padding: 20px 16px 80px; 
+            padding: 20px 16px 80px;
             max-width: 600px;
             margin: 0 auto;
         }
-
         .section-title {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 20px;
+            font-size: 22px;
             color: var(--haiti-blue);
             letter-spacing: 1px;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 16px;
         }
 
-        /* ── CANDIDATE CARD — Liste horizontale compacte ── */
+        /* Carte grande image */
         .candidate-card {
-            background: var(--card-bg);
+            background: white;
             border-radius: var(--radius);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 0;
-            box-shadow: var(--shadow-card);
+            margin-bottom: 20px;
             overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,48,135,0.10);
             position: relative;
             opacity: 0;
-            transform: translateX(-20px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transform: translateY(24px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
             border: 2px solid transparent;
             width: 100%;
         }
-        .candidate-card.visible { 
-            opacity: 1; 
-            transform: translateX(0); 
-        }
-        .candidate-card.top-1 {
-            border-color: var(--haiti-gold);
-            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
-        }
-        .candidate-card.top-2 {
-            border-color: #C0C0C0;
-        }
-        .candidate-card.top-3 {
-            border-color: #CD7F32;
-        }
+        .candidate-card.visible { opacity: 1; transform: translateY(0); }
+        .candidate-card.top-1 { border-color: var(--haiti-gold); }
+        .candidate-card.top-2 { border-color: #C0C0C0; }
+        .candidate-card.top-3 { border-color: #CD7F32; }
 
-        /* Photo carrée compacte */
-        .card-photo {
-            width: 90px;
-            height: 90px;
-            flex-shrink: 0;
+        /* Grande image */
+        .card-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
             overflow: hidden;
             position: relative;
         }
-        .card-photo img {
+        .card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -222,78 +282,72 @@
             display: block;
         }
 
-        /* Rank overlay sur photo */
-        .rank-overlay {
+        /* Overlay gradient sur l'image */
+        .card-image-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 50%);
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
-            padding: 5px;
+            inset: 0;
+            background: linear-gradient(to bottom, 
+                transparent 40%, 
+                rgba(0,0,0,0.6) 100%
+            );
         }
-        .rank-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 18px;
-            color: white;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-            line-height: 1;
-        }
-        .rank-num.gold { color: var(--haiti-gold); }
-        .rank-num.silver { color: #E8E8E8; }
-        .rank-num.bronze { color: #F4A460; }
 
-        /* Infos candidat */
+        /* Badge rang sur l'image */
+        .rank-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            letter-spacing: 1px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            z-index: 2;
+        }
+        .top-1 .rank-badge { background: var(--haiti-gold); color: #0a0f2c; }
+        .top-2 .rank-badge { background: #C0C0C0; color: #0a0f2c; }
+        .top-3 .rank-badge { background: #CD7F32; color: white; }
+
+        /* Info panel en bas de l'image */
         .card-info {
-            flex: 1;
-            padding: 12px 12px 12px 14px;
-            min-width: 0;
+            padding: 18px 18px 20px;
         }
         .card-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
+            align-items: flex-start;
+            margin-bottom: 10px;
         }
         .c-name { 
-            font-size: 15px; 
-            font-weight: 800; 
+            font-size: 20px; 
+            font-weight: 900;
             color: var(--text-main);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 140px;
+            line-height: 1.2;
         }
-        .c-votes-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            flex-shrink: 0;
-        }
+        .c-votes-wrap { text-align: right; }
         .c-votes { 
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 20px; 
+            font-size: 28px; 
             color: var(--haiti-blue);
             line-height: 1;
         }
+        .top-1 .c-votes { color: #b8860b; }
         .c-pct {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-dim);
             font-weight: 700;
         }
 
         /* Barre de progression */
-        .progress-wrap {
-            margin-bottom: 8px;
-        }
         .progress-bg { 
-            height: 6px; 
+            height: 8px; 
             background: #e8edf5; 
             border-radius: 10px; 
-            overflow: hidden; 
+            overflow: hidden;
+            margin-bottom: 14px;
         }
         .progress-fill { 
             height: 100%; 
@@ -302,41 +356,35 @@
             transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1); 
             width: 0%;
         }
-        .top-1 .progress-fill {
-            background: linear-gradient(90deg, var(--haiti-gold), #f59e0b);
-        }
+        .top-1 .progress-fill { background: linear-gradient(90deg, var(--haiti-gold), #f59e0b); }
 
-        /* Bouton vote compact */
+        /* Bouton vote */
         .btn-vote { 
             background: linear-gradient(135deg, var(--haiti-blue), #1a237e);
             color: white;
             border: none; 
-            padding: 7px 14px;
-            border-radius: 10px; 
-            font-size: 11px; 
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px; 
+            font-size: 14px; 
             font-weight: 800; 
             text-transform: uppercase; 
             cursor: pointer; 
-            transition: transform 0.1s, box-shadow 0.1s;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
+            transition: transform 0.1s;
+            letter-spacing: 1px;
         }
-        .btn-vote:active { transform: scale(0.95); }
-        .top-1 .btn-vote {
-            background: linear-gradient(135deg, var(--haiti-gold), #f59e0b);
-            color: #0a0f2c;
-        }
+        .btn-vote:active { transform: scale(0.98); }
+        .top-1 .btn-vote { background: linear-gradient(135deg, #b8860b, var(--haiti-gold)); color: #0a0f2c; }
 
-        /* ── LOAD MORE ── */
-        .load-more-container { 
-            text-align: center; 
-            padding: 10px 0 20px;
-        }
+        /* ══════════════════════════════════
+           LOAD MORE
+        ══════════════════════════════════ */
+        .load-more-container { text-align: center; padding: 10px 0 20px; }
         .btn-more { 
             background: linear-gradient(135deg, var(--haiti-red), #b71c1c);
             color: white;
             border: none; 
-            padding: 16px 32px; 
+            padding: 16px 36px; 
             border-radius: 50px; 
             font-size: 13px; 
             font-weight: 800; 
@@ -346,10 +394,12 @@
             letter-spacing: 1px;
         }
 
-        /* ── MODALS ── */
+        /* ══════════════════════════════════
+           MODALS
+        ══════════════════════════════════ */
         .overlay { 
             position: fixed; inset: 0; 
-            background: rgba(0,48,135,0.85); 
+            background: rgba(0,30,80,0.88); 
             display: none; 
             align-items: center; 
             justify-content: center; 
@@ -365,11 +415,13 @@
             border-radius: 28px; 
             text-align: center;
             box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .modal-icon { font-size: 56px; margin-bottom: 12px; }
         .modal h2 { 
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; 
+            font-size: 30px; 
             letter-spacing: 1px;
             margin-bottom: 8px; 
         }
@@ -377,14 +429,13 @@
             color: var(--text-dim); 
             font-size: 13px; 
             font-weight: 600;
-            margin-bottom: 20px; 
-            line-height: 1.6;
+            margin-bottom: 16px; 
+            line-height: 1.7;
         }
-
         .wa-btn { 
             color: white; 
             width: 100%; 
-            padding: 16px; 
+            padding: 15px; 
             border-radius: 14px; 
             font-weight: 800; 
             display: block; 
@@ -410,47 +461,39 @@
             letter-spacing: 1px;
         }
 
-        /* ── FOOTER ── */
+        /* Ad zone */
+        .ad-zone { margin: 14px 0; min-height: 60px; }
+
+        /* ══════════════════════════════════
+           FOOTER
+        ══════════════════════════════════ */
+        .haiti-bar { height: 5px; background: linear-gradient(90deg, var(--haiti-blue) 50%, var(--haiti-red) 50%); }
         footer { 
             background: var(--haiti-blue);
-            color: rgba(255,255,255,0.6);
-            padding: 40px 20px; 
+            color: rgba(255,255,255,0.55);
+            padding: 36px 20px; 
             text-align: center; 
             font-size: 11px; 
-            line-height: 1.8;
+            line-height: 1.9;
         }
-        footer a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-weight: 700;
-        }
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-        .haiti-flag-bar {
-            height: 4px;
-            background: linear-gradient(90deg, var(--haiti-blue) 50%, var(--haiti-red) 50%);
-            margin-bottom: 0;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        
-        /* Animation stagger pour les cartes */
-        .candidate-card:nth-child(1) { transition-delay: 0.0s; }
-        .candidate-card:nth-child(2) { transition-delay: 0.08s; }
-        .candidate-card:nth-child(3) { transition-delay: 0.16s; }
-        .candidate-card:nth-child(4) { transition-delay: 0.24s; }
-        .candidate-card:nth-child(5) { transition-delay: 0.32s; }
+        footer a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; }
+        .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
     </style>
 </head>
 <body>
 
-<!-- Barre drapeau haïtien -->
-<div class="haiti-flag-bar"></div>
+<!-- SPLASH SCREEN -->
+<div id="splash">
+    <div class="splash-flag">🇭🇹</div>
+    <div class="splash-logo">HOC <span>FANDOM</span></div>
+    <div class="splash-ring">
+        <div class="splash-dot"></div>
+    </div>
+    <div class="splash-text">Chargement en cours...</div>
+</div>
+
+<!-- Barre drapeau -->
+<div class="haiti-bar"></div>
 
 <header>
     <div class="logo">HOC <span>FANDOM</span></div>
@@ -459,13 +502,13 @@
 
 <div class="hero">
     <div class="hero-tag">🇭🇹 House of Challenge 2027</div>
-    <h1>❤️ Ede <span>kandida</span><br>ou a genyen!</h1>
+    <h1>❤️ Ede <span>Kandida</span><br>Ou a Genyen!</h1>
     <p>Bay vòt ou jodi a epi sipòte moun ou ta renmen wè reprezante Ayiti. Ansanm nou pi fò!</p>
 </div>
 
 <div class="stats-bar">
     <div class="stat-item">
-        <div class="stat-num" id="total-votes-display">0</div>
+        <div class="stat-num" id="total-votes-display">—</div>
         <div class="stat-label">Total Vòt</div>
     </div>
     <div class="stat-item">
@@ -481,30 +524,28 @@
 <div class="container">
     <div class="section-title">🏆 Klasman Kandida Yo</div>
     <div id="main-grid"></div>
-
     <div id="load-more-area" class="load-more-container">
-        <button class="btn-more" onclick="showAllCandidates()">
-            Wè tout 10 Kandida Yo ⬇️
-        </button>
+        <button class="btn-more" onclick="showAllCandidates()">Wè tout 10 Kandida Yo ⬇️</button>
     </div>
 </div>
 
 <!-- Modal Vote -->
 <div id="vote-modal" class="overlay">
     <div class="modal">
-
         <div id="step-already-voted" style="display:none;">
             <div class="modal-icon">🚫</div>
-            <h2 style="color: var(--haiti-red);">Ou Deja Vote!</h2>
+            <h2 style="color:var(--haiti-red);">Ou Deja Vote!</h2>
             <p>Sistèm nan detekte ke ou te deja bay vòt ou pou jodi a.<br>Ou ka tounen <strong>demen</strong>!</p>
-            <script async="async" data-cfasync="false" src="https://pl29257548.profitablecpmratenetwork.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
-            <div id="container-623647ad2d51b4896cf878366ccdd192"></div>
-            <button class="wa-btn" style="background: var(--haiti-blue); margin-top: 16px;" onclick="closeModal()">RETOUNEN NAN LIS LA</button>
+            <div class="ad-zone">
+                <script async="async" data-cfasync="false" src="https://pl29257548.profitablecpmratenetwork.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
+                <div id="container-623647ad2d51b4896cf878366ccdd192-1"></div>
+            </div>
+            <button class="wa-btn" style="background:var(--haiti-blue);" onclick="closeModal()">RETOUNEN NAN LIS LA</button>
         </div>
 
         <div id="step-2">
             <div class="modal-icon">🔐</div>
-            <h2 style="color: var(--haiti-blue);">Verifikasyon</h2>
+            <h2 style="color:var(--haiti-blue);">Verifikasyon</h2>
             <p>Prouve ou se yon moun reyèl pou vòt la konte!</p>
             <div class="cf-turnstile" data-sitekey="0x4AAAAAADCpLqQgHa8tJMGA" data-callback="turnstileSuccess"></div>
             <button id="final-btn" class="btn-finish" onclick="finalizeVote()">✅ VALIDE VÒT LA</button>
@@ -512,26 +553,28 @@
 
         <div id="step-3" style="display:none;">
             <div class="modal-icon">🎉</div>
-            <h2 style="color: var(--haiti-blue);">Vòt Konfime!</h2>
-            <p>Mèsi pou sipò w! Pataje sondaj la ak <strong>10 zanmi</strong> w pou'w double vòt kandida ou a!</p>
-            <script async="async" data-cfasync="false" src="https://pl29257548.profitablecpmratenetwork.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
-            <div id="container-623647ad2d51b4896cf878366ccdd192"></div>
-            <a href="#" class="wa-btn" style="background: #25d366; margin-top: 16px;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
-            <a href="#" class="wa-btn" style="background: #1877f2;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
-            <button class="wa-btn" style="background: var(--text-main);" onclick="closeModal()">FÈMEN</button>
+            <h2 style="color:var(--haiti-blue);">Vòt Konfime!</h2>
+            <p>Mèsi pou sipò w! Pataje sondaj la ak <strong>10 zanmi</strong> w pou double vòt kandida ou a!</p>
+            <div class="ad-zone">
+                <script async="async" data-cfasync="false" src="https://pl29257548.profitablecpmratenetwork.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
+                <div id="container-623647ad2d51b4896cf878366ccdd192-2"></div>
+            </div>
+            <a href="#" class="wa-btn" style="background:#25d366;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
+            <a href="#" class="wa-btn" style="background:#1877f2;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
+            <button class="wa-btn" style="background:var(--text-main);" onclick="closeModal()">FÈMEN</button>
         </div>
     </div>
 </div>
 
 <!-- Modal Legal -->
 <div id="legal-modal" class="overlay" onclick="closeLegal()">
-    <div class="modal" style="max-height:80vh;overflow-y:auto;text-align:left;" onclick="event.stopPropagation()">
+    <div class="modal" style="text-align:left;" onclick="event.stopPropagation()">
         <div id="legal-content"></div>
-        <button class="wa-btn" style="background:var(--haiti-blue);margin-top:20px;" onclick="closeLegal()">FERMER</button>
+        <button class="wa-btn" style="background:var(--haiti-blue);margin-top:16px;" onclick="closeLegal()">FERMER</button>
     </div>
 </div>
 
-<div class="haiti-flag-bar"></div>
+<div class="haiti-bar"></div>
 <footer>
     <div class="footer-links">
         <a href="#" onclick="showLegal('terms')">Conditions d'Utilisation</a>
@@ -567,15 +610,21 @@
     let selectedCandidateId = null;
     let turnstileToken = null;
 
-    // LocalStorage avec reset quotidien
-    const lastVoteDate = localStorage.getItem('hoc_vote_date');
     const todayHaiti = new Date().toLocaleDateString('en-CA', {timeZone: 'America/Port-au-Prince'});
-    let hasVoted = lastVoteDate === todayHaiti;
+    let hasVoted = localStorage.getItem('hoc_vote_date') === todayHaiti;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.05 });
 
+    // ── SPLASH ──
+    function hideSplash() {
+        const splash = document.getElementById('splash');
+        splash.classList.add('hide');
+        setTimeout(() => splash.remove(), 700);
+    }
+
+    // ── FETCH VOTES ──
     async function fetchVotes() {
         try {
             const res = await fetch(WORKER_URL + "/results");
@@ -594,60 +643,59 @@
             renderCandidates();
             candidates.forEach(c => animateValue(c.id, c.lastVotes, c.votes, 2500));
         } catch(e) {
-            console.log("Offline"); renderCandidates();
+            console.log("Offline");
+            renderCandidates();
+        } finally {
+            hideSplash();
         }
     }
 
     function showMaintenancePage() {
+        hideSplash();
         document.body.innerHTML = `
         <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#003087,#D21034);padding:20px;font-family:'Nunito',sans-serif;">
-            <div style="background:#fff;border-radius:28px;padding:50px 30px;max-width:400px;width:100%;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.3);">
+            <div style="background:#fff;border-radius:28px;padding:50px 28px;max-width:400px;width:100%;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.3);">
                 <div style="font-size:64px;margin-bottom:16px;">🔒</div>
                 <div style="background:#003087;color:#FFD700;font-weight:800;font-size:12px;padding:5px 16px;border-radius:20px;display:inline-block;margin-bottom:16px;letter-spacing:2px;">HOC FANDOM</div>
                 <h1 style="font-size:22px;font-weight:900;margin-bottom:12px;color:#003087;">Chè Zanmi HOC FANDOM!</h1>
-                <p style="color:#64748b;font-size:14px;line-height:1.8;margin-bottom:12px;">Nou remèsye w anpil pou fidelite w ak platfòm nou an. Kounye a, nou ap travay sou kèk amelyorasyon enpòtan pou ba ou yon pi bon eksperyans.</p>
-                <p style="color:#64748b;font-size:14px;line-height:1.8;">Tanpri tounen yon ti moman pita pou w ka vote ak wè tout rezilta yo ajou.</p>
-                <p style="margin-top:20px;font-size:13px;color:#94a3b8;font-weight:700;">Mèsi pou pasiyans ou, nou la pou ou! 🙏❤️</p>
+                <p style="color:#64748b;font-size:14px;line-height:1.8;margin-bottom:12px;">Nou remèsye w anpil pou fidelite w. Platfòm nan ap sibi kèk amelyorasyon enpòtan.</p>
+                <p style="color:#64748b;font-size:14px;line-height:1.8;">Tanpri tounen pita pou w ka vote ak wè rezilta yo.</p>
+                <p style="margin-top:20px;font-size:13px;color:#94a3b8;font-weight:700;">Mèsi pou pasiyans ou! 🙏❤️</p>
             </div>
         </div>`;
     }
 
+    // ── RENDER ──
     function renderCandidates() {
         const grid = document.getElementById('main-grid');
         candidates.sort((a, b) => b.votes - a.votes);
         const topScore = Math.max(...candidates.map(c => c.votes), 1);
         const displayList = showingAll ? candidates : candidates.slice(0, 5);
-        const rankEmoji = ['🥇', '🥈', '🥉'];
+        const rankLabel = ['👑 FAVORIT N°1', '🥈 N°2', '🥉 N°3'];
         const rankClass = ['top-1', 'top-2', 'top-3'];
-        const rankColor = ['gold', 'silver', 'bronze'];
 
         grid.innerHTML = displayList.map((c, i) => {
             const pct = (c.votes / topScore) * 100;
-            const rClass = rankClass[i] || '';
-            const rColor = rankColor[i] || '';
             return `
-            <div class="candidate-card ${rClass}" id="card-${c.id}">
-                <div class="card-photo">
-                    <img src="${c.img}" alt="${c.name}" loading="lazy">
-                    <div class="rank-overlay">
-                        <span class="rank-num ${rColor}">${rankEmoji[i] || '#'+(i+1)}</span>
-                    </div>
+            <div class="candidate-card ${rankClass[i]||''}" id="card-${c.id}">
+                <div class="card-image">
+                    <img src="${c.img}" alt="${c.name}" loading="${i < 3 ? 'eager' : 'lazy'}">
+                    <div class="card-image-overlay"></div>
+                    <div class="rank-badge">${rankLabel[i] || '#'+(i+1)}</div>
                 </div>
                 <div class="card-info">
                     <div class="card-top">
                         <span class="c-name">${c.name}</span>
                         <div class="c-votes-wrap">
-                            <span class="c-votes" id="vote-count-${c.id}">${formatVotes(c.lastVotes)}</span>
-                            <span class="c-pct" id="pct-${c.id}">${c.percentage}%</span>
+                            <div class="c-votes" id="vote-count-${c.id}">${formatVotes(c.lastVotes)}</div>
+                            <div class="c-pct" id="pct-${c.id}">${c.percentage}% des votes</div>
                         </div>
                     </div>
-                    <div class="progress-wrap">
-                        <div class="progress-bg">
-                            <div class="progress-fill" style="width:${pct}%"></div>
-                        </div>
+                    <div class="progress-bg">
+                        <div class="progress-fill" style="width:${pct}%"></div>
                     </div>
                     <button class="btn-vote" onclick="initiateVote('${c.id}')">
-                        VOTE POU ${c.name.split(' ')[0].toUpperCase()} 🗳️
+                        🗳️ VOTE POU ${c.name.split(' ')[0].toUpperCase()}
                     </button>
                 </div>
             </div>`;
@@ -660,19 +708,20 @@
     }
 
     function formatVotes(n) {
+        if (!n) return '0';
         if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
         if (n >= 1000) return (n/1000).toFixed(1)+'k';
-        return n || 0;
+        return n;
     }
 
     function animateValue(id, start, end, duration) {
         const obj = document.getElementById(`vote-count-${id}`);
         if (!obj || start === end) return;
         let t0 = null;
-        const step = (t) => {
+        const step = t => {
             if (!t0) t0 = t;
-            const p = Math.min((t - t0) / duration, 1);
-            obj.innerHTML = formatVotes(Math.floor(p * (end - start) + start));
+            const p = Math.min((t-t0)/duration, 1);
+            obj.textContent = formatVotes(Math.floor(p*(end-start)+start));
             if (p < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
@@ -737,7 +786,7 @@
 
     function shareWhatsApp() {
         const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
-        window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mezanmi men vòt pou nou wè kiyès kap reprezante Ayiti nan House of challenge 2027! 🔥 Vin vote moun pa'w la 🙌🏽: ${APP_DATA.SITE_URL}`)}`;
+        window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mezanmi men vòt pou nou wè kiyès kap reprezante Ayiti nan HOC 2027! 🔥 Vin vote moun pa'w la 🙌🏽: ${APP_DATA.SITE_URL}`)}`;
     }
     function shareFacebook() {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank');
@@ -745,8 +794,8 @@
     function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
 
     const LEGAL = {
-        terms: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">📋 Conditions d'Utilisation</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">HOC FANDOM est une plateforme communautaire indépendante gérée par des fans. Ce site n'a aucune relation officielle avec la production de House of Challenge.</p><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">• Les votes sont uniquement à titre de divertissement<br>• Les résultats ne représentent aucune décision officielle<br>• Nous nous réservons le droit de modifier le site à tout moment<br>• Les utilisateurs doivent avoir plus de 13 ans</p>`,
-        privacy: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">🔒 Politique de Confidentialité</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">Nous respectons votre vie privée. Nous ne collectons aucune information personnelle.</p><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">• Cookies pour éviter les votes multiples<br>• Publicité pour maintenir la plateforme<br>• Cloudflare pour la sécurité et les performances</p><p style="font-size:13px;color:#64748b;line-height:1.8;">Nous ne vendons ni ne partageons jamais vos données avec des tiers.</p>`,
+        terms: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">📋 Conditions d'Utilisation</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">HOC FANDOM est une plateforme communautaire indépendante gérée par des fans. Ce site n'a aucune relation officielle avec la production de House of Challenge.</p><p style="font-size:13px;color:#64748b;line-height:1.8;">• Les votes sont uniquement à titre de divertissement<br>• Les résultats ne représentent aucune décision officielle<br>• Nous nous réservons le droit de modifier le site à tout moment<br>• Les utilisateurs doivent avoir plus de 13 ans</p>`,
+        privacy: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">🔒 Politique de Confidentialité</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">Nous respectons votre vie privée. Nous ne collectons aucune information personnelle.</p><p style="font-size:13px;color:#64748b;line-height:1.8;">• Cookies pour éviter les votes multiples<br>• Publicité pour maintenir la plateforme<br>• Cloudflare pour la sécurité et les performances<br>• Vos données ne sont jamais vendues</p>`,
         contact: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">📩 Contactez-Nous</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:15px;">Une question, une plainte ou une suggestion ?</p><a href="mailto:hocfandom@gmail.com" style="background:#003087;color:white;display:block;text-align:center;padding:14px;border-radius:12px;text-decoration:none;font-weight:800;">📧 hocfandom@gmail.com</a><p style="font-size:11px;color:#94a3b8;margin-top:15px;text-align:center;">© 2026 HOC FANDOM — Tous droits réservés</p>`
     };
     function showLegal(t) { document.getElementById('legal-content').innerHTML = LEGAL[t]; document.getElementById('legal-modal').style.display = 'flex'; }
