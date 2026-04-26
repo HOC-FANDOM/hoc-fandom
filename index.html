@@ -804,7 +804,16 @@
     setInterval(fetchVotes, 60000);
     window.onload = fetchVotes;
 </script>
-
-<script src="https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js"></script>
+<script>
+// Popunder 1 fois par 24h seulement
+const lastPopunder = localStorage.getItem('hoc_popunder_date');
+const todayPop = new Date().toLocaleDateString('en-CA', {timeZone: 'America/Port-au-Prince'});
+if (lastPopunder !== todayPop) {
+    const script = document.createElement('script');
+    script.src = 'https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js';
+    document.body.appendChild(script);
+    localStorage.setItem('hoc_popunder_date', todayPop);
+}
+</script>
 </body>
 </html>
