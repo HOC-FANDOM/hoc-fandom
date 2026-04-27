@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-    <mei="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🔥 Kiyès ki pral reprezante Ayiti? Vote kounye a!</title>
     <meta name="description" content="⚡ Vòt ou a konte! Chwazi tiktokeuse ou ta renmen wè reprezante Ayiti nan HOC 2027.">
@@ -601,60 +601,7 @@
         { id: "chrisTell", name: "Christ-Tell",        img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "mcdk",      name: "MC DK",              img: "https://i.ibb.co/1fDvCBvL/mc.jpg",         votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "meetch",    name: "Meetch",             img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg",     votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "Leila",     nameasync function fetchVotes() {
-    try {
-        const res = await fetch(WORKER_URL + "/results");
-        const data = await res.json();
-
-        // 🛠️ SI LE WORKER DIT QU'IL Y A MAINTENANCE
-        if (data.maintenance === true) { 
-            showMaintenancePage(); 
-            return; 
-        }
-
-        let total = 0;
-        
-        // 📊 MISE À JOUR DES DONNÉES DEPUIS LE JSON UNIQUE
-        candidates.forEach(c => {
-            if (data[c.id]) {
-                c.lastVotes  = c.votes;
-                c.votes      = data[c.id].votes;
-                c.percentage = data[c.id].percentage;
-                total += c.votes;
-            }
-        });
-
-        document.getElementById('total-votes-display').textContent = formatVotes(total);
-        
-        // 🔄 RAFRAÎCHIR L'ORDRE DES CANDIDATS
-        renderCandidates();
-
-        // ✨ ANIMATIONS ET MISE À JOUR MANUELLE DES BARRES
-        candidates.forEach(c => {
-            animateValue(c.id, c.lastVotes, c.votes, 2500);
-            
-            const card = document.getElementById(`card-${c.id}`);
-            if (card) {
-                const fill = card.querySelector('.progress-fill');
-                const topScore = Math.max(...candidates.map(x => x.votes), 1);
-                const pctFill = (c.votes / topScore) * 100;
-                
-                // Met à jour la largeur de la barre de progression
-                if (fill) fill.style.width = pctFill + '%';
-                
-                // Met à jour le texte du pourcentage
-                const pctText = document.getElementById(`pct-${c.id}`);
-                if (pctText) pctText.innerText = c.percentage + "% des votes";
-            }
-        });
-
-    } catch(e) {
-        console.error("Erreur de connexion :", e);
-    } finally {
-        hideSplash();
-    }
-}
-: "Barbie Leila",       img: "https://i.ibb.co/hRN90sL8/Leila.webp",     votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "Leila",     name: "Barbie Leila",       img: "https://i.ibb.co/hRN90sL8/Leila.webp",     votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "jalia",     name: "Jalia Magnian",      img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "manie",     name: "Manie",              img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "natha",     name: "Natha",              img: "https://i.ibb.co/jvRF2dqp/Natha.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
@@ -681,24 +628,48 @@
     }
 
     // ── FETCH VOTES ──
-    
+    async function fetchVotes() {
+
+    async function fetchVotes() {
+    try {
+        const res = await fetch(WORKER_URL + "/results");
+        const data = await res.json();
+
+        // 🛠️ DÉTECTION MAINTENANCE
+        // Si le Worker renvoie maintenance: true, on affiche l'écran
+        if (data.maintenance === true) { 
+            showMaintenancePage(); 
+            return; 
+        }
+
+        let total = 0;
+        candidates.forEach(c => {
+            if (data[c.id]) {
+                c.lastVotes = c.votes;
+                c.votes = data[c.id].votes;
+                c.percentage = data[c.id].percentage;
+                total += c.votes;
+            }
+        });
+
+        document.getElementById('total-votes-display').textContent = formatVotes(total);
+        renderCandidates();
+        
+        // Animation des chiffres
+        candidates.forEach(c => animateValue(c.id, c.lastVotes, c.votes, 2500));
+
+    } catch(e) {
+        console.error("Erreur de chargement :", e);
+    } finally {
+        hideSplash();
+    }
 }
 
 
     function showMaintenancePage() {
         hideSplash();
         document.body.innerHTML = `
-        <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#003087,#D21034);padding:20px;font-family:'Nunito',sans-serif;">
-            <div style="background:#fff;border-radius:28px;padding:50px 28px;max-width:400px;width:100%;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.3);">
-                <div style="font-size:64px;margin-bottom:16px;">🔒</div>
-                <div style="background:#003087;color:#FFD700;font-weight:800;font-size:12px;padding:5px 16px;border-radius:20px;display:inline-block;margin-bottom:16px;letter-spacing:2px;">HOC FANDOM</div>
-                <h1 style="font-size:22px;font-weight:900;margin-bottom:12px;color:#003087;">Chè Zanmi HOC FANDOM!</h1>
-                <p style="color:#64748b;font-size:14px;line-height:1.8;margin-bottom:12px;">Nou remèsye w anpil pou fidelite w. Platfòm nan ap sibi kèk amelyorasyon enpòtan.</p>
-                <p style="color:#64748b;font-size:14px;line-height:1.8;">Tanpri tounen pita pou w ka vote ak wè rezilta yo.</p>
-                <p style="margin-top:20px;font-size:13px;color:#94a3b8;font-weight:700;">Mèsi pou pasiyans ou! 🙏❤️</p>
-            </div>
-        </div>`;
-    }
+        
 
     // ── RENDER ──
     function renderCandidates() {
@@ -786,15 +757,8 @@
         turnstileToken = token;
         document.getElementById('final-btn').style.display = 'block';
     }
-
-    
-
-    function shareWhatsApp() {
-        const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
-        window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mezanmi men vòt pou nou wè kiyès kap reprezante Ayiti nan HOC 2027! 🔥 Vin vote moun pa'w la 🙌🏽: ${APP_DATA.SITE_URL}`)}`;
-    }
-    function shareFacebook() {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blasync function finalizeVote() {
+//Function finalizevote
+    async function finalizeVote() {
     if (!turnstileToken) return;
     const btn = document.getElementById('final-btn');
     btn.innerHTML = "⏳ TRAITEMENT...";
@@ -837,7 +801,14 @@
         btn.disabled = false;
     }
 }
-ank');
+
+
+    function shareWhatsApp() {
+        const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
+        window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mezanmi men vòt pou nou wè kiyès kap reprezante Ayiti nan HOC 2027! 🔥 Vin vote moun pa'w la 🙌🏽: ${APP_DATA.SITE_URL}`)}`;
+    }
+    function shareFacebook() {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank');
     }
     function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
 
