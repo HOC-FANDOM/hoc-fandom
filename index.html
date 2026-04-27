@@ -731,12 +731,13 @@
     }
 
     function showAllCandidates() {
-        window.open(APP_DATA.AD_SEE_MORE, '_blank');
-        showingAll = true;
-        renderCandidates();
-        document.getElementById('load-more-area').style.display = 'none';
+    window.open(APP_DATA.AD_SEE_MORE, '_blank');
+    showingAll = true;
+    renderCandidates();
+    document.getElementById('load-more-area').style.display = 'none';
+    // Pas d'animation au chargement initial
+    candidates.forEach(c => c.lastVotes = c.votes);
     }
-
     function initiateVote(id) {
         selectedCandidateId = id;
         ['step-2','step-3','step-already-voted'].forEach(s => document.getElementById(s).style.display = 'none');
