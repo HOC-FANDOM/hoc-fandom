@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-    <meta charset="UTF-8">
+    <mei="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔥 Top 10 influenceuse ki ka al nan House of challenge 2027! Kiyès ki pral reprezante Ayiti? Antre nan sondaj la kounya!</title>
+    <title>🔥 Kiyès ki pral reprezante Ayiti? Vote kounye a!</title>
     <meta name="description" content="⚡ Vòt ou a konte! Chwazi tiktokeuse ou ta renmen wè reprezante Ayiti nan HOC 2027.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="🔥 Kiyès ki pral ale HOC 2027? Se OU ki deside! Vote kounye a!">
-    <meta property="og:description" content="⚡ Mezanmi men 10 infliyanzèz ki nan vòt pou ale reprezante Ayiti nan House of challenge 2027! Bay vòt ou jodi a gratis. ou ka fè sa'w chwazi a genyen! 🇭🇹❤️">
+    <meta property="og:description" content="⚡ Kandida favori ou a bezwen ou! Bay vòt ou jodi a — yon sèl vòt pa jou. Ansanm nou ka fè l genyen! 🇭🇹❤️">
     <meta property="og:image" content="https://i.ibb.co/0pBcPfmV/20260425-171444.jpg">
     <meta property="og:url" content="https://houseofchallengefandom.pages.dev">
     <meta name="theme-color" content="#003087">
@@ -635,16 +635,16 @@
             if (data.maintenance) { showMaintenancePage(); return; }
             let total = 0;
             candidates.forEach(c => {
-    if (data[c.id]) {
-        c.lastVotes  = c.votes;
-        c.votes      = data[c.id].votes;
-        c.percentage = data[c.id].percentage;
-        total += c.votes;
-    }
-});
+                if (data[c.id]) {
+                    c.lastVotes  = c.votes;
+                    c.votes      = data[c.id].votes;
+                    c.percentage = data[c.id].percentage;
+                    total += c.votes;
+                }
+            });
             document.getElementById('total-votes-display').textContent = formatVotes(total);
             renderCandidates();
-            
+            candidates.forEach(c => animateValue(c.id, c.lastVotes, c.votes, 2500));
         } catch(e) {
             console.log("Offline");
             renderCandidates();
@@ -728,14 +728,15 @@
             if (p < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
-    }function showAllCandidates() {
-    window.open(APP_DATA.AD_SEE_MORE, '_blank');
-    showingAll = true;
-    renderCandidates();
-    document.getElementById('load-more-area').style.display = 'none';
-    // Pas d'animation au chargement initial
-    candidates.forEach(c => c.lastVotes = c.votes);
     }
+
+    function showAllCandidates() {
+        window.open(APP_DATA.AD_SEE_MORE, '_blank');
+        showingAll = true;
+        renderCandidates();
+        document.getElementById('load-more-area').style.display = 'none';
+    }
+
     function initiateVote(id) {
         selectedCandidateId = id;
         ['step-2','step-3','step-already-voted'].forEach(s => document.getElementById(s).style.display = 'none');
