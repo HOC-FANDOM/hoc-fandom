@@ -629,29 +629,58 @@
 
     // ── FETCH VOTES ──
     async function fetchVotes() {
-        try {
-            const res = await fetch(WORKER_URL + "/results");
-            const data = await res.json();
-            if (data.maintenance) { showMaintenancePage(); return; }
-            let total = 0;
-            candidates.forEach(c => {
-                if (data[c.id]) {
-                    c.lastVotes  = c.votes;
-                    c.votes      = data[c.id].votes;
-                    c.percentage = data[c.id].percentage;
-                    total += c.votes;
-                }
-            });
-            document.getElementById('total-votes-display').textContent = formatVotes(total);
-            renderCandidates();
-            candidates.forEach(c => animateValue(c.id, c.lastVotes, c.votes, 2500));
-        } catch(e) {
-            console.log("Offline");
-            renderCandidates();
-        } finally {
-            hideSplash();
+async function fetchVotes() {
+    try {
+        const res = await fetch(WORKER_URL + "/results");
+        const data = await res.json();
+
+        // SI WORKER A DI GEN MAINTENANCE
+        if (data.maintenance) { 
+            showMaintenancePage(); 
+            return; 
         }
+
+        let total = 0;
+        // Map done yo pou mete yo nan array candidates nou an
+        candidates.forEach(c => {
+            if (data[c.id]) {
+                c.lastVotes  = c.votes;
+                c.votes      = data[c.id].votes;
+                c.percentage = data[c.id].percentage;
+                total += c.votes;
+            }
+        });
+
+        document.getElementById('total-votes-display').textContent = formatVotes(total);
+        
+        // Rafrechi UI a
+        renderCandidates();
+
+        // Anime chif yo pou chak kandida
+        candidates.forEach(c => {
+            animateValue(c.id, c.lastVotes, c.votes, 2500);
+            
+            // Mizajou ba pwogrè a manyèlman si li deja nan DOM la
+            const card = document.getElementById(`card-${c.id}`);
+            if (card) {
+                const fill = card.querySelector('.progress-fill');
+                // Nou itilize vòt li parapò ak pi gwo a pou ba a (menm lojik ak render la)
+                const topScore = Math.max(...candidates.map(x => x.votes), 1);
+                const pctFill = (c.votes / topScore) * 100;
+                if (fill) fill.style.width = pctFill + '%';
+                
+                const pctText = document.getElementById(`pct-${c.id}`);
+                if (pctText) pctText.innerText = c.percentage + "% des votes";
+            }
+        });
+
+    } catch(e) {
+        console.error("Erreur de connexion :", e);
+    } finally {
+        hideSplash();
     }
+}
+
 
     function showMaintenancePage() {
         hideSplash();
@@ -755,44 +784,57 @@
         document.getElementById('final-btn').style.display = 'block';
     }
 
-    async function finalizeVote() {
-        if (!turnstileToken) return;
-        const btn = document.getElementById('final-btn');
-        btn.innerHTML = "⏳ TRAITEMENT...";
-        btn.disabled = true;
-        try {
-            const res = await fetch(WORKER_URL + "/vote", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ candidateId: selectedCandidateId, token: turnstileToken })
-            });
-            if (res.status === 429 || res.status === 403) {
-                document.getElementById('step-2').style.display = 'none';
-                document.getElementById('step-already-voted').style.display = 'block';
-                localStorage.setItem('hoc_vote_date', todayHaiti);
-                hasVoted = true;
-                return;
-            }
-            if (!res.ok) throw new Error("Erreur");
-            localStorage.setItem('hoc_vote_date', todayHaiti);
-            hasVoted = true;
-            document.getElementById('step-2').style.display = 'none';
-            document.getElementById('step-3').style.display = 'block';
-            setTimeout(fetchVotes, 2000);
-        } catch(e) {
-            alert("Erreur de connexion. Veuillez réessayer.");
-            btn.innerHTML = "✅ VALIDE VÒT LA";
-            btn.disabled = false;
-        }
-    }
+    
 
     function shareWhatsApp() {
         const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
         window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mezanmi men vòt pou nou wè kiyès kap reprezante Ayiti nan HOC 2027! 🔥 Vin vote moun pa'w la 🙌🏽: ${APP_DATA.SITE_URL}`)}`;
     }
     function shareFacebook() {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blasync function finalizeVote() {
+    if (!turnstileToken) return;
+    const btn = document.getElementById('final-btn');
+    btn.innerHTML = "⏳ TRAITEMENT...";
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(WORKER_URL + "/vote", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include', // ENPÒTAN: Pou voye epi resevwa cookies
+            body: JSON.stringify({ 
+                candidateId: selectedCandidateId, 
+                token: turnstileToken 
+            })
+        });
+
+        // Si vòt la bloke (Dejà vote)
+        if (res.status === 403 || res.status === 429) {
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-already-voted').style.display = 'block';
+            localStorage.setItem('hoc_vote_date', todayHaiti);
+            hasVoted = true;
+            return;
+        }
+
+        if (!res.ok) throw new Error("Erreur");
+
+        // Siksè
+        localStorage.setItem('hoc_vote_date', todayHaiti);
+        hasVoted = true;
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-3').style.display = 'block';
+        
+        // Rekipere nouvo rezilta yo apre 2 segonn
+        setTimeout(fetchVotes, 2000);
+
+    } catch(e) {
+        alert("Gen yon ti pwoblèm koneksyon. Tanpri eseye ankò.");
+        btn.innerHTML = "✅ VALIDE VÒT LA";
+        btn.disabled = false;
+    }
+}
+ank');
     }
     function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
 
