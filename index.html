@@ -635,16 +635,25 @@
             if (data.maintenance) { showMaintenancePage(); return; }
             let total = 0;
             candidates.forEach(c => {
-                if (data[c.id]) {
-                    c.lastVotes  = c.votes;
-                    c.votes      = data[c.id].votes;
-                    c.percentage = data[c.id].percentage;
-                    total += c.votes;
-                }
-            });
+    if (data[c.id]) {
+        c.lastVotes = c.votes;
+
+        // ⚠️ Empêche les votes de descendre
+        c.votes = Math.max(c.votes, data[c.id].votes);
+
+        c.percentage = data[c.id].percentage;
+        total += c.votes;
+    }
+});
             document.getElementById('total-votes-display').textContent = formatVotes(total);
             renderCandidates();
-            candidates.forEach(c => animateValue(c.id, c.lastVotes, c.votes, 2500));
+            candidates.forEach(c => {
+    if (c.votes > c.lastVotes) {
+        animateValue(c.id, c.lastVotes, c.votes, 1500);
+    } else {
+        document.getElementById(`vote-count-${c.id}`).textContent = formatVotes(c.votes);
+    }
+});
         } catch(e) {
             console.log("Offline");
             renderCandidates();
