@@ -601,7 +601,60 @@
         { id: "chrisTell", name: "Christ-Tell",        img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "mcdk",      name: "MC DK",              img: "https://i.ibb.co/1fDvCBvL/mc.jpg",         votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "meetch",    name: "Meetch",             img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg",     votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "Leila",     name: "Barbie Leila",       img: "https://i.ibb.co/hRN90sL8/Leila.webp",     votes: 0, percentage: "0.00", lastVotes: 0 },
+        { id: "Leila",     nameasync function fetchVotes() {
+    try {
+        const res = await fetch(WORKER_URL + "/results");
+        const data = await res.json();
+
+        // 🛠️ SI LE WORKER DIT QU'IL Y A MAINTENANCE
+        if (data.maintenance === true) { 
+            showMaintenancePage(); 
+            return; 
+        }
+
+        let total = 0;
+        
+        // 📊 MISE À JOUR DES DONNÉES DEPUIS LE JSON UNIQUE
+        candidates.forEach(c => {
+            if (data[c.id]) {
+                c.lastVotes  = c.votes;
+                c.votes      = data[c.id].votes;
+                c.percentage = data[c.id].percentage;
+                total += c.votes;
+            }
+        });
+
+        document.getElementById('total-votes-display').textContent = formatVotes(total);
+        
+        // 🔄 RAFRAÎCHIR L'ORDRE DES CANDIDATS
+        renderCandidates();
+
+        // ✨ ANIMATIONS ET MISE À JOUR MANUELLE DES BARRES
+        candidates.forEach(c => {
+            animateValue(c.id, c.lastVotes, c.votes, 2500);
+            
+            const card = document.getElementById(`card-${c.id}`);
+            if (card) {
+                const fill = card.querySelector('.progress-fill');
+                const topScore = Math.max(...candidates.map(x => x.votes), 1);
+                const pctFill = (c.votes / topScore) * 100;
+                
+                // Met à jour la largeur de la barre de progression
+                if (fill) fill.style.width = pctFill + '%';
+                
+                // Met à jour le texte du pourcentage
+                const pctText = document.getElementById(`pct-${c.id}`);
+                if (pctText) pctText.innerText = c.percentage + "% des votes";
+            }
+        });
+
+    } catch(e) {
+        console.error("Erreur de connexion :", e);
+    } finally {
+        hideSplash();
+    }
+}
+: "Barbie Leila",       img: "https://i.ibb.co/hRN90sL8/Leila.webp",     votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "jalia",     name: "Jalia Magnian",      img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "manie",     name: "Manie",              img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
         { id: "natha",     name: "Natha",              img: "https://i.ibb.co/jvRF2dqp/Natha.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
@@ -628,57 +681,7 @@
     }
 
     // ── FETCH VOTES ──
-    async function fetchVotes() {
-async function fetchVotes() {
-    try {
-        const res = await fetch(WORKER_URL + "/results");
-        const data = await res.json();
-
-        // SI WORKER A DI GEN MAINTENANCE
-        if (data.maintenance) { 
-            showMaintenancePage(); 
-            return; 
-        }
-
-        let total = 0;
-        // Map done yo pou mete yo nan array candidates nou an
-        candidates.forEach(c => {
-            if (data[c.id]) {
-                c.lastVotes  = c.votes;
-                c.votes      = data[c.id].votes;
-                c.percentage = data[c.id].percentage;
-                total += c.votes;
-            }
-        });
-
-        document.getElementById('total-votes-display').textContent = formatVotes(total);
-        
-        // Rafrechi UI a
-        renderCandidates();
-
-        // Anime chif yo pou chak kandida
-        candidates.forEach(c => {
-            animateValue(c.id, c.lastVotes, c.votes, 2500);
-            
-            // Mizajou ba pwogrè a manyèlman si li deja nan DOM la
-            const card = document.getElementById(`card-${c.id}`);
-            if (card) {
-                const fill = card.querySelector('.progress-fill');
-                // Nou itilize vòt li parapò ak pi gwo a pou ba a (menm lojik ak render la)
-                const topScore = Math.max(...candidates.map(x => x.votes), 1);
-                const pctFill = (c.votes / topScore) * 100;
-                if (fill) fill.style.width = pctFill + '%';
-                
-                const pctText = document.getElementById(`pct-${c.id}`);
-                if (pctText) pctText.innerText = c.percentage + "% des votes";
-            }
-        });
-
-    } catch(e) {
-        console.error("Erreur de connexion :", e);
-    } finally {
-        hideSplash();
-    }
+    
 }
 
 
