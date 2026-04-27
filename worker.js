@@ -9,7 +9,7 @@ export default {
   async fetch(request, env) {
 
     // ⚙️ CONFIG
-    const WRITE_PROBABILITY = parseFloat(env.PROBABILITY || "0.001");
+    const WRITE_PROBABILITY = parseFloat(env.PROBABILITY || "0.01");
     const VOTE_WEIGHT       = parseInt(env.WEIGHT || "1000");
     const COOKIE_SECRET     = env.COOKIE_SECRET || "hoc2027-change-moi-svp";
     const ALLOWED_ORIGIN    = "https://houseofchallengefandom.pages.dev";
@@ -230,4 +230,4 @@ function jsonResponse(data, status, corsHeaders) {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" }
   });
-                      }
+          }
