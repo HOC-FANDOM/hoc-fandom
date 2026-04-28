@@ -855,8 +855,124 @@ async function fetchVotes() {
         const data = await res.json();
         
         if (data.maintenance) {
-            document.body.innerHTML = '<div style="padding:40px; text-align:center; font-family:sans-serif;"><h1>🔧 Maintenance</h1><p>Nou revine byento!</p></div>';
-            return;
+    document.body.innerHTML = `
+    <div class="maintenance-overlay">
+        <div class="maintenance-content">
+            <div class="logo-glow">HOC FANDOM</div>
+            <h1>L'ÉVOLUTION <span class="gold-text">EST EN MARCHE</span></h1>
+            
+            <div class="message-box">
+                <p class="intro-text">Nous redéfinissons l'arène de vos émotions.</p>
+                <p class="body-text">
+                    HOC FANDOM n'est pas simplement une plateforme, c'est le cœur battant d'une communauté. 
+                    Pour offrir une expérience à la hauteur de votre passion, nos équipes déploient actuellement 
+                    la <strong>V2 de l'interface Titan</strong>.
+                </p>
+                <p class="body-text">
+                    Nous optimisons nos systèmes pour garantir l'intégrité totale de chaque vòt. 
+                    Le prestige demande de la précision, et nous prenons ces instants pour sculpter le futur de votre divertissement.
+                </p>
+            </div>
+
+            <div class="status-badge">RETOUR IMMINENT • VERSION 2.0</div>
+            
+            <p class="footer-note">Préparez-vous à l'excellence. Revenez dans quelques instants.</p>
+        </div>
+    </div>
+    <style>
+    .maintenance-overlay {
+        position: fixed;
+        z-index: 999999;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(135deg, #0a0f2c 0%, #1a2563 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+    }
+    .maintenance-content {
+        background: rgba(255,255,255,0.10);
+        border-radius: 28px;
+        box-shadow: 0 12px 48px rgba(10,15,44,0.20);
+        padding: 44px 32px 32px 32px;
+        text-align: center;
+        max-width: 430px;
+        width: 100%;
+        color: #fff;
+        border: 1.5px solid #ffd70040;
+    }
+    .logo-glow {
+        font-family: 'League Gothic', cursive;
+        font-size: 48px;
+        color: #ffd700;
+        letter-spacing: 2px;
+        margin-bottom: 18px;
+        text-shadow: 0 0 16px #ffd70055, 0 2px 8px #0a0f2c55;
+        animation: logo-glow-fade 1.6s ease-in-out infinite alternate;
+    }
+    @keyframes logo-glow-fade {
+      from { text-shadow: 0 0 16px #ffd70055, 0 2px 8px #0a0f2c55; }
+      to   { text-shadow: 0 0 32px #ffd70099, 0 4px 16px #0a0f2c99; }
+    }
+    h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        letter-spacing: -1px;
+    }
+    .gold-text {
+        color: #ffd700;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+    .message-box {
+        background: rgba(10, 15, 44, 0.16);
+        border-radius: 16px;
+        margin: 16px 0 18px 0;
+        padding: 16px 14px 10px 14px;
+        box-shadow: 0 2px 8px rgba(10,15,44,0.04);
+    }
+    .intro-text {
+        font-size: 1.11rem;
+        font-weight: 600;
+        color: #ffd700;
+        margin-bottom: 9px;
+        font-family: 'Montserrat', sans-serif;
+    }
+    .body-text {
+        font-size: 1rem;
+        font-family: 'Open Sans', serif;
+        color: #eee;
+        margin-bottom: 6px;
+    }
+    .status-badge {
+        display: inline-block;
+        background: #ffd70015;
+        color: #ffd700;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: bold;
+        font-size: 0.95rem;
+        padding: 6px 22px;
+        border-radius: 333px;
+        margin-top: 16px;
+        margin-bottom: 14px;
+        border: 1.3px solid #ffd70080;
+        letter-spacing: 2px;
+        box-shadow: 0 1px 6px #ffd70022;
+    }
+    .footer-note {
+        color: #d6d6d699;
+        font-size: 0.92rem;
+        margin-top: 9px;
+        font-style: italic;
+        letter-spacing: 0.5px;
+    }
+    </style>
+    `;
+    return;
         }
 
         votes = data;
