@@ -59,9 +59,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 32px;
+            gap: 28px;
             opacity: 1;
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
         }
 
         #splash.hide {
@@ -116,13 +117,13 @@
         .ring-outer {
             stroke: var(--haiti-gold);
             stroke-dasharray: 314;
-            animation: ringSpin 3s linear infinite;
+            animation: ringSpinOuter 3s linear infinite;
         }
 
         .ring-inner {
             stroke: var(--haiti-red);
             stroke-dasharray: 282;
-            animation: ringSpin 4s linear infinite reverse;
+            animation: ringSpinInner 4s linear infinite reverse;
         }
 
         .splash-text {
@@ -132,16 +133,15 @@
             color: rgba(255, 255, 255, 0.6);
             text-transform: uppercase;
             animation: fadeInUp 0.8s ease-out 0.3s both;
+            height: 20px;
+            display: flex;
+            align-items: center;
         }
 
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes ringSpinOuter { to { transform: rotate(360deg); } }
         @keyframes ringSpinInner { to { transform: rotate(-360deg); } }
-        @keyframes ringSpinOuterReverse { to { transform: rotate(-360deg); } }
-
-        .ring-outer { animation: ringSpinOuter 3s linear infinite; }
-        .ring-inner { animation: ringSpinInner 4s linear infinite reverse; }
 
         /* ═══════════════════════════════════════════════════════
            HEADER
@@ -408,7 +408,7 @@
             line-height: 1;
         }
 
-        .card-rank-1 .votes-num { color: var(--haiti-gold-dark); }
+        .card.rank-1 .votes-num { color: var(--haiti-gold-dark); }
 
         .votes-pct {
             font-size: 11px;
@@ -461,6 +461,11 @@
         .load-more-area {
             text-align: center;
             padding: 20px 0;
+            display: none;
+        }
+
+        .load-more-area.show {
+            display: block;
         }
 
         .btn-more {
@@ -581,7 +586,7 @@
             <circle class="ring-inner" cx="50" cy="50" r="40"/>
         </svg>
     </div>
-    <div class="splash-text">Chargement...</div>
+    <div class="splash-text">Chargement en cours...</div>
 </div>
 
 <header>
@@ -613,7 +618,7 @@
 <div class="container">
     <div class="section-title">🏆 Klasman</div>
     <div class="candidates-grid" id="grid"></div>
-    <div class="load-more-area" id="load-more">
+    <div class="load-more-area show" id="load-more">
         <button class="btn-more" onclick="showAll()">Wè tout 10 kandida ⬇️</button>
     </div>
 </div>
@@ -685,7 +690,7 @@ async function fetchVotes() {
         const data = await res.json();
         
         if (data.maintenance) {
-            document.body.innerHTML = '<div style="padding:40px; text-align:center; font-family:sans-serif;"><h1>🔧 Maintenance</h1><p>On sera back soon!</p></div>';
+            document.body.innerHTML = '<div style="padding:40px; text-align:center; font-family:sans-serif;"><h1>🔧 Maintenance</h1><p>Nou revine byento!</p></div>';
             return;
         }
 
@@ -739,7 +744,13 @@ function render() {
         `;
     }).join('');
 
-    if (!showingAll) document.getElementById('load-more').style.display = 'block';
+    // Afficher/cacher le bouton "Wè tout"
+    const loadMoreBtn = document.getElementById('load-more');
+    if (showingAll || displayed.length === CANDIDATES.length) {
+        loadMoreBtn.classList.remove('show');
+    } else {
+        loadMoreBtn.classList.add('show');
+    }
 }
 
 function formatNum(n) {
