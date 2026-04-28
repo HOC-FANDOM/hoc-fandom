@@ -964,34 +964,70 @@ function shareFB() { window.open(`https://facebook.com/sharer/sharer.php?u=${enc
 
 function showLegal(type) {
     const overlay = document.getElementById('legal-overlay');
-    const body = document.getElementById('legal-body');
     const title = document.getElementById('legal-title');
-    overlay.style.display = 'flex';
+    const body = document.getElementById('legal-body');
 
     if (type === 'terms') {
         title.innerText = "Conditions d'Utilisation";
         body.innerHTML = `
-            <h2>1. Clause de Non-Affiliation (PLATEFORME FANTASY)</h2>
-            <p><strong>HOC FANDOM</strong> est une plateforme de divertissement créée par et pour les fans. <strong>Nous ne sommes ni affiliés, ni approuvés, ni officiellement liés à "House of Challenge".</strong></p>
+            <h2>1. Clause de Non-Affiliation (Bouclier Légal)</h2>
+            <p><strong>HOC FANDOM</strong> est une plateforme de divertissement indépendante créée <em>par des fans, pour les fans</em>. <strong>Nous ne sommes ni affiliés, ni approuvés, ni sponsorisés par la production officielle de "House of Challenge".</strong></p>
+            
+            <h2>2. Utilisation Équitable (Fair Use) & Droit à l'Image</h2>
+            <p>Les noms, photographies et références liés aux personnalités publiques et créateurs de contenu sont utilisés dans un cadre strict de <strong>"Fair Use" (Usage Loyal)</strong> à des fins de sondage d'opinion, de commentaire public et de célébration de la culture haïtienne. Tous les droits de propriété intellectuelle originaux appartiennent à leurs détenteurs respectifs.</p>
+
+            <h2>3. Valeur des Votes (Fantasy League)</h2>
+            <p>Cette plateforme agit comme un <strong>simulateur de popularité communautaire</strong>. Les votes enregistrés ici n'ont <strong>absolument aucun impact officiel</strong> sur le casting, les sélections ou les décisions réelles de la production de House of Challenge. C'est un espace de jeu et de soutien.</p>
+            
+            <h2>4. Sécurité & Modération</h2>
+            <p>L'équipe technique de Ziltroniq se réserve le droit de bloquer toute adresse IP tentant de manipuler les votes via des bots ou des scripts automatisés, garantissant ainsi l'intégrité de la plateforme.</p>
         `;
     } else if (type === 'privacy') {
         title.innerText = "Politique de Confidentialité";
         body.innerHTML = `
-            <h2>1. Collecte des Données Minimale</h2>
-            <p>HOC FANDOM ne collecte <strong>aucune donnée personnelle sensible.</strong></p>
+            <h2>1. Anonymat & Collecte Minimale</h2>
+            <p>HOC FANDOM est conçu pour protéger votre vie privée. Nous ne demandons ni nom, ni numéro de téléphone, ni mot de passe pour voter. Nous n'enregistrons <strong>aucune donnée personnelle sensible</strong> sur nos serveurs.</p>
+
+            <h2>2. Sécurité Anti-Bot (Turnstile)</h2>
+            <p>Pour garantir l'intégrité des votes sans compromettre votre vie privée, nous utilisons <strong>Cloudflare Turnstile</strong>. Ce service vérifie que vous êtes un humain de manière sécurisée, sans utiliser de captchas intrusifs et sans traquer votre historique de navigation.</p>
+
+            <h2>3. Cookies et Partenaires Publicitaires</h2>
+            <p>Pour maintenir nos serveurs gratuits et performants, nous affichons des publicités via nos partenaires. Ces réseaux peuvent utiliser des cookies non-personnels pour limiter le nombre de fois que vous voyez une annonce. Nous utilisons également le stockage local (<em>localStorage</em>) de votre navigateur uniquement pour enregistrer la date de votre vote et respecter les limites journalières.</p>
         `;
     } else if (type === 'contact') {
         title.innerText = "Contact & Support";
         body.innerHTML = `
-            <p style="margin-bottom: 20px;">📧 Email: <strong>hocfandom@gmail.com</strong></p>
+            <p>Une question, un signalement (DMCA) ou une proposition de partenariat ? L'équipe est à votre écoute.</p>
+            <p style="margin-bottom: 24px;">📧 Email direct : <strong>hocfandom@gmail.com</strong></p>
+            
+            <div class="contact-form">
+                <h3 style="color: var(--haiti-blue); font-family: 'Montserrat', sans-serif; margin-bottom: 15px;">Envoyez-nous un message</h3>
+                <form id="hoc-contact-form" onsubmit="event.preventDefault(); alert('Message envoyé avec succès ! L\\'équipe vous répondra bientôt.'); document.getElementById('hoc-contact-form').reset();">
+                    <label for="name">Nom / Pseudo (Optionnel)</label>
+                    <input type="text" id="name" class="contact-input" placeholder="Comment devons-nous vous appeler ?">
+                    
+                    <label for="email">Adresse Email (Requis)</label>
+                    <input type="email" id="email" class="contact-input" placeholder="votre@email.com" required>
+                    
+                    <label for="message">Votre Message (Requis)</label>
+                    <textarea id="message" class="contact-input" rows="4" placeholder="Tapez votre message ici..." required style="resize: vertical; font-family: 'Open Sans', sans-serif;"></textarea>
+                    
+                    <button type="submit" class="btn-submit">ENVOYER LE MESSAGE</button>
+                </form>
+            </div>
         `;
     }
+
+    overlay.style.display = 'flex';
+    // Bloque le scroll de la page principale quand la modale légale est ouverte
+    document.body.style.overflow = 'hidden'; 
 }
 
 function closeLegal() {
     document.getElementById('legal-overlay').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Réactive le scroll
 }
-
+    
 setInterval(fetchVotes, 60000);
 window.addEventListener('load', fetchVotes);
 
