@@ -48,9 +48,6 @@
             user-select: none;
         }
 
-        /* ═══════════════════════════════════════════════════════
-           SPLASH SCREEN - PREMIUM ANIMATION
-        ═══════════════════════════════════════════════════════ */
         #splash {
             position: fixed;
             inset: 0;
@@ -144,9 +141,6 @@
         @keyframes ringSpinOuter { to { transform: rotate(360deg); } }
         @keyframes ringSpinInner { to { transform: rotate(-360deg); } }
 
-        /* ═══════════════════════════════════════════════════════
-           HEADER
-        ═══════════════════════════════════════════════════════ */
         header {
             position: sticky;
             top: 0;
@@ -187,9 +181,6 @@
         .pulse { width: 8px; height: 8px; background: white; border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        /* ═══════════════════════════════════════════════════════
-           HERO SECTION
-        ═══════════════════════════════════════════════════════ */
         .hero {
             background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
             padding: 48px 20px;
@@ -223,7 +214,7 @@
         }
 
         .hero h1 {
-            font-family: 'Roboto', cursive;
+            font-family: 'League Gothic', cursive;
             font-size: 52px;
             font-weight: 400;
             letter-spacing: -2px;
@@ -242,9 +233,6 @@
             line-height: 1.8;
         }
 
-        /* ═══════════════════════════════════════════════════════
-           STATS BAR
-        ═══════════════════════════════════════════════════════ */
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -278,9 +266,6 @@
             text-transform: uppercase;
         }
 
-        /* ═══════════════════════════════════════════════════════
-           MAIN CONTENT
-        ═══════════════════════════════════════════════════════ */
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -288,7 +273,7 @@
         }
 
         .section-title {
-            font-family: 'SYNE' , cursive;
+            font-family: 'League Gothic', cursive;
             font-size: 32px;
             font-weight: 400;
             letter-spacing: -1px;
@@ -298,9 +283,6 @@
             gap: 12px;
         }
 
-        /* ═══════════════════════════════════════════════════════
-           CANDIDATE CARDS - LUXURY DESIGN
-        ═══════════════════════════════════════════════════════ */
         .candidates-grid {
             display: flex;
             flex-direction: column;
@@ -391,11 +373,10 @@
         }
 
         .card-name {
-            ont-family: 'Roboto', sans-serif;
-    text-transform: uppercase;
-          font-size: 1,5rem; /* On l'agrandit car elle est étroite */
-    letter-spacing: 1px;
-     
+            font-family: 'Open Sans', sans-serif;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
         }
 
         .card-votes {
@@ -458,9 +439,6 @@
         .btn-vote:active { transform: scale(0.98); }
         .card.rank-1 .btn-vote { background: var(--haiti-gold); color: var(--haiti-blue); }
 
-        /* ═══════════════════════════════════════════════════════
-           LOAD MORE BUTTON
-        ═══════════════════════════════════════════════════════ */
         .load-more-area {
             text-align: center;
             padding: 20px 0;
@@ -489,9 +467,6 @@
 
         .btn-more:active { transform: scale(0.98); }
 
-        /* ═══════════════════════════════════════════════════════
-           MODALS
-        ═══════════════════════════════════════════════════════ */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -558,9 +533,6 @@
         .btn-facebook { background: #1877f2; color: white; }
         .btn-dark { background: var(--text-main); color: white; }
 
-        /* ═══════════════════════════════════════════════════════
-           LEGAL OVERLAY - PROFESSIONAL PAGE
-        ═══════════════════════════════════════════════════════ */
         #legal-overlay {
             position: fixed;
             top: 0;
@@ -645,7 +617,7 @@
         .legal-content em {
             color: var(--haiti-gold-dark);
             font-style: italic;
-        }sss
+        }
 
         .contact-form {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, #f8fafc 100%);
@@ -708,9 +680,6 @@
             margin-top: 40px;
         }
 
-        /* ═══════════════════════════════════════════════════════
-           FOOTER
-        ═══════════════════════════════════════════════════════ */
         .haiti-bar { height: 5px; background: linear-gradient(90deg, var(--haiti-blue) 50%, var(--haiti-red) 50%); }
 
         footer {
@@ -729,7 +698,6 @@
 </head>
 <body>
 
-<!-- SPLASH SCREEN -->
 <div id="splash">
     <div class="splash-badge">🇭🇹 House of Challenge 2027</div>
     <div class="splash-logo">HOC <span>FANDOM</span></div>
@@ -776,14 +744,12 @@
     </div>
 </div>
 
-<!-- VOTE MODAL -->
 <div id="vote-modal" class="modal-overlay">
     <div class="modal">
         <div id="modal-already">
             <div class="modal-icon">🚫</div>
             <h2 style="color: var(--haiti-red);">Ou Deja Vote!</h2>
             <p>Ou ka tounen demen pou vote ankò!</p>
-
             <div id="container-623647ad2d51b4896cf878366ccdd192"></div>
             <button class="modal-btn btn-primary" onclick="closeModal()">RETOUNEN</button>
         </div>
@@ -806,7 +772,6 @@
     </div>
 </div>
 
-<!-- LEGAL OVERLAY -->
 <div id="legal-overlay">
     <div class="legal-header">
         <span class="legal-title" id="legal-title">Documents</span>
@@ -858,124 +823,8 @@ async function fetchVotes() {
         const data = await res.json();
         
         if (data.maintenance) {
-    document.body.innerHTML = `
-    <div class="maintenance-overlay">
-        <div class="maintenance-content">
-            <div class="logo-glow">HOC FANDOM</div>
-            <h1>MIZAJOU <span class="gold-text">SISTÈM NAN AN KOU...</span></h1>
-            
-            <div class="message-box">
-                <p class="intro-text"> </p>
-                <p class="body-text">
-                    HOC FANDOM pa disponib nan moman sa, aktyèlman nou ap travay sou sistèm nan. 
-                    pou nou ka ofri yon pi bon eksperyans ak tout itilizatè nou yo
-                    
-                    <strong> MÈSI POU PASYANS OU! </strong>
-                </p>
-                <p class="body-text">
-                    
-                </p>
-            </div>
-
-            <div class="status-badge"> SIT LA AP DISPONIB ANKÒ NAN KÈK MINIT </div>
-            
-            <p class="footer-note"> retounen nan yon ti moman</p>
-        </div>
-    </div>
-    <style>
-    .maintenance-overlay {
-        position: fixed;
-        z-index: 999999;
-        inset: 0;
-        width: 100vw;
-        height: 100vh;
-        background: linear-gradient(135deg, #0a0f2c 0%, #1a2563 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 24px;
-    }
-    .maintenance-content {
-        background: rgba(255,255,255,0.10);
-        border-radius: 28px;
-        box-shadow: 0 12px 48px rgba(10,15,44,0.20);
-        padding: 44px 32px 32px 32px;
-        text-align: center;
-        max-width: 430px;
-        width: 100%;
-        color: #fff;
-        border: 1.5px solid #ffd70040;
-    }
-    .logo-glow {
-        font-family: 'League Gothic', cursive;
-        font-size: 48px;
-        color: #ffd700;
-        letter-spacing: 2px;
-        margin-bottom: 18px;
-        text-shadow: 0 0 16px #ffd70055, 0 2px 8px #0a0f2c55;
-        animation: logo-glow-fade 1.6s ease-in-out infinite alternate;
-    }
-    @keyframes logo-glow-fade {
-      from { text-shadow: 0 0 16px #ffd70055, 0 2px 8px #0a0f2c55; }
-      to   { text-shadow: 0 0 32px #ffd70099, 0 4px 16px #0a0f2c99; }
-    }
-    h1 {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 16px;
-        letter-spacing: -1px;
-    }
-    .gold-text {
-        color: #ffd700;
-        font-weight: 900;
-        letter-spacing: 1px;
-    }
-    .message-box {
-        background: rgba(10, 15, 44, 0.16);
-        border-radius: 16px;
-        margin: 16px 0 18px 0;
-        padding: 16px 14px 10px 14px;
-        box-shadow: 0 2px 8px rgba(10,15,44,0.04);
-    }
-    .intro-text {
-        font-size: 1.11rem;
-        font-weight: 600;
-        color: #ffd700;
-        margin-bottom: 9px;
-        font-family: 'Montserrat', sans-serif;
-    }
-    .body-text {
-        font-size: 1rem;
-        font-family: 'Open Sans', serif;
-        color: #eee;
-        margin-bottom: 6px;
-    }
-    .status-badge {
-        display: inline-block;
-        background: #ffd70015;
-        color: #ffd700;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: bold;
-        font-size: 0.95rem;
-        padding: 6px 22px;
-        border-radius: 333px;
-        margin-top: 16px;
-        margin-bottom: 14px;
-        border: 1.3px solid #ffd70080;
-        letter-spacing: 2px;
-        box-shadow: 0 1px 6px #ffd70022;
-    }
-    .footer-note {
-        color: #d6d6d699;
-        font-size: 0.92rem;
-        margin-top: 9px;
-        font-style: italic;
-        letter-spacing: 0.5px;
-    }
-    </style>
-    `;
-    return;
+            document.body.innerHTML = '<div style="padding:40px; text-align:center; font-family:sans-serif;"><h1>🔧 Maintenance</h1><p>Nou revine byento!</p></div>';
+            return;
         }
 
         votes = data;
@@ -1100,8 +949,11 @@ async function submitVote() {
     }
 }
 
+// ════════════════════════════════════════════════════════
+// MODIFICATION #1: Smartlink lié au bouton "Wè tout 10"
+// ════════════════════════════════════════════════════════
 function showAll() {
-    window.open('https://penguinsincequalify.com/em8kp2un6?key=2c7c3589c01489e08c544389bd3ac67b');
+    window.open('https://penguinsincequalify.com/abgewwmh?key=d099b9f5294c955380d0e6a4917c6950');
     showingAll = true;
     render();
 }
@@ -1120,99 +972,20 @@ function showLegal(type) {
         title.innerText = "Conditions d'Utilisation";
         body.innerHTML = `
             <h2>1. Clause de Non-Affiliation (PLATEFORME FANTASY)</h2>
-            <p><strong>HOC FANDOM</strong> est une plateforme de divertissement créée par et pour les fans de culture numérique haïtienne. <strong>Nous ne sommes ni affiliés, ni approuvés, ni officiellement liés aux organisateurs de "House of Challenge".</strong> Ce site est une simulation "Fantasy" destinée à soulager les émotions du peuple fan et à célébrer notre communauté en ligne. Tous les votes exprimés ici n'ont aucune valeur contractuelle pour la sélection réelle des participants à l'émission officielle.</p>
-            
-            <h2>2. Propriété Intellectuelle et Fair Use</h2>
-            <p>Tous les noms, logos et images des candidats ou de la marque "House of Challenge" appartiennent à leurs propriétaires respectifs. Notre utilisation de ces éléments relève du <strong>"Fair Use" (Usage Loyal)</strong> à des fins de divertissement communautaire sans intention commerciale de nuire à la marque officielle. Les images sont hébergées sur des serveurs externes (ibb.co) pour garantir le respect des droits d'auteur.</p>
-            
-            <h2>3. Système de Vote Impartial</h2>
-            <p>Les votes exprimés sur cette plateforme sont collectés via <strong>Cloudflare KV</strong> (base de données sécurisée) et protégés contre les manipulations par un système HMAC-SHA256 + Turnstile (vérification anti-bot). Un utilisateur ne peut voter qu'une seule fois par jour, par appareil. Tout abus ou tentative de manipulation technique détectée par nos algorithmes entraînera une <strong>réinitialisation automatique des scores</strong>.</p>
-            
-            <h2>4. Responsabilité Juridique</h2>
-            <p>En utilisant ce site, vous acceptez que les administrateurs de HOC FANDOM ne puissent être tenus responsables de tout litige découlant de l'interprétation des résultats. Nous nous réservons le droit de <strong>modifier, fermer ou mettre à jour la plateforme à tout moment sans préavis</strong>. Cette plateforme est hébergée sur <strong>Cloudflare Pages</strong> (serveurs USA) et les données de votes sont stockées dans <strong>Cloudflare KV</strong> (services tiers de sécurité).
-            </p>
-
-            <h2>5. Protection des Données Personnelles</h2>
-            <p>Nous respectons votre vie privée. Aucune donnée personnelle sensible n'est collectée (pas de nom, adresse ou numéro de téléphone). Seuls les cookies techniques et les signatures HMAC sont utilisés pour garantir l'intégrité du sondage.</p>
-
-            <h2>6. Modification des Conditions</h2>
-            <p><em>Document mis à jour le 28 Avril 2026. Ces conditions peuvent être modifiées à tout moment. La continuation de l'utilisation du site implique votre acceptation des nouvelles conditions.</em></p>
+            <p><strong>HOC FANDOM</strong> est une plateforme de divertissement créée par et pour les fans. <strong>Nous ne sommes ni affiliés, ni approuvés, ni officiellement liés à "House of Challenge".</strong></p>
         `;
     } else if (type === 'privacy') {
         title.innerText = "Politique de Confidentialité";
         body.innerHTML = `
             <h2>1. Collecte des Données Minimale</h2>
-            <p>HOC FANDOM ne collecte <strong>aucune donnée personnelle sensible</strong> (Nom, Adresse, Téléphone, Email). Notre collecte se limite à :</p>
-            <p><strong>• Cookies techniques (HMAC-SHA256)</strong> → Permettent un vote par jour/appareil<br>
-            <strong>• Adresses IP anonymisées</strong> → Traitées par Cloudflare pour prévenir les attaques de robots<br>
-            <strong>• Données de vote agrégées</strong> → Stockées dans Cloudflare KV (pas d'identification personnelle)</p>
-            
-            <h2>2. Infrastructure Sécurisée Cloudflare</h2>
-            <p>Votre navigation est protégée par <strong>Cloudflare Pages</strong> et <strong>Cloudflare Workers</strong>, qui offrent :</p>
-            <p><strong>• Chiffrement HTTPS 256-bit</strong> pour toutes les transmissions<br>
-            <strong>• Turnstile CAPTCHA</strong> pour vérifier que vous êtes humain<br>
-            <strong>• DDoS Protection</strong> contre les attaques de robots<br>
-            <strong>• Cache optimisé</strong> pour la performance et la stabilité</p>
-            
-            <h2>3. Publicités Tiers et Cookies</h2>
-            <p>HOC FANDOM utilise des régies publicitaires tierces (Adsterra, Monetag) pour financer les serveurs et l'infrastructure. Ces régies peuvent utiliser leurs propres cookies pour afficher des publicités pertinentes. <strong>Vous pouvez désactiver les cookies tiers dans les réglages de votre navigateur.</strong></p>
-            
-            <h2>4. Engagement de Confidentialité Absolu</h2>
-            <p>Nous nous engageons solennellement à <strong>ne jamais vendre, louer, partager ou divulguer vos données</strong> de navigation, de vote ou d'interaction à des fins de marketing direct ou de profilage. Toute violation de cet engagement serait dénoncée publiquement.</p>
-
-            <h2>5. Droit à l'Oubli</h2>
-            <p>Vous pouvez demander la suppression de vos données en contactant <strong>hocfandom@gmail.com</strong>. Nous supprimerons tous les logs liés à votre appareil dans un délai de 7 jours ouvrables.</p>
-
-            <h2>6. Durée de Conservation</h2>
-            <p>Les données de vote sont conservées <strong>pendant la durée de vie de la plateforme</strong> uniquement. À la fermeture du site, toutes les données seront supprimées ou anonymisées définitivement.</p>
+            <p>HOC FANDOM ne collecte <strong>aucune donnée personnelle sensible.</strong></p>
         `;
     } else if (type === 'contact') {
         title.innerText = "Contact & Support";
         body.innerHTML = `
-            <p style="margin-bottom: 20px;">Besoin d'aide, d'un partenariat ou d'un signalement de bug ? Notre équipe est à votre écoute. Remplissez le formulaire ci-dessous et nous vous répondrons dans les 24-48h.</p>
-            
-            <div class="contact-form">
-                <p style="font-size: 16px; color: var(--haiti-blue); font-weight: 700; margin-bottom: 20px;">📧 Email Direct : <strong>hocfandom@gmail.com</strong></p>
-                
-                <label>👤 Votre Nom (optionnel)</label>
-                <input type="text" class="contact-input" id="contact-name" placeholder="Ex: Jean Dupont ou simple pseudonyme">
-                
-                <label>📱 Sujet</label>
-                <select class="contact-input" id="contact-subject" style="padding: 14px;">
-                    <option>Signaler un bug</option>
-                    <option>Partenariat / Publicité</option>
-                    <option>Question technique</option>
-                    <option>Autre</option>
-                </select>
-                
-                <label>💬 Votre Message</label>
-                <textarea class="contact-input" id="contact-message" rows="6" placeholder="Décrivez votre demande en détail..."></textarea>
-                
-                <button class="btn-submit" onclick="submitContact()">📤 ENVOYER LE MESSAGE</button>
-            </div>
-            
-            <p style="margin-top: 24px; font-size: 13px; color: var(--text-secondary); text-align: center;">
-                <strong>⏱️ Délai de réponse moyen : 24h à 48h</strong><br>
-                Vérifiez aussi votre dossier "Spam" si vous n'avez pas de réponse.
-            </p>
+            <p style="margin-bottom: 20px;">📧 Email: <strong>hocfandom@gmail.com</strong></p>
         `;
     }
-}
-
-function submitContact() {
-    const name = document.getElementById('contact-name')?.value || 'Anonymous';
-    const subject = document.getElementById('contact-subject')?.value || 'Autre';
-    const message = document.getElementById('contact-message')?.value;
-
-    if (!message || message.trim().length < 10) {
-        alert('⚠️ Svp écrivez un message avec au moins 10 caractères');
-        return;
-    }
-
-    const mailtoLink = `mailto:hocfandom@gmail.com?subject=${encodeURIComponent(`[HOC FANDOM] ${subject}`)}&body=${encodeURIComponent(`Nom: ${name}\n\nMessage:\n${message}`)}`;
-    window.location.href = mailtoLink;
-    
-    alert('✅ Message prêt à être envoyé! Votre client email va s\'ouvrir.');
 }
 
 function closeLegal() {
@@ -1221,10 +994,37 @@ function closeLegal() {
 
 setInterval(fetchVotes, 60000);
 window.addEventListener('load', fetchVotes);
-</script>
-    <script async="async" data-cfasync="false" src="//penguinsincequalify.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
-    
 
-<script src="https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js"></script>
+// ════════════════════════════════════════════════════════
+// MODIFICATION #2: Pop-under retardé de 60 secondes
+// ════════════════════════════════════════════════════════
+setTimeout(function() {
+    const KEY_COUNT = 'hoc_popunder_count';
+    const KEY_DATE  = 'hoc_popunder_date';
+    const MAX_SHOWS = 3;
+
+    const todayPop  = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Port-au-Prince' });
+    const savedDate = localStorage.getItem(KEY_DATE);
+    let   showCount = parseInt(localStorage.getItem(KEY_COUNT) || '0');
+
+    // Reset compteur si nouveau jour Haiti
+    if (savedDate !== todayPop) {
+        showCount = 0;
+        localStorage.setItem(KEY_DATE, todayPop);
+        localStorage.setItem(KEY_COUNT, '0');
+    }
+
+    // Charger pop-under seulement si < 3 fois aujourd'hui
+    if (showCount < MAX_SHOWS) {
+        const script = document.createElement('script');
+        script.src = 'https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js';
+        script.async = true;
+        document.body.appendChild(script);
+        localStorage.setItem(KEY_COUNT, (showCount + 1).toString());
+    }
+}, 60000); // Apparait apres 60s — max 3x par 24h (reset minuit Haiti)
+</script>
+
+<script async="async" data-cfasync="false" src="//penguinsincequalify.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
 </body>
 </html>
