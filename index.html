@@ -15,7 +15,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;600;700;800;900&family=Lora:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     <style>
@@ -85,9 +85,9 @@
         }
 
         .splash-logo {
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Great Vibes', cursive;
             font-size: 54px;
-            font-weight: 800;
+            font-weight: 400;
             letter-spacing: -2px;
             color: white;
             animation: fadeInUp 0.8s ease-out 0.1s both;
@@ -161,9 +161,9 @@
         }
 
         .logo {
-            font-family: 'Playfair Display', sans-serif;
-            font-size: 24px;
-            font-weight: 800;
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            font-weight: 400;
             letter-spacing: -1px;
         }
 
@@ -222,9 +222,9 @@
         }
 
         .hero h1 {
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Great Vibes', cursive;
             font-size: 52px;
-            font-weight: 800;
+            font-weight: 400;
             letter-spacing: -2px;
             color: white;
             line-height: 1.1;
@@ -261,7 +261,7 @@
         .stat:last-child { border-right: none; }
 
         .stat-num {
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 28px;
             font-weight: 800;
             color: var(--haiti-blue);
@@ -287,9 +287,9 @@
         }
 
         .section-title {
-            font-family: 'Playfair Display', sans-serif;
-            font-size: 24px;
-            font-weight: 800;
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            font-weight: 400;
             letter-spacing: -1px;
             margin-bottom: 24px;
             display: flex;
@@ -368,7 +368,7 @@
             color: white;
             padding: 6px 14px;
             border-radius: 20px;
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 14px;
             font-weight: 700;
             z-index: 2;
@@ -390,9 +390,9 @@
         }
 
         .card-name {
-            font-family: 'Playfair Display', sans-serif;
-            font-size: 20px;
-            font-weight: 800;
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            font-weight: 400;
             letter-spacing: -0.5px;
         }
 
@@ -401,7 +401,7 @@
         }
 
         .votes-num {
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 28px;
             font-weight: 800;
             color: var(--haiti-blue);
@@ -414,6 +414,7 @@
             font-size: 11px;
             color: var(--text-secondary);
             font-weight: 700;
+            font-family: 'Nunito', sans-serif;
         }
 
         .progress-bar {
@@ -443,7 +444,7 @@
             border: none;
             padding: 14px;
             border-radius: 12px;
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 13px;
             font-weight: 700;
             letter-spacing: 1px;
@@ -474,7 +475,7 @@
             border: none;
             padding: 16px 40px;
             border-radius: 50px;
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 13px;
             font-weight: 700;
             letter-spacing: 1px;
@@ -519,9 +520,9 @@
         .modal-icon { font-size: 60px; margin-bottom: 16px; }
 
         .modal h2 {
-            font-family: 'Playfair Display', sans-serif;
-            font-size: 28px;
-            font-weight: 800;
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            font-weight: 400;
             letter-spacing: -1px;
             margin-bottom: 12px;
         }
@@ -538,7 +539,7 @@
             padding: 14px;
             border: none;
             border-radius: 12px;
-            font-family: 'Playfair Display', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 13px;
             font-weight: 700;
             letter-spacing: 1px;
@@ -556,6 +557,156 @@
         .btn-dark { background: var(--text-main); color: white; }
 
         /* ═══════════════════════════════════════════════════════
+           LEGAL OVERLAY - PROFESSIONAL PAGE
+        ═══════════════════════════════════════════════════════ */
+        #legal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            color: var(--text-main);
+            overflow-y: auto;
+            font-family: 'Lora', serif;
+        }
+
+        .legal-header {
+            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
+            color: white;
+            padding: 28px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .legal-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: -1px;
+        }
+
+        .btn-close-legal {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-close-legal:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .legal-content {
+            padding: 40px 25px;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.9;
+        }
+
+        .legal-content h2 {
+            color: var(--haiti-blue);
+            border-left: 4px solid var(--haiti-gold);
+            padding-left: 16px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            font-weight: 400;
+        }
+
+        .legal-content h2:first-child { margin-top: 0; }
+
+        .legal-content p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            text-align: justify;
+        }
+
+        .legal-content strong {
+            color: var(--haiti-blue);
+            font-weight: 700;
+        }
+
+        .legal-content em {
+            color: var(--haiti-gold-dark);
+            font-style: italic;
+        }
+
+        .contact-form {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, #f8fafc 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid var(--haiti-gold);
+            margin-top: 40px;
+        }
+
+        .contact-form label {
+            display: block;
+            font-weight: 700;
+            color: var(--haiti-blue);
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .contact-input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: 'Lora', serif;
+            font-size: 14px;
+            transition: border 0.2s;
+        }
+
+        .contact-input:focus {
+            outline: none;
+            border-color: var(--haiti-gold);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-submit:active { transform: scale(0.98); }
+
+        .legal-footer {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        /* ═══════════════════════════════════════════════════════
            FOOTER
         ═══════════════════════════════════════════════════════ */
         .haiti-bar { height: 5px; background: linear-gradient(90deg, var(--haiti-blue) 50%, var(--haiti-red) 50%); }
@@ -569,7 +720,7 @@
             line-height: 1.9;
         }
 
-        footer a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 600; }
+        footer a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 600; cursor: pointer; }
 
         .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
     </style>
@@ -650,12 +801,24 @@
     </div>
 </div>
 
+<!-- LEGAL OVERLAY -->
+<div id="legal-overlay">
+    <div class="legal-header">
+        <span class="legal-title" id="legal-title">Documents</span>
+        <button class="btn-close-legal" onclick="closeLegal()">✕ FERME</button>
+    </div>
+    <div class="legal-content" id="legal-body"></div>
+    <div class="legal-footer">
+        © 2026 HOC FANDOM — Plateforme Indépendante de Fans | Protégée par la Sécurité Cloudflare
+    </div>
+</div>
+
 <div class="haiti-bar"></div>
 <footer>
     <div class="footer-links">
-        <a href="#" onclick="showLegal('terms')">Conditions</a>
-        <a href="#" onclick="showLegal('privacy')">Confidentialité</a>
-        <a href="#" onclick="showLegal('contact')">Contact</a>
+        <a onclick="showLegal('terms')">Conditions</a>
+        <a onclick="showLegal('privacy')">Confidentialité</a>
+        <a onclick="showLegal('contact')">Contact</a>
     </div>
     HOC FANDOM est une plateforme indépendante de fans.<br>
     © 2026 HOC FANDOM
@@ -744,7 +907,6 @@ function render() {
         `;
     }).join('');
 
-    // Afficher/cacher le bouton "Wè tout"
     const loadMoreBtn = document.getElementById('load-more');
     if (showingAll || displayed.length === CANDIDATES.length) {
         loadMoreBtn.classList.remove('show');
@@ -827,13 +989,113 @@ function closeModal() { document.getElementById('vote-modal').classList.remove('
 function shareWA() { window.location.href = `whatsapp://send?text=${encodeURIComponent('Vòt pou HOC FANDOM: ' + location.href)}`; }
 function shareFB() { window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`); }
 
-function showLegal(t) {
-    const content = {
-        terms: '<h3>Conditions d\'Utilisation</h3><p>HOC FANDOM est une plateforme indépendante. Votes à titre de divertissement seulement.</p>',
-        privacy: '<h3>Confidentialité</h3><p>Nous respectons votre vie privée. Pas de vente de données.</p>',
-        contact: '<h3>Contact</h3><p>Email: hocfandom@gmail.com</p>'
-    };
-    alert(content[t]);
+function showLegal(type) {
+    const overlay = document.getElementById('legal-overlay');
+    const body = document.getElementById('legal-body');
+    const title = document.getElementById('legal-title');
+    overlay.style.display = 'flex';
+
+    if (type === 'terms') {
+        title.innerText = "Conditions d'Utilisation";
+        body.innerHTML = `
+            <h2>1. Clause de Non-Affiliation (PLATEFORME FANTASY)</h2>
+            <p><strong>HOC FANDOM</strong> est une plateforme de divertissement créée par et pour les fans de culture numérique haïtienne. <strong>Nous ne sommes ni affiliés, ni approuvés, ni officiellement liés aux organisateurs de "House of Challenge".</strong> Ce site est une simulation "Fantasy" destinée à soulager les émotions du peuple fan et à célébrer notre communauté en ligne. Tous les votes exprimés ici n'ont aucune valeur contractuelle pour la sélection réelle des participants à l'émission officielle.</p>
+            
+            <h2>2. Propriété Intellectuelle et Fair Use</h2>
+            <p>Tous les noms, logos et images des candidats ou de la marque "House of Challenge" appartiennent à leurs propriétaires respectifs. Notre utilisation de ces éléments relève du <strong>"Fair Use" (Usage Loyal)</strong> à des fins de divertissement communautaire sans intention commerciale de nuire à la marque officielle. Les images sont hébergées sur des serveurs externes (ibb.co) pour garantir le respect des droits d'auteur.</p>
+            
+            <h2>3. Système de Vote Impartial</h2>
+            <p>Les votes exprimés sur cette plateforme sont collectés via <strong>Cloudflare KV</strong> (base de données sécurisée) et protégés contre les manipulations par un système HMAC-SHA256 + Turnstile (vérification anti-bot). Un utilisateur ne peut voter qu'une seule fois par jour, par appareil. Tout abus ou tentative de manipulation technique détectée par nos algorithmes entraînera une <strong>réinitialisation automatique des scores</strong>.</p>
+            
+            <h2>4. Responsabilité Juridique</h2>
+            <p>En utilisant ce site, vous acceptez que les administrateurs de HOC FANDOM ne puissent être tenus responsables de tout litige découlant de l'interprétation des résultats. Nous nous réservons le droit de <strong>modifier, fermer ou mettre à jour la plateforme à tout moment sans préavis</strong>. Cette plateforme est hébergée sur <strong>Cloudflare Pages</strong> (serveurs USA) et les données de votes sont stockées dans <strong>Cloudflare KV</strong> (services tiers de sécurité).
+            </p>
+
+            <h2>5. Protection des Données Personnelles</h2>
+            <p>Nous respectons votre vie privée. Aucune donnée personnelle sensible n'est collectée (pas de nom, adresse ou numéro de téléphone). Seuls les cookies techniques et les signatures HMAC sont utilisés pour garantir l'intégrité du sondage.</p>
+
+            <h2>6. Modification des Conditions</h2>
+            <p><em>Document mis à jour le 28 Avril 2026. Ces conditions peuvent être modifiées à tout moment. La continuation de l'utilisation du site implique votre acceptation des nouvelles conditions.</em></p>
+        `;
+    } else if (type === 'privacy') {
+        title.innerText = "Politique de Confidentialité";
+        body.innerHTML = `
+            <h2>1. Collecte des Données Minimale</h2>
+            <p>HOC FANDOM ne collecte <strong>aucune donnée personnelle sensible</strong> (Nom, Adresse, Téléphone, Email). Notre collecte se limite à :</p>
+            <p><strong>• Cookies techniques (HMAC-SHA256)</strong> → Permettent un vote par jour/appareil<br>
+            <strong>• Adresses IP anonymisées</strong> → Traitées par Cloudflare pour prévenir les attaques de robots<br>
+            <strong>• Données de vote agrégées</strong> → Stockées dans Cloudflare KV (pas d'identification personnelle)</p>
+            
+            <h2>2. Infrastructure Sécurisée Cloudflare</h2>
+            <p>Votre navigation est protégée par <strong>Cloudflare Pages</strong> et <strong>Cloudflare Workers</strong>, qui offrent :</p>
+            <p><strong>• Chiffrement HTTPS 256-bit</strong> pour toutes les transmissions<br>
+            <strong>• Turnstile CAPTCHA</strong> pour vérifier que vous êtes humain<br>
+            <strong>• DDoS Protection</strong> contre les attaques de robots<br>
+            <strong>• Cache optimisé</strong> pour la performance et la stabilité</p>
+            
+            <h2>3. Publicités Tiers et Cookies</h2>
+            <p>HOC FANDOM utilise des régies publicitaires tierces (Adsterra, Monetag) pour financer les serveurs et l'infrastructure. Ces régies peuvent utiliser leurs propres cookies pour afficher des publicités pertinentes. <strong>Vous pouvez désactiver les cookies tiers dans les réglages de votre navigateur.</strong></p>
+            
+            <h2>4. Engagement de Confidentialité Absolu</h2>
+            <p>Nous nous engageons solennellement à <strong>ne jamais vendre, louer, partager ou divulguer vos données</strong> de navigation, de vote ou d'interaction à des fins de marketing direct ou de profilage. Toute violation de cet engagement serait dénoncée publiquement.</p>
+
+            <h2>5. Droit à l'Oubli</h2>
+            <p>Vous pouvez demander la suppression de vos données en contactant <strong>hocfandom@gmail.com</strong>. Nous supprimerons tous les logs liés à votre appareil dans un délai de 7 jours ouvrables.</p>
+
+            <h2>6. Durée de Conservation</h2>
+            <p>Les données de vote sont conservées <strong>pendant la durée de vie de la plateforme</strong> uniquement. À la fermeture du site, toutes les données seront supprimées ou anonymisées définitivement.</p>
+        `;
+    } else if (type === 'contact') {
+        title.innerText = "Contact & Support";
+        body.innerHTML = `
+            <p style="margin-bottom: 20px;">Besoin d'aide, d'un partenariat ou d'un signalement de bug ? Notre équipe est à votre écoute. Remplissez le formulaire ci-dessous et nous vous répondrons dans les 24-48h.</p>
+            
+            <div class="contact-form">
+                <p style="font-size: 16px; color: var(--haiti-blue); font-weight: 700; margin-bottom: 20px;">📧 Email Direct : <strong>hocfandom@gmail.com</strong></p>
+                
+                <label>👤 Votre Nom (optionnel)</label>
+                <input type="text" class="contact-input" id="contact-name" placeholder="Ex: Jean Dupont ou simple pseudonyme">
+                
+                <label>📱 Sujet</label>
+                <select class="contact-input" id="contact-subject" style="padding: 14px;">
+                    <option>Signaler un bug</option>
+                    <option>Partenariat / Publicité</option>
+                    <option>Question technique</option>
+                    <option>Autre</option>
+                </select>
+                
+                <label>💬 Votre Message</label>
+                <textarea class="contact-input" id="contact-message" rows="6" placeholder="Décrivez votre demande en détail..."></textarea>
+                
+                <button class="btn-submit" onclick="submitContact()">📤 ENVOYER LE MESSAGE</button>
+            </div>
+            
+            <p style="margin-top: 24px; font-size: 13px; color: var(--text-secondary); text-align: center;">
+                <strong>⏱️ Délai de réponse moyen : 24h à 48h</strong><br>
+                Vérifiez aussi votre dossier "Spam" si vous n'avez pas de réponse.
+            </p>
+        `;
+    }
+}
+
+function submitContact() {
+    const name = document.getElementById('contact-name')?.value || 'Anonymous';
+    const subject = document.getElementById('contact-subject')?.value || 'Autre';
+    const message = document.getElementById('contact-message')?.value;
+
+    if (!message || message.trim().length < 10) {
+        alert('⚠️ Svp écrivez un message avec au moins 10 caractères');
+        return;
+    }
+
+    const mailtoLink = `mailto:hocfandom@gmail.com?subject=${encodeURIComponent(`[HOC FANDOM] ${subject}`)}&body=${encodeURIComponent(`Nom: ${name}\n\nMessage:\n${message}`)}`;
+    window.location.href = mailtoLink;
+    
+    alert('✅ Message prêt à être envoyé! Votre client email va s\'ouvrir.');
+}
+
+function closeLegal() {
+    document.getElementById('legal-overlay').style.display = 'none';
 }
 
 setInterval(fetchVotes, 60000);
