@@ -2,520 +2,609 @@
 <html lang="ht">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔥 Kiyès ki pral reprezante Ayiti? Vote kounye a!</title>
-    <meta name="description" content="⚡ Vòt ou a konte! Chwazi tiktokeuse ou ta renmen wè reprezante Ayiti nan HOC 2027.">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="🔥 Kiyès ki pral ale HOC 2027? Se OU ki deside! Vote kounye a!">
-    <meta property="og:description" content="⚡ Kandida favori ou a bezwen ou! Bay vòt ou jodi a — yon sèl vòt pa jou. Ansanm nou ka fè l genyen! 🇭🇹❤️">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>🔥 HOC FANDOM 2027 - Vote Now</title>
+    <meta name="description" content="Ede kandida ou a genyen! Vote for your favorite TikToker to represent Haiti at House of Challenge 2027.">
+    <meta property="og:title" content="🔥 Kiyès ki pral al HOC 2027? Vote Now!">
+    <meta property="og:description" content="Kandida favori ou a bezwen ou! Vote now — one vote per day. Together we're stronger! 🇭🇹">
     <meta property="og:image" content="https://i.ibb.co/0pBcPfmV/20260425-171444.jpg">
     <meta property="og:url" content="https://houseofchallengefandom.pages.dev">
-    <meta name="theme-color" content="#003087">
-    <meta name="monetag" content="90fc55ded5037d18541ebaff32099939">
+    <meta name="theme-color" content="#0a0f2c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     <style>
         :root {
-            --haiti-blue: #003087;
-            --haiti-red: #D21034;
-            --haiti-gold: #FFD700;
-            --bg: #f0f4ff;
+            --haiti-blue: #0a0f2c;
+            --haiti-red: #d21034;
+            --haiti-gold: #ffd700;
+            --haiti-gold-dark: #daa500;
+            --accent-dark: #1a1f3a;
+            --bg-light: #f5f7fa;
             --text-main: #0a0f2c;
-            --text-dim: #64748b;
-            --radius: 24px;
+            --text-secondary: #6b7280;
+            --border-color: rgba(10, 15, 44, 0.1);
+            --shadow-sm: 0 2px 8px rgba(10, 15, 44, 0.08);
+            --shadow-md: 0 8px 24px rgba(10, 15, 44, 0.12);
+            --shadow-lg: 0 20px 40px rgba(10, 15, 44, 0.15);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background: var(--bg);
-            color: var(--text-main); 
-            font-family: 'Nunito', sans-serif; 
-            overflow-x: hidden; 
-            user-select: none; 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
             -webkit-user-select: none;
+            user-select: none;
         }
 
-        /* ══════════════════════════════════
-           SPLASH SCREEN
-        ══════════════════════════════════ */
+        /* ═══════════════════════════════════════════════════════
+           SPLASH SCREEN - PREMIUM ANIMATION
+        ═══════════════════════════════════════════════════════ */
         #splash {
             position: fixed;
             inset: 0;
-            background: var(--haiti-blue);
-            z-index: 9999;
+            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
+            z-index: 99999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 24px;
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            gap: 32px;
+            opacity: 1;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         #splash.hide {
             opacity: 0;
-            transform: scale(1.05);
             pointer-events: none;
         }
-        .splash-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 48px;
-            letter-spacing: 4px;
-            color: white;
+
+        .splash-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid var(--haiti-gold);
+            color: var(--haiti-gold);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeInDown 0.8s ease-out;
         }
+
+        .splash-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 54px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            color: white;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
         .splash-logo span { color: var(--haiti-gold); }
-        
+
         .splash-ring {
             position: relative;
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
-        .splash-ring::before, .splash-ring::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 3px solid transparent;
+
+        .splash-ring svg {
+            width: 100%;
+            height: 100%;
+            transform-origin: center;
         }
-        .splash-ring::before {
-            border-top-color: var(--haiti-gold);
-            border-right-color: var(--haiti-gold);
-            animation: spin 1s linear infinite;
+
+        .splash-ring circle {
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
         }
-        .splash-ring::after {
-            border-bottom-color: var(--haiti-red);
-            border-left-color: var(--haiti-red);
-            animation: spin 1.5s linear infinite reverse;
-            inset: 8px;
+
+        .ring-outer {
+            stroke: var(--haiti-gold);
+            stroke-dasharray: 314;
+            animation: ringSpin 3s linear infinite;
         }
-        .splash-dot {
-            position: absolute;
-            inset: 50%;
-            transform: translate(-50%, -50%);
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 50%;
-            animation: pulse-dot 1s ease-in-out infinite;
+
+        .ring-inner {
+            stroke: var(--haiti-red);
+            stroke-dasharray: 282;
+            animation: ringSpin 4s linear infinite reverse;
         }
+
         .splash-text {
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
             letter-spacing: 3px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.6);
             text-transform: uppercase;
-            animation: blink 1.5s ease infinite;
-        }
-        .splash-flag {
-            font-size: 40px;
-            animation: pulse-dot 2s ease-in-out infinite;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes pulse-dot { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1} 50%{transform:translate(-50%,-50%) scale(1.3);opacity:0.7} }
-        @keyframes blink { 0%,100%{opacity:0.5} 50%{opacity:1} }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes ringSpinOuter { to { transform: rotate(360deg); } }
+        @keyframes ringSpinInner { to { transform: rotate(-360deg); } }
+        @keyframes ringSpinOuterReverse { to { transform: rotate(-360deg); } }
 
-        /* ══════════════════════════════════
+        .ring-outer { animation: ringSpinOuter 3s linear infinite; }
+        .ring-inner { animation: ringSpinInner 4s linear infinite reverse; }
+
+        /* ═══════════════════════════════════════════════════════
            HEADER
-        ══════════════════════════════════ */
-        header { 
-            height: 64px; 
-            padding: 0 16px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
+        ═══════════════════════════════════════════════════════ */
+        header {
+            position: sticky;
+            top: 0;
             z-index: 1000;
-            background: var(--haiti-blue);
-            box-shadow: 0 4px 20px rgba(0,48,135,0.4);
-        }
-        .logo { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; 
-            letter-spacing: 2px;
-            color: white;
-        }
-        .logo span { color: var(--haiti-gold); }
-        .live-badge { 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            font-size: 11px; 
-            font-weight: 800; 
-            color: white;
-            background: var(--haiti-red);
-            padding: 5px 12px; 
-            border-radius: 20px;
-            letter-spacing: 1px;
-        }
-        .pulse-dot { 
-            width: 7px; height: 7px; 
-            background: white; 
-            border-radius: 50%; 
-            animation: blink 1.2s infinite; 
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* ══════════════════════════════════
-           HERO
-        ══════════════════════════════════ */
-        .hero { 
-            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a237e 60%, var(--haiti-red) 100%);
-            padding: 36px 20px 44px;
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--haiti-gold); }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--haiti-red);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .pulse { width: 8px; height: 8px; background: white; border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* ═══════════════════════════════════════════════════════
+           HERO SECTION
+        ═══════════════════════════════════════════════════════ */
+        .hero {
+            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
+            padding: 48px 20px;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
+
         .hero::before {
             content: '🇭🇹';
             position: absolute;
-            font-size: 220px;
-            opacity: 0.05;
+            font-size: 240px;
+            opacity: 0.04;
             top: -40px;
             right: -40px;
             pointer-events: none;
         }
+
         .hero-tag {
             display: inline-block;
-            background: rgba(255,215,0,0.15);
-            border: 1px solid rgba(255,215,0,0.35);
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid var(--haiti-gold);
             color: var(--haiti-gold);
+            padding: 8px 20px;
+            border-radius: 50px;
             font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            padding: 4px 14px;
-            border-radius: 20px;
-            margin-bottom: 14px;
-            text-transform: uppercase;
-        }
-        .hero h1 { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 46px; 
-            color: white;
-            line-height: 1.1;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-        }
-        .hero h1 span { color: var(--haiti-gold); }
-        .hero p { 
-            color: rgba(255,255,255,0.8); 
-            font-size: 14px; 
-            font-weight: 600;
-            max-width: 280px; 
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        /* Stats bar */
-        .stats-bar {
-            background: white;
-            padding: 14px 20px;
-            display: flex;
-            justify-content: space-around;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            border-bottom: 3px solid var(--bg);
-        }
-        .stat-item { text-align: center; }
-        .stat-num { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 22px; 
-            color: var(--haiti-blue);
-            line-height: 1;
-        }
-        .stat-label { 
-            font-size: 10px; 
-            color: var(--text-dim); 
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-        }
-
-        /* ══════════════════════════════════
-           CONTAINER + CARDS
-        ══════════════════════════════════ */
-        .container { 
-            padding: 20px 16px 80px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .section-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 22px;
-            color: var(--haiti-blue);
-            letter-spacing: 1px;
             margin-bottom: 16px;
         }
 
-        /* Carte grande image */
-        .candidate-card {
-            background: white;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,48,135,0.10);
-            position: relative;
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            border: 2px solid transparent;
-            width: 100%;
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 52px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 16px;
         }
-        .candidate-card.visible { opacity: 1; transform: translateY(0); }
-        .candidate-card.top-1 { border-color: var(--haiti-gold); }
-        .candidate-card.top-2 { border-color: #C0C0C0; }
-        .candidate-card.top-3 { border-color: #CD7F32; }
 
-        /* Grande image */
-        .card-image {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            overflow: hidden;
-            position: relative;
+        .hero h1 span { color: var(--haiti-gold); }
+
+        .hero p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 320px;
+            margin: 0 auto;
+            line-height: 1.8;
         }
+
+        /* ═══════════════════════════════════════════════════════
+           STATS BAR
+        ═══════════════════════════════════════════════════════ */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat {
+            padding: 24px;
+            text-align: center;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .stat:last-child { border-right: none; }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--haiti-blue);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           MAIN CONTENT
+        ═══════════════════════════════════════════════════════ */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 32px 20px 100px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           CANDIDATE CARDS - LUXURY DESIGN
+        ═══════════════════════════════════════════════════════ */
+        .candidates-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: cardEntry 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            border: 2px solid transparent;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.2s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+
+        .card.rank-1 {
+            border-color: var(--haiti-gold);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, white 100%);
+        }
+
+        .card.rank-2 { border-color: #c0c0c0; }
+        .card.rank-3 { border-color: #cd7f32; }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @keyframes cardEntry { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card-image {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+        }
+
         .card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            display: block;
         }
 
-        /* Overlay gradient sur l'image */
-        .card-image-overlay {
+        .card-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, 
-                transparent 40%, 
-                rgba(0,0,0,0.6) 100%
-            );
+            background: linear-gradient(to bottom, transparent 40%, rgba(10, 15, 44, 0.5) 100%);
         }
 
-        /* Badge rang sur l'image */
-        .rank-badge {
+        .card-rank {
             position: absolute;
-            top: 14px;
-            left: 14px;
-            background: rgba(0,0,0,0.6);
+            top: 12px;
+            left: 12px;
+            background: rgba(10, 15, 44, 0.8);
             backdrop-filter: blur(8px);
             color: white;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 16px;
-            letter-spacing: 1px;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
             z-index: 2;
         }
-        .top-1 .rank-badge { background: var(--haiti-gold); color: #0a0f2c; }
-        .top-2 .rank-badge { background: #C0C0C0; color: #0a0f2c; }
-        .top-3 .rank-badge { background: #CD7F32; color: white; }
 
-        /* Info panel en bas de l'image */
-        .card-info {
-            padding: 18px 18px 20px;
+        .card-rank.gold { background: var(--haiti-gold); color: var(--haiti-blue); }
+        .card-rank.silver { background: #c0c0c0; color: var(--haiti-blue); }
+        .card-rank.bronze { background: #cd7f32; color: white; }
+
+        .card-content {
+            padding: 20px;
         }
-        .card-top {
+
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
-        .c-name { 
-            font-size: 20px; 
-            font-weight: 900;
-            color: var(--text-main);
-            line-height: 1.2;
+
+        .card-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
-        .c-votes-wrap { text-align: right; }
-        .c-votes { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; 
+
+        .card-votes {
+            text-align: right;
+        }
+
+        .votes-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
             color: var(--haiti-blue);
             line-height: 1;
         }
-        .top-1 .c-votes { color: #b8860b; }
-        .c-pct {
+
+        .card-rank-1 .votes-num { color: var(--haiti-gold-dark); }
+
+        .votes-pct {
             font-size: 11px;
-            color: var(--text-dim);
+            color: var(--text-secondary);
             font-weight: 700;
         }
 
-        /* Barre de progression */
-        .progress-bg { 
-            height: 8px; 
-            background: #e8edf5; 
-            border-radius: 10px; 
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
-        .progress-fill { 
-            height: 100%; 
-            background: linear-gradient(90deg, var(--haiti-blue), var(--haiti-red));
-            border-radius: 10px; 
-            transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1); 
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--haiti-blue) 0%, var(--haiti-red) 100%);
+            border-radius: 10px;
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 0%;
         }
-        .top-1 .progress-fill { background: linear-gradient(90deg, var(--haiti-gold), #f59e0b); }
 
-        /* Bouton vote */
-        .btn-vote { 
-            background: linear-gradient(135deg, var(--haiti-blue), #1a237e);
-            color: white;
-            border: none; 
+        .card.rank-1 .progress-fill {
+            background: linear-gradient(90deg, var(--haiti-gold) 0%, var(--haiti-gold-dark) 100%);
+        }
+
+        .btn-vote {
             width: 100%;
-            padding: 16px;
-            border-radius: 14px; 
-            font-size: 14px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            cursor: pointer; 
-            transition: transform 0.1s;
-            letter-spacing: 1px;
-        }
-        .btn-vote:active { transform: scale(0.98); }
-        .top-1 .btn-vote { background: linear-gradient(135deg, #b8860b, var(--haiti-gold)); color: #0a0f2c; }
-
-        /* ══════════════════════════════════
-           LOAD MORE
-        ══════════════════════════════════ */
-        .load-more-container { text-align: center; padding: 10px 0 20px; }
-        .btn-more { 
-            background: linear-gradient(135deg, var(--haiti-red), #b71c1c);
+            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
             color: white;
-            border: none; 
-            padding: 16px 36px; 
-            border-radius: 50px; 
-            font-size: 13px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            cursor: pointer; 
-            box-shadow: 0 8px 24px rgba(210,16,52,0.3);
-            letter-spacing: 1px;
-        }
-
-        /* ══════════════════════════════════
-           MODALS
-        ══════════════════════════════════ */
-        .overlay { 
-            position: fixed; inset: 0; 
-            background: rgba(0,30,80,0.88); 
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 2000; 
-            padding: 20px; 
-            backdrop-filter: blur(10px); 
-        }
-        .modal { 
-            background: white; 
-            width: 100%; 
-            max-width: 400px; 
-            padding: 36px 24px; 
-            border-radius: 28px; 
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .modal-icon { font-size: 56px; margin-bottom: 12px; }
-        .modal h2 { 
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 30px; 
-            letter-spacing: 1px;
-            margin-bottom: 8px; 
-        }
-        .modal p { 
-            color: var(--text-dim); 
-            font-size: 13px; 
-            font-weight: 600;
-            margin-bottom: 16px; 
-            line-height: 1.7;
-        }
-        .wa-btn { 
-            color: white; 
-            width: 100%; 
-            padding: 15px; 
-            border-radius: 14px; 
-            font-weight: 800; 
-            display: block; 
-            text-decoration: none; 
-            margin-bottom: 10px;
-            font-size: 13px;
-            letter-spacing: 0.5px;
             border: none;
-            cursor: pointer;
-        }
-        .btn-finish { 
-            background: linear-gradient(135deg, var(--haiti-blue), #1a237e);
-            color: white; 
-            width: 100%; 
-            padding: 16px; 
-            border-radius: 14px; 
-            font-weight: 800; 
-            margin-top: 16px; 
-            display: none; 
-            border: none; 
-            cursor: pointer;
-            font-size: 14px;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
             letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        /* Ad zone */
-        .ad-zone { margin: 14px 0; min-height: 60px; }
+        .btn-vote:active { transform: scale(0.98); }
+        .card.rank-1 .btn-vote { background: var(--haiti-gold); color: var(--haiti-blue); }
 
-        /* ══════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
+           LOAD MORE BUTTON
+        ═══════════════════════════════════════════════════════ */
+        .load-more-area {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .btn-more {
+            background: linear-gradient(135deg, var(--haiti-red) 0%, #b71c1c 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(210, 16, 52, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-more:active { transform: scale(0.98); }
+
+        /* ═══════════════════════════════════════════════════════
+           MODALS
+        ═══════════════════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 44, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 28px;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(10, 15, 44, 0.2);
+            text-align: center;
+            animation: modalSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalSlideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        .modal-icon { font-size: 60px; margin-bottom: 16px; }
+
+        .modal h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
+
+        .modal p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+
+        .modal-btn:active { transform: scale(0.98); }
+
+        .btn-primary { background: var(--haiti-blue); color: white; }
+        .btn-success { background: #25d366; color: white; }
+        .btn-facebook { background: #1877f2; color: white; }
+        .btn-dark { background: var(--text-main); color: white; }
+
+        /* ═══════════════════════════════════════════════════════
            FOOTER
-        ══════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
         .haiti-bar { height: 5px; background: linear-gradient(90deg, var(--haiti-blue) 50%, var(--haiti-red) 50%); }
-        footer { 
+
+        footer {
             background: var(--haiti-blue);
-            color: rgba(255,255,255,0.55);
-            padding: 36px 20px; 
-            text-align: center; 
-            font-size: 11px; 
+            color: rgba(255, 255, 255, 0.5);
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 11px;
             line-height: 1.9;
         }
-        footer a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; }
-        .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+
+        footer a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 600; }
+
+        .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
     </style>
 </head>
 <body>
 
 <!-- SPLASH SCREEN -->
 <div id="splash">
-    <div class="splash-flag">🇭🇹</div>
+    <div class="splash-badge">🇭🇹 House of Challenge 2027</div>
     <div class="splash-logo">HOC <span>FANDOM</span></div>
     <div class="splash-ring">
-        <div class="splash-dot"></div>
+        <svg viewBox="0 0 100 100">
+            <circle class="ring-outer" cx="50" cy="50" r="45"/>
+            <circle class="ring-inner" cx="50" cy="50" r="40"/>
+        </svg>
     </div>
-    <div class="splash-text">Chargement en cours...</div>
+    <div class="splash-text">Chargement...</div>
 </div>
-
-<!-- Barre drapeau -->
-<div class="haiti-bar"></div>
 
 <header>
     <div class="logo">HOC <span>FANDOM</span></div>
-    <div class="live-badge"><div class="pulse-dot"></div> LIVE</div>
+    <div class="live-badge"><div class="pulse"></div> LIVE</div>
 </header>
 
 <div class="hero">
-    <div class="hero-tag">🇭🇹 House of Challenge 2027</div>
-    <h1>❤️ Ede <span>"influenceuse"</span><br>Ou a Genyen!</h1>
-    <p>Bay vòt ou jodi a epi sipòte moun ou ta renmen wè al reprezante Ayiti. Ansanm nou pi fò!</p>
+    <div class="hero-tag">🇭🇹 HOC 2027</div>
+    <h1>❤️ Ede <span>Kandida</span> Ou a Genyen</h1>
+    <p>Bay vòt ou jodi a epi sipòte moun ou ta renmen wè reprezante Ayiti. Ansanm nou pi fò!</p>
 </div>
 
-<div class="stats-bar">
-    <div class="stat-item">
-        <div class="stat-num" id="total-votes-display">—</div>
+<div class="stats">
+    <div class="stat">
+        <div class="stat-num" id="total-votes">0</div>
         <div class="stat-label">Total Vòt</div>
     </div>
-    <div class="stat-item">
+    <div class="stat">
         <div class="stat-num">10</div>
         <div class="stat-label">Kandida</div>
     </div>
-    <div class="stat-item">
+    <div class="stat">
         <div class="stat-num">2027</div>
         <div class="stat-label">HOC</div>
     </div>
@@ -523,328 +612,223 @@
 
 <div class="container">
     <div class="section-title">🏆 Klasman</div>
-    <div id="main-grid"></div>
-    <div id="load-more-area" class="load-more-container">
-        <button class="btn-more" onclick="showAllCandidates()">Wè tout 10 kandida Yo ⬇️</button>
+    <div class="candidates-grid" id="grid"></div>
+    <div class="load-more-area" id="load-more">
+        <button class="btn-more" onclick="showAll()">Wè tout 10 kandida ⬇️</button>
     </div>
 </div>
 
-<!-- Modal Vote -->
-<div id="vote-modal" class="overlay">
+<!-- VOTE MODAL -->
+<div id="vote-modal" class="modal-overlay">
     <div class="modal">
-        <div id="step-already-voted" style="display:none;">
+        <div id="modal-already">
             <div class="modal-icon">🚫</div>
-            <h2 style="color:var(--haiti-red);">Ou Deja Vote!</h2>
-            <p>Sistèm nan detekte ke ou te deja bay vòt ou pou jodi a.<br>Ou ka tounen <strong>demen</strong>!</p>
-            <div class="ad-zone">
-                
-                
-              <div id="container-623647ad2d51b4896cf878366ccdd192"></div>
-                
-            </div>
-            <button class="wa-btn" style="background:var(--haiti-blue);" onclick="closeModal()">RETOUNEN NAN LIS LA</button>
+            <h2 style="color: var(--haiti-red);">Ou Deja Vote!</h2>
+            <p>Ou ka tounen demen pou vote ankò!</p>
+            <button class="modal-btn btn-primary" onclick="closeModal()">RETOUNEN</button>
         </div>
-
-        <div id="step-2">
+        <div id="modal-verify" style="display:none;">
             <div class="modal-icon">🔐</div>
-            <h2 style="color:var(--haiti-blue);">Verifikasyon</h2>
-            <p>Prouve ou se yon moun reyèl pou vòt la konte!</p>
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAADCpLqQgHa8tJMGA" data-callback="turnstileSuccess"></div>
-            <button id="final-btn" class="btn-finish" onclick="finalizeVote()">✅ VALIDE VÒT LA</button>
+            <h2>Verifikasyon</h2>
+            <p>Prouve ou se yon moun reyèl!</p>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAADCpLqQgHa8tJMGA" data-callback="onTurnstile"></div>
+            <button id="verify-btn" class="modal-btn btn-primary" style="display:none; margin-top: 16px;" onclick="submitVote()">✅ VOTE</button>
         </div>
-
-        <div id="step-3" style="display:none;">
+        <div id="modal-success" style="display:none;">
             <div class="modal-icon">🎉</div>
-            <h2 style="color:var(--haiti-blue);">Vòt Konfime!</h2>
-            <p>Mèsi pou sipò w! Pataje sondaj la ak <strong>10 zanmi</strong> w pou double vòt kandida ou a!</p>
-            <div class="ad-zone">
-                
-                <div id="container-623647ad2d51b4896cf878366ccdd192"></div>
-                
-            </div>
-            <a href="#" class="wa-btn" style="background:#25d366;" onclick="shareWhatsApp()">📲 PATAJE SOU WHATSAPP</a>
-            <a href="#" class="wa-btn" style="background:#1877f2;" onclick="shareFacebook()">📘 PATAJE SOU FACEBOOK</a>
-            <button class="wa-btn" style="background:var(--text-main);" onclick="closeModal()">FÈMEN</button>
+            <h2>Vòt Konfime!</h2>
+            <p>Mèsi! Pataje ak 10 zanmi pou double vòt!</p>
+            <a href="#" class="modal-btn btn-success" onclick="shareWA()">📲 WHATSAPP</a>
+            <a href="#" class="modal-btn btn-facebook" onclick="shareFB()">📘 FACEBOOK</a>
+            <button class="modal-btn btn-dark" onclick="closeModal()">FÈMEN</button>
         </div>
-    </div>
-</div>
-
-<!-- Modal Legal -->
-<div id="legal-modal" class="overlay" onclick="closeLegal()">
-    <div class="modal" style="text-align:left;" onclick="event.stopPropagation()">
-        <div id="legal-content"></div>
-        <button class="wa-btn" style="background:var(--haiti-blue);margin-top:16px;" onclick="closeLegal()">FERMER</button>
     </div>
 </div>
 
 <div class="haiti-bar"></div>
 <footer>
     <div class="footer-links">
-        <a href="#" onclick="showLegal('terms')">Conditions d'Utilisation</a>
-        <a href="#" onclick="showLegal('privacy')">Politique de Confidentialité</a>
-        <a href="#" onclick="showLegal('contact')">Contactez-Nous</a>
+        <a href="#" onclick="showLegal('terms')">Conditions</a>
+        <a href="#" onclick="showLegal('privacy')">Confidentialité</a>
+        <a href="#" onclick="showLegal('contact')">Contact</a>
     </div>
-    HOC FANDOM est une plateforme communautaire indépendante gérée par des fans.<br>
-    Non affilié à la production officielle de House of Challenge.<br><br>
-    © 2026 HOC FANDOM — Tous droits réservés
+    HOC FANDOM est une plateforme indépendante de fans.<br>
+    © 2026 HOC FANDOM
 </footer>
 
 <script>
-    const WORKER_URL = "https://hoc-fandom-engine.joasleonard01.workers.dev";
-    const APP_DATA = {
-        AD_SEE_MORE: "https://penguinsincequalify.com/em8kp2un6?key=2c7c3589c01489e08c544389bd3ac67b",
-        SITE_URL: "https://houseofchallengefandom.pages.dev"
-    };
+const WORKER = "https://hoc-fandom-engine.joasleonard01.workers.dev";
+const CANDIDATES = [
+    { id: "Abigail", name: "Abigail", img: "https://i.ibb.co/fPXzFk7/Abigail.webp" },
+    { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp" },
+    { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg" },
+    { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg" },
+    { id: "Leila", name: "Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp" },
+    { id: "jalia", name: "Jalia", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg" },
+    { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg" },
+    { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg" },
+    { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg" },
+    { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg" }
+];
 
-    let candidates = [
-        { id: "Abigail",   name: "Abigail Alexandre", img: "https://i.ibb.co/fPXzFk7/Abigail.webp",    votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "chrisTell", name: "Christ-Tell",        img: "https://i.ibb.co/fY444jsX/Christell.webp", votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "mcdk",      name: "MC DK",              img: "https://i.ibb.co/1fDvCBvL/mc.jpg",         votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "meetch",    name: "Meetch",             img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg",     votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "Leila",     name: "Barbie Leila",       img: "https://i.ibb.co/hRN90sL8/Leila.webp",     votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "jalia",     name: "Jalia Magnian",      img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "manie",     name: "Manie",              img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "natha",     name: "Natha",              img: "https://i.ibb.co/jvRF2dqp/Natha.jpg",      votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "layouyou",  name: "Layouyou",           img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg",   votes: 0, percentage: "0.00", lastVotes: 0 },
-        { id: "abee",      name: "Abee",               img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg",       votes: 0, percentage: "0.00", lastVotes: 0 }
-    ];
+let votes = Object.fromEntries(CANDIDATES.map(c => [c.id, { votes: 0, percentage: "0.00" }]));
+let showingAll = false;
+let selectedId = null;
+let turnToken = null;
 
-    let showingAll = false;
-    let selectedCandidateId = null;
-    let turnstileToken = null;
+const todayHaiti = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Port-au-Prince' });
+let hasVoted = localStorage.getItem('hoc_voted_date') === todayHaiti;
 
-    const todayHaiti = new Date().toLocaleDateString('en-CA', {timeZone: 'America/Port-au-Prince'});
-    let hasVoted = localStorage.getItem('hoc_vote_date') === todayHaiti;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.05 });
-
-    // ── SPLASH ──
-    function hideSplash() {
-        const splash = document.getElementById('splash');
-        splash.classList.add('hide');
-        setTimeout(() => splash.remove(), 700);
-    }
-
-    // ── FETCH Votes ──
-    async function fetchVotes() {
+async function fetchVotes() {
     try {
-        const res = await fetch(WORKER_URL + "/results");
+        const res = await fetch(WORKER + "/results");
         const data = await res.json();
-
-        // 🛠️ DÉTECTION MAINTENANCE
-        // Si le Worker renvoie maintenance: true, on affiche l'écran
-        if (data.maintenance === true) { 
-            showMaintenancePage(); 
-            return; 
-        }
-
-        let total = 0;
-        candidates.forEach(c => {
-            if (data[c.id]) {
-                c.lastVotes = c.votes;
-                c.votes = data[c.id].votes;
-                c.percentage = data[c.id].percentage;
-                total += c.votes;
-            }
-        });
-
-        document.getElementById('total-votes-display').textContent = formatVotes(total);
-        renderCandidates();
         
-        // Animation des chiffres
-        candidates.forEach(c => animateValue(c.id, c.lastVotes, c.votes, 2500));
-
-    } catch(e) {
-        console.error("Erreur de chargement :", e);
-    } finally {
-        hideSplash();
-    }
-}
-
-
-    function showMaintenancePage() {
-        hideSplash();
-        document.body.innerHTML = `
-        <div id="maintenance-screen" style="display:flex; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:10000; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
-    <div style="font-size: 80px; margin-bottom: 20px;">🛠️</div>
-    <h1 style="font-size: 26px; font-weight: 900; color: #003087; margin-bottom: 10px;">Maintenance an Kou</h1>
-    <p style="color: #64748b; font-size: 16px; max-width: 350px; line-height: 1.6; margin-bottom: 25px;">
-        N ap mete sistèm nan ajou pou vòt yo ka pi sekirize. Nou ap tounen nan yon ti moman !
-    </p>
-    <button onclick="location.reload()" style="background:#003087; color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:800; cursor:pointer;">
-        REFRECHI PAJ LA
-    </button>
-</div>`;
-    } 
-
-
-        
-
-    // ── RENDER ──
-    function renderCandidates() {
-        const grid = document.getElementById('main-grid');
-        candidates.sort((a, b) => b.votes - a.votes);
-        const topScore = Math.max(...candidates.map(c => c.votes), 1);
-        const displayList = showingAll ? candidates : candidates.slice(0, 5);
-        const rankLabel = ['👑 FAVORIT N°1', '🥈 N°2', '🥉 N°3'];
-        const rankClass = ['top-1', 'top-2', 'top-3'];
-
-        grid.innerHTML = displayList.map((c, i) => {
-            const pct = (c.votes / topScore) * 100;
-            return `
-            <div class="candidate-card ${rankClass[i]||''}" id="card-${c.id}">
-                <div class="card-image">
-                    <img src="${c.img}" alt="${c.name}" loading="${i < 3 ? 'eager' : 'lazy'}">
-                    <div class="card-image-overlay"></div>
-                    <div class="rank-badge">${rankLabel[i] || '#'+(i+1)}</div>
-                </div>
-                <div class="card-info">
-                    <div class="card-top">
-                        <span class="c-name">${c.name}</span>
-                        <div class="c-votes-wrap">
-                            <div class="c-votes" id="vote-count-${c.id}">${formatVotes(c.lastVotes)}</div>
-                            <div class="c-pct" id="pct-${c.id}">${c.percentage}% des votes</div>
-                        </div>
-                    </div>
-                    <div class="progress-bg">
-                        <div class="progress-fill" style="width:${pct}%"></div>
-                    </div>
-                    <button class="btn-vote" onclick="initiateVote('${c.id}')">
-                        🗳️ VOTE POU ${c.name.split(' ')[0].toUpperCase()}
-                    </button>
-                </div>
-            </div>`;
-        }).join('');
-
-        displayList.forEach(c => {
-            const el = document.getElementById(`card-${c.id}`);
-            if (el) observer.observe(el);
-        });
-    }
-
-    function formatVotes(n) {
-        if (!n) return '0';
-        if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
-        if (n >= 1000) return (n/1000).toFixed(1)+'k';
-        return n;
-    }
-
-    function animateValue(id, start, end, duration) {
-        const obj = document.getElementById(`vote-count-${id}`);
-        if (!obj || start === end) return;
-        let t0 = null;
-        const step = t => {
-            if (!t0) t0 = t;
-            const p = Math.min((t-t0)/duration, 1);
-            obj.textContent = formatVotes(Math.floor(p*(end-start)+start));
-            if (p < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-    }
-
-    function showAllCandidates() {
-        window.open(APP_DATA.AD_SEE_MORE, '_blank');
-        showingAll = true;
-        renderCandidates();
-        document.getElementById('load-more-area').style.display = 'none';
-    }
-
-    function initiateVote(id) {
-        selectedCandidateId = id;
-        ['step-2','step-3','step-already-voted'].forEach(s => document.getElementById(s).style.display = 'none');
-        if (hasVoted) {
-            document.getElementById('step-already-voted').style.display = 'block';
-        } else {
-            document.getElementById('final-btn').style.display = 'none';
-            document.getElementById('step-2').style.display = 'block';
-            if (typeof turnstile !== 'undefined') turnstile.reset();
-        }
-        document.getElementById('vote-modal').style.display = 'flex';
-    }
-
-    function turnstileSuccess(token) {
-        turnstileToken = token;
-        document.getElementById('final-btn').style.display = 'block';
-    }
-//Function finalizevote
-    async function finalizeVote() {
-    if (!turnstileToken) return;
-    const btn = document.getElementById('final-btn');
-    btn.innerHTML = "⏳ TRAITEMENT...";
-    btn.disabled = true;
-
-    try {
-        const res = await fetch(WORKER_URL + "/vote", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include', // ENPÒTAN: Pou voye epi resevwa cookies
-            body: JSON.stringify({ 
-                candidateId: selectedCandidateId, 
-                token: turnstileToken 
-            })
-        });
-
-        // Si vòt la bloke (Dejà vote)
-        if (res.status === 403 || res.status === 429) {
-            document.getElementById('step-2').style.display = 'none';
-            document.getElementById('step-already-voted').style.display = 'block';
-            localStorage.setItem('hoc_vote_date', todayHaiti);
-            hasVoted = true;
+        if (data.maintenance) {
+            document.body.innerHTML = '<div style="padding:40px; text-align:center; font-family:sans-serif;"><h1>🔧 Maintenance</h1><p>On sera back soon!</p></div>';
             return;
         }
 
-        if (!res.ok) throw new Error("Erreur");
+        votes = data;
+        render();
+    } catch (e) {
+        console.error(e);
+        render();
+    } finally {
+        document.getElementById('splash').classList.add('hide');
+        setTimeout(() => document.getElementById('splash').remove(), 800);
+    }
+}
 
-        // Siksè
-        localStorage.setItem('hoc_vote_date', todayHaiti);
-        hasVoted = true;
-        document.getElementById('step-2').style.display = 'none';
-        document.getElementById('step-3').style.display = 'block';
-        
-        // Rekipere nouvo rezilta yo apre 2 segonn
-        setTimeout(fetchVotes, 2000);
+function render() {
+    const sorted = [...CANDIDATES].sort((a, b) => (votes[b.id]?.votes || 0) - (votes[a.id]?.votes || 0));
+    const displayed = showingAll ? sorted : sorted.slice(0, 5);
+    const maxVotes = Math.max(...sorted.map(c => votes[c.id]?.votes || 0), 1);
+    const ranks = ['👑 #1', '🥈 #2', '🥉 #3'];
+    const rankClasses = ['rank-1', 'rank-2', 'rank-3'];
+    const rankStyles = ['gold', 'silver', 'bronze'];
 
-    } catch(e) {
-        alert("Gen yon ti pwoblèm koneksyon. Tanpri eseye ankò.");
-        btn.innerHTML = "✅ VALIDE VÒT LA";
+    let total = 0;
+    sorted.forEach(c => total += votes[c.id]?.votes || 0);
+
+    document.getElementById('total-votes').textContent = formatNum(total);
+    document.getElementById('grid').innerHTML = displayed.map((c, i) => {
+        const v = votes[c.id];
+        const pct = Math.round((v.votes / maxVotes) * 100);
+        return `
+            <div class="card ${rankClasses[i] || ''}">
+                <div class="card-image">
+                    <img src="${c.img}" alt="${c.name}" loading="${i < 2 ? 'eager' : 'lazy'}">
+                    <div class="card-overlay"></div>
+                    <div class="card-rank ${rankStyles[i] || ''}">${ranks[i] || '#' + (i + 1)}</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="card-name">${c.name}</div>
+                        <div class="card-votes">
+                            <div class="votes-num">${formatNum(v.votes)}</div>
+                            <div class="votes-pct">${v.percentage}%</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${pct}%"></div>
+                    </div>
+                    <button class="btn-vote" onclick="vote('${c.id}')">Vote pou ${c.name}</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (!showingAll) document.getElementById('load-more').style.display = 'block';
+}
+
+function formatNum(n) {
+    if (!n) return '0';
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+    return n;
+}
+
+function vote(id) {
+    selectedId = id;
+    if (hasVoted) {
+        document.getElementById('modal-already').style.display = 'block';
+        document.getElementById('modal-verify').style.display = 'none';
+        document.getElementById('modal-success').style.display = 'none';
+    } else {
+        document.getElementById('modal-already').style.display = 'none';
+        document.getElementById('modal-verify').style.display = 'block';
+        document.getElementById('modal-success').style.display = 'none';
+        if (typeof turnstile !== 'undefined') turnstile.reset();
+    }
+    document.getElementById('vote-modal').classList.add('active');
+}
+
+function onTurnstile(token) {
+    turnToken = token;
+    document.getElementById('verify-btn').style.display = 'block';
+}
+
+async function submitVote() {
+    if (!turnToken || !selectedId) return;
+    const btn = document.getElementById('verify-btn');
+    btn.textContent = '⏳ TRAITEMENT...';
+    btn.disabled = true;
+    
+    try {
+        const res = await fetch(WORKER + "/vote", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ candidateId: selectedId, token: turnToken })
+        });
+
+        if (res.status === 429 || res.status === 403) {
+            hasVoted = true;
+            localStorage.setItem('hoc_voted_date', todayHaiti);
+            document.getElementById('modal-verify').style.display = 'none';
+            document.getElementById('modal-already').style.display = 'block';
+            return;
+        }
+
+        if (res.ok) {
+            hasVoted = true;
+            localStorage.setItem('hoc_voted_date', todayHaiti);
+            document.getElementById('modal-verify').style.display = 'none';
+            document.getElementById('modal-success').style.display = 'block';
+            setTimeout(fetchVotes, 1500);
+        }
+    } catch (e) {
+        alert('Erreur: ' + e.message);
+    } finally {
+        btn.textContent = '✅ VOTE';
         btn.disabled = false;
     }
 }
 
-
-    function shareWhatsApp() {
-        const c = candidates.find(x => x.id === selectedCandidateId) || candidates[0];
-        window.location.href = `whatsapp://send?text=${encodeURIComponent(`Mezanmi men vòt pou nou wè kiyès kap reprezante Ayiti nan HOC 2027! 🔥 Vin vote moun pa'w la 🙌🏽: ${APP_DATA.SITE_URL}`)}`;
-    }
-    function shareFacebook() {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(APP_DATA.SITE_URL)}`, '_blank');
-    }
-    function closeModal() { document.getElementById('vote-modal').style.display = 'none'; }
-
-    const LEGAL = {
-        terms: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">📋 Conditions d'Utilisation</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">HOC FANDOM est une plateforme communautaire indépendante gérée par des fans. Ce site n'a aucune relation officielle avec la production de House of Challenge.</p><p style="font-size:13px;color:#64748b;line-height:1.8;">• Les votes sont uniquement à titre de divertissement<br>• Les résultats ne représentent aucune décision officielle<br>• Nous nous réservons le droit de modifier le site à tout moment<br>• Les utilisateurs doivent avoir plus de 13 ans</p>`,
-        privacy: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">🔒 Politique de Confidentialité</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px;">Nous respectons votre vie privée. Nous ne collectons aucune information personnelle.</p><p style="font-size:13px;color:#64748b;line-height:1.8;">• Cookies pour éviter les votes multiples<br>• Publicité pour maintenir la plateforme<br>• Cloudflare pour la sécurité et les performances<br>• Vos données ne sont jamais vendues</p>`,
-        contact: `<h2 style="font-size:18px;font-weight:900;margin-bottom:15px;color:#003087;">📩 Contactez-Nous</h2><p style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:15px;">Une question, une plainte ou une suggestion ?</p><a href="mailto:hocfandom@gmail.com" style="background:#003087;color:white;display:block;text-align:center;padding:14px;border-radius:12px;text-decoration:none;font-weight:800;">📧 hocfandom@gmail.com</a><p style="font-size:11px;color:#94a3b8;margin-top:15px;text-align:center;">© 2026 HOC FANDOM — Tous droits réservés</p>`
-    };
-    function showLegal(t) { document.getElementById('legal-content').innerHTML = LEGAL[t]; document.getElementById('legal-modal').style.display = 'flex'; }
-    function closeLegal() { document.getElementById('legal-modal').style.display = 'none'; }
-
-    setInterval(fetchVotes, 60000);
-    window.onload = fetchVotes;
-</script>
-<script>
-// Popunder 1 fois par 24h seulement
-const lastPopunder = localStorage.getItem('hoc_popunder_date');
-const todayPop = new Date().toLocaleDateString('en-CA', {timeZone: 'America/Port-au-Prince'});
-if (lastPopunder !== todayPop) {
-    const script = document.createElement('script');
-    script.src = 'https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js';
-    document.body.appendChild(script);
-    localStorage.setItem('hoc_popunder_date', todayPop);
+function showAll() {
+    window.open('https://penguinsincequalify.com/em8kp2un6?key=2c7c3589c01489e08c544389bd3ac67b');
+    showingAll = true;
+    render();
 }
+
+function closeModal() { document.getElementById('vote-modal').classList.remove('active'); }
+function shareWA() { window.location.href = `whatsapp://send?text=${encodeURIComponent('Vòt pou HOC FANDOM: ' + location.href)}`; }
+function shareFB() { window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`); }
+
+function showLegal(t) {
+    const content = {
+        terms: '<h3>Conditions d\'Utilisation</h3><p>HOC FANDOM est une plateforme indépendante. Votes à titre de divertissement seulement.</p>',
+        privacy: '<h3>Confidentialité</h3><p>Nous respectons votre vie privée. Pas de vente de données.</p>',
+        contact: '<h3>Contact</h3><p>Email: hocfandom@gmail.com</p>'
+    };
+    alert(content[t]);
+}
+
+setInterval(fetchVotes, 60000);
+window.addEventListener('load', fetchVotes);
 </script>
-    <script async="async" data-cfasync="false" src="https://pl29257548.profitablecpmratenetwork.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
+
+<script src="https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js"></script>
 </body>
 </html>
