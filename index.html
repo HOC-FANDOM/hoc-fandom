@@ -439,33 +439,7 @@
         .btn-vote:active { transform: scale(0.98); }
         .card.rank-1 .btn-vote { background: var(--haiti-gold); color: var(--haiti-blue); }
 
-        .load-more-area {
-            text-align: center;
-            padding: 20px 0;
-            display: none;
-        }
 
-        .load-more-area.show {
-            display: block;
-        }
-
-        .btn-more {
-            background: linear-gradient(135deg, var(--haiti-red) 0%, #b71c1c 100%);
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(210, 16, 52, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-more:active { transform: scale(0.98); }
 
         .modal-overlay {
             position: fixed;
@@ -739,8 +713,18 @@
 <div class="container">
     <div class="section-title">🏆 Klasman</div>
     <div class="candidates-grid" id="grid"></div>
-    <div class="load-more-area show" id="load-more">
-        <button class="btn-more" onclick="showAll()">Wè tout 10 kandida ⬇️</button>
+    <!-- Banner Ad 300x250 — sous le dernier candidat -->
+    <div style="display:flex; justify-content:center; margin-top:28px;">
+        <script>
+          atOptions = {
+            'key' : 'bfa34ea21f0dd2c4048fdf4cf8ddf94e',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://penguinsincequalify.com/bfa34ea21f0dd2c4048fdf4cf8ddf94e/invoke.js"></script>
     </div>
 </div>
 
@@ -879,12 +863,6 @@ function render() {
         `;
     }).join('');
 
-    const loadMoreBtn = document.getElementById('load-more');
-    if (showingAll || displayed.length === CANDIDATES.length) {
-        loadMoreBtn.classList.remove('show');
-    } else {
-        loadMoreBtn.classList.add('show');
-    }
 }
 
 function formatNum(n) {
@@ -1065,4 +1043,3 @@ setTimeout(function() {
 <script async="async" data-cfasync="false" src="//penguinsincequalify.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
 </body>
 </html>
-
