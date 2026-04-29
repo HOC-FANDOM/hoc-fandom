@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🔥 HOC FANDOM 2027 - Vote gratis </title>
+    <title>🔥 HOC FANDOM 2027 - Vote gratis</title>
     <meta name="description" content="Mezanmi 👀 genlè se li ki pral nan House of challenge 2027 la! Vote pou moun ou ta renmen al reprezante Ayiti nan House of Challenge 2027.">
     <meta property="og:title" content="🔥 Kiyès ki te panse tiktokèz sa tap pami moun yo chwazi pou House of challenge!">
     <meta property="og:description" content="Heyy! ou vote pou influenceuse ou pi renmen an deja? Ann fèl 🇭🇹">
@@ -12,8 +12,9 @@
     <meta name="theme-color" content="#0a0f2c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="43a9ef337bc150eb93e54b66eaa5372384db4079" content="43a9ef337bc150eb93e54b66eaa5372384db4079" /> 
+    <meta name="43a9ef337bc150eb93e54b66eaa5372384db4079" content="43a9ef337bc150eb93e54b66eaa5372384db4079">
     <meta name='admaven-placement' content=Bqjs6rHa9>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monoton&family=League+Gothic&family=Open+Sans:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -21,27 +22,32 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     <style>
+        /* ════════════════════════════════════════════════════════
+           VARIABLES & RESET — HOC FANDOM PLATINUM
+        ════════════════════════════════════════════════════════ */
         :root {
             --haiti-blue: #0a0f2c;
             --haiti-red: #d21034;
             --haiti-gold: #ffd700;
             --haiti-gold-dark: #daa500;
             --accent-dark: #1a1f3a;
-            --bg-light: #f5f7fa;
+            --bg-light: #f0f2f8;
             --text-main: #0a0f2c;
             --text-secondary: #6b7280;
             --border-color: rgba(10, 15, 44, 0.1);
             --shadow-sm: 0 2px 8px rgba(10, 15, 44, 0.08);
             --shadow-md: 0 8px 24px rgba(10, 15, 44, 0.12);
-            --shadow-lg: 0 20px 40px rgba(10, 15, 44, 0.15);
+            --shadow-lg: 0 20px 60px rgba(10, 15, 44, 0.18);
+            --shadow-gold: 0 8px 32px rgba(255, 215, 0, 0.25);
+            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         body {
             background: var(--bg-light);
             color: var(--text-main);
-            font-family: 'Open sans', serif;
+            font-family: 'Open Sans', sans-serif;
             font-size: 16px;
             line-height: 1.6;
             overflow-x: hidden;
@@ -49,126 +55,209 @@
             user-select: none;
         }
 
+        /* ════════════════════════════════════════════════════════
+           SPLASH SCREEN CINÉMATIQUE — STYLE STUDIO HOLLYWOODIEN
+        ════════════════════════════════════════════════════════ */
         #splash {
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
+            background: #050810;
             z-index: 99999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 28px;
-            opacity: 1;
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 20px;
+            gap: 0;
+            overflow: hidden;
         }
 
-        #splash.hide {
-            opacity: 0;
-            pointer-events: none;
+        /* Lignes cinématiques de fond */
+        #splash::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, transparent 49.8%, rgba(255,215,0,0.03) 50%, transparent 50.2%),
+                linear-gradient(0deg, transparent 49.8%, rgba(255,215,0,0.03) 50%, transparent 50.2%);
+            background-size: 60px 60px;
+            animation: gridPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Halo central */
+        #splash::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(10,15,44,0.8) 0%, rgba(255,215,0,0.05) 50%, transparent 70%);
+            animation: haloPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes haloPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .splash-inner {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .splash-line {
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--haiti-gold), transparent);
+            animation: lineExpand 0.6s ease-out 0.2s forwards;
+        }
+
+        @keyframes lineExpand {
+            to { width: 200px; }
         }
 
         .splash-badge {
+            opacity: 0;
             display: inline-block;
-            background: rgba(255, 215, 0, 0.15);
-            border: 1px solid var(--haiti-gold);
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.4);
             color: var(--haiti-gold);
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            animation: fadeInDown 0.8s ease-out;
+            animation: fadeSlideUp 0.6s ease-out 0.4s forwards;
+        }
+
+        .splash-logo-wrap {
+            position: relative;
+            opacity: 0;
+            animation: fadeSlideUp 0.7s ease-out 0.6s forwards;
         }
 
         .splash-logo {
             font-family: 'League Gothic', cursive;
-            font-size: 54px;
-            font-weight: 600;
-            letter-spacing: 2px;
+            font-size: 72px;
+            font-weight: 400;
+            letter-spacing: 4px;
             color: white;
-            animation: fadeInUp 0.8s ease-out 0.1s both;
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
         }
 
-        .splash-logo span { color: var(--haiti-gold); }
+        .splash-logo span {
+            color: var(--haiti-gold);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
 
+        /* Anneau SVG premium */
         .splash-ring {
             position: relative;
-            width: 100px;
-            height: 100px;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
+            width: 80px;
+            height: 80px;
+            opacity: 0;
+            animation: fadeSlideUp 0.6s ease-out 0.8s forwards;
         }
 
-        .splash-ring svg {
-            width: 100%;
-            height: 100%;
-            transform-origin: center;
-        }
+        .splash-ring svg { width: 100%; height: 100%; }
 
-        .splash-ring circle {
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-        }
+        .splash-ring circle { fill: none; stroke-width: 1.5; stroke-linecap: round; }
 
         .ring-outer {
             stroke: var(--haiti-gold);
-            stroke-dasharray: 314;
-            animation: ringSpinOuter 3s linear infinite;
+            stroke-dasharray: 251;
+            stroke-dashoffset: 251;
+            animation: ringDraw 1s ease-out 1s forwards, ringSpinOuter 6s linear 2s infinite;
         }
 
         .ring-inner {
             stroke: var(--haiti-red);
-            stroke-dasharray: 282;
-            animation: ringSpinInner 4s linear infinite reverse;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+            animation: ringDraw 1s ease-out 1.2s forwards, ringSpinInner 8s linear 2.2s infinite;
         }
 
-        .splash-text {
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            animation: fadeInUp 0.8s ease-out 0.3s both;
-            height: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes ringDraw { to { stroke-dashoffset: 0; } }
         @keyframes ringSpinOuter { to { transform: rotate(360deg); } }
         @keyframes ringSpinInner { to { transform: rotate(-360deg); } }
 
+        .splash-text {
+            opacity: 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            animation: fadeSlideUp 0.6s ease-out 1s forwards;
+        }
+
+        .splash-line-bottom {
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--haiti-red), transparent);
+            animation: lineExpand 0.6s ease-out 1.2s forwards;
+        }
+
+        /* Transition de sortie du splash */
+        #splash.hide {
+            animation: splashExit 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes splashExit {
+            0% { opacity: 1; clip-path: inset(0 0 0 0); }
+            100% { opacity: 0; clip-path: inset(50% 0 50% 0); }
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ════════════════════════════════════════════════════════
+           HEADER — PREMIUM STICKY
+        ════════════════════════════════════════════════════════ */
         header {
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-bottom: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            padding: 16px 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s ease;
         }
 
         .logo {
             font-family: 'League Gothic', cursive;
-            font-size: 40px;
+            font-size: 38px;
             font-weight: 400;
             letter-spacing: -1px;
+            transition: var(--transition-smooth);
         }
 
+        .logo:hover { transform: scale(1.03); }
         .logo span { color: var(--haiti-gold); }
 
         .live-badge {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
             background: var(--haiti-red);
             color: white;
             padding: 6px 14px;
@@ -177,157 +266,247 @@
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(210, 16, 52, 0.3);
         }
 
-        .pulse { width: 8px; height: 8px; background: white; border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .pulse {
+            width: 7px; height: 7px;
+            background: white; border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 6px rgba(255,255,255,0.8);
+        }
 
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+        /* ════════════════════════════════════════════════════════
+           HERO — SECTION PRINCIPALE
+        ════════════════════════════════════════════════════════ */
         .hero {
-            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
-            padding: 48px 20px;
+            background: linear-gradient(135deg, #060b1f 0%, #0a0f2c 50%, #1a1240 100%);
+            padding: 56px 20px 48px;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
+        /* Particules de fond animées */
         .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(2px 2px at 20% 30%, rgba(255,215,0,0.4) 0%, transparent 100%),
+                radial-gradient(2px 2px at 80% 20%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 50% 80%, rgba(210,16,52,0.4) 0%, transparent 100%),
+                radial-gradient(2px 2px at 10% 70%, rgba(255,215,0,0.3) 0%, transparent 100%),
+                radial-gradient(2px 2px at 90% 60%, rgba(255,255,255,0.15) 0%, transparent 100%);
+            animation: particlesShimmer 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes particlesShimmer {
+            0% { opacity: 0.6; transform: translateY(0); }
+            100% { opacity: 1; transform: translateY(-10px); }
+        }
+
+        .hero::after {
             content: '🇭🇹';
             position: absolute;
-            font-size: 240px;
-            opacity: 0.04;
-            top: -40px;
-            right: -40px;
+            font-size: 200px;
+            opacity: 0.03;
+            top: -20px;
+            right: -30px;
             pointer-events: none;
+            animation: floatFlag 6s ease-in-out infinite;
+        }
+
+        @keyframes floatFlag {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(0deg); }
         }
 
         .hero-tag {
             display: inline-block;
-            background: rgba(255, 215, 0, 0.15);
-            border: 1px solid var(--haiti-gold);
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.5);
             color: var(--haiti-gold);
-            padding: 8px 20px;
+            padding: 7px 18px;
             border-radius: 50px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(4px);
         }
 
         .hero h1 {
             font-family: 'League Gothic', cursive;
-            font-size: 52px;
+            font-size: 56px;
             font-weight: 400;
             letter-spacing: -2px;
             color: white;
-            line-height: 1.1;
+            line-height: 1.05;
             margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 span { color: var(--haiti-gold); }
 
         .hero p {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.8);
-            max-width: 320px;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.75);
+            max-width: 300px;
             margin: 0 auto;
             line-height: 1.8;
+            position: relative;
+            z-index: 1;
         }
 
+        /* ════════════════════════════════════════════════════════
+           STATS BAR — COMPTEURS ANIMÉS
+        ════════════════════════════════════════════════════════ */
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0;
             background: white;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
         }
 
         .stat {
-            padding: 24px;
+            padding: 20px 12px;
             text-align: center;
             border-right: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
         }
 
         .stat:last-child { border-right: none; }
 
+        .stat::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--haiti-blue), var(--haiti-gold));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .stat:hover::before { transform: scaleX(1); }
+
         .stat-num {
             font-family: 'Open Sans', sans-serif;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--haiti-blue);
             line-height: 1;
             margin-bottom: 6px;
+            transition: color 0.3s;
         }
 
+        .stat:hover .stat-num { color: var(--haiti-gold-dark); }
+
         .stat-label {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             color: var(--text-secondary);
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
         }
 
+        /* ════════════════════════════════════════════════════════
+           CONTAINER PRINCIPAL
+        ════════════════════════════════════════════════════════ */
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 32px 20px 100px;
+            padding: 32px 16px 80px;
         }
 
         .section-title {
             font-family: 'League Gothic', cursive;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 400;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
         }
 
+        /* ════════════════════════════════════════════════════════
+           CANDIDATE CARDS — MICRO-INTERACTIONS PLATINUM
+        ════════════════════════════════════════════════════════ */
         .candidates-grid {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
         }
 
         .card {
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow-md);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Staggered animation cascade */
             opacity: 0;
-            animation: cardEntry 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform: translateY(30px) scale(0.97);
+            animation: cardEntry 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.3s ease,
+                        border-color 0.3s ease;
+            will-change: transform;
         }
 
-        .card:nth-child(1) { animation-delay: 0.05s; }
-        .card:nth-child(2) { animation-delay: 0.1s; }
-        .card:nth-child(3) { animation-delay: 0.15s; }
-        .card:nth-child(4) { animation-delay: 0.2s; }
-        .card:nth-child(5) { animation-delay: 0.25s; }
+        /* Stagger dynamique : les 10 cards */
+        .card:nth-child(1)  { animation-delay: 0.04s; }
+        .card:nth-child(2)  { animation-delay: 0.08s; }
+        .card:nth-child(3)  { animation-delay: 0.12s; }
+        .card:nth-child(4)  { animation-delay: 0.16s; }
+        .card:nth-child(5)  { animation-delay: 0.20s; }
+        .card:nth-child(6)  { animation-delay: 0.24s; }
+        .card:nth-child(7)  { animation-delay: 0.28s; }
+        .card:nth-child(8)  { animation-delay: 0.32s; }
+        .card:nth-child(9)  { animation-delay: 0.36s; }
+        .card:nth-child(10) { animation-delay: 0.40s; }
 
         .card.rank-1 {
             border-color: var(--haiti-gold);
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, white 100%);
+            background: linear-gradient(160deg, rgba(255,215,0,0.06) 0%, white 60%);
+            box-shadow: 0 8px 32px rgba(255,215,0,0.15), var(--shadow-md);
         }
 
-        .card.rank-2 { border-color: #c0c0c0; }
-        .card.rank-3 { border-color: #cd7f32; }
+        .card.rank-2 { border-color: rgba(192,192,192,0.7); }
+        .card.rank-3 { border-color: rgba(205,127,50,0.7); }
 
+        /* HOVER — Micro-interaction premium */
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px) scale(1.01);
             box-shadow: var(--shadow-lg);
         }
 
-        @keyframes cardEntry { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .card.rank-1:hover {
+            box-shadow: var(--shadow-gold), var(--shadow-lg);
+        }
+
+        @keyframes cardEntry {
+            from { opacity: 0; transform: translateY(30px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
         .card-image {
             position: relative;
             width: 100%;
             aspect-ratio: 4/3;
             overflow: hidden;
-            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            background: linear-gradient(135deg, #e8eaf0 0%, #d0d4e0 100%);
         }
 
         .card-image img {
@@ -335,123 +514,374 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
+            transition: transform 0.5s ease;
         }
+
+        /* Zoom image au hover */
+        .card:hover .card-image img { transform: scale(1.04); }
 
         .card-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, transparent 40%, rgba(10, 15, 44, 0.5) 100%);
+            background: linear-gradient(to bottom, transparent 35%, rgba(5,8,20,0.55) 100%);
         }
 
         .card-rank {
             position: absolute;
             top: 12px;
             left: 12px;
-            background: rgba(10, 15, 44, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(5, 8, 20, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: white;
-            padding: 6px 14px;
+            padding: 5px 13px;
             border-radius: 20px;
             font-family: 'Open Sans', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             z-index: 2;
+            transition: var(--transition-smooth);
         }
 
-        .card-rank.gold { background: var(--haiti-gold); color: var(--haiti-blue); }
-        .card-rank.silver { background: #c0c0c0; color: var(--haiti-blue); }
-        .card-rank.bronze { background: #cd7f32; color: white; }
+        .card:hover .card-rank { transform: scale(1.05); }
 
-        .card-content {
-            padding: 20px;
-        }
+        .card-rank.gold  { background: var(--haiti-gold); color: var(--haiti-blue); box-shadow: 0 4px 12px rgba(255,215,0,0.4); }
+        .card-rank.silver { background: linear-gradient(135deg, #d0d0d0, #a8a8a8); color: #333; }
+        .card-rank.bronze { background: linear-gradient(135deg, #cd7f32, #a0522d); color: white; }
+
+        .card-content { padding: 18px 18px 16px; }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            gap: 8px;
         }
 
         .card-name {
             font-family: 'Open Sans', sans-serif;
             text-transform: uppercase;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            flex: 1;
         }
 
-        .card-votes {
-            text-align: right;
-        }
+        .card-votes { text-align: right; flex-shrink: 0; }
 
         .votes-num {
             font-family: 'Open Sans', sans-serif;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--haiti-blue);
             line-height: 1;
+            transition: color 0.3s;
         }
 
         .card.rank-1 .votes-num { color: var(--haiti-gold-dark); }
 
         .votes-pct {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-secondary);
             font-weight: 700;
             font-family: 'Inter', sans-serif;
         }
 
         .progress-bar {
-            height: 6px;
-            background: #e5e7eb;
+            height: 5px;
+            background: #e8eaf0;
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--haiti-blue) 0%, var(--haiti-red) 100%);
             border-radius: 10px;
-            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: width 1.4s cubic-bezier(0.25, 1, 0.5, 1);
             width: 0%;
         }
 
         .card.rank-1 .progress-fill {
-            background: linear-gradient(90deg, var(--haiti-gold) 0%, var(--haiti-gold-dark) 100%);
+            background: linear-gradient(90deg, #daa500 0%, var(--haiti-gold) 100%);
         }
 
+        /* BOUTON VOTE — Ripple effect */
         .btn-vote {
             width: 100%;
             background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 13px;
+            border-radius: 10px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .btn-vote:active { transform: scale(0.98); }
-        .card.rank-1 .btn-vote { background: var(--haiti-gold); color: var(--haiti-blue); }
+        .btn-vote::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0);
+            transition: background 0.3s;
+        }
 
+        .btn-vote:hover::after { background: rgba(255,255,255,0.08); }
+        .btn-vote:active { transform: scale(0.97); }
 
+        .card.rank-1 .btn-vote {
+            background: linear-gradient(135deg, #c8a800 0%, var(--haiti-gold) 100%);
+            color: var(--haiti-blue);
+            box-shadow: 0 4px 16px rgba(255,215,0,0.3);
+        }
 
+        /* ════════════════════════════════════════════════════════
+           LEADERBOARD PREMIUM — CLASSEMENT GÉNÉRAL
+        ════════════════════════════════════════════════════════ */
+        .leaderboard-btn-wrap {
+            text-align: center;
+            margin-top: 28px;
+        }
+
+        .btn-leaderboard {
+            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(10,15,44,0.25);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-leaderboard::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-leaderboard:hover::before { opacity: 1; }
+        .btn-leaderboard:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(10,15,44,0.3); }
+        .btn-leaderboard:active { transform: scale(0.98); }
+
+        /* Section Classement Général — design corporate épuré */
+        #leaderboard-section {
+            display: none;
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #leaderboard-section.visible {
+            display: block;
+        }
+
+        #leaderboard-section.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .leaderboard-header {
+            background: linear-gradient(135deg, var(--haiti-blue), #1a2563);
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px 20px;
+            text-align: center;
+        }
+
+        .leaderboard-header h2 {
+            font-family: 'League Gothic', cursive;
+            font-size: 28px;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard-header p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard-body {
+            background: white;
+            border-radius: 0 0 20px 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* TOP 3 — PODIUM SPÉCIAL */
+        .podium-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .podium-row::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+        }
+
+        .podium-row.p-gold::before  { background: var(--haiti-gold); }
+        .podium-row.p-silver::before { background: #c0c0c0; }
+        .podium-row.p-bronze::before { background: #cd7f32; }
+        .podium-row:hover { background: #fafbff; }
+
+        .podium-medal {
+            font-size: 32px;
+            flex-shrink: 0;
+            width: 44px;
+            text-align: center;
+        }
+
+        .podium-info { flex: 1; min-width: 0; }
+
+        .podium-name {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .podium-pct {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            margin-top: 2px;
+        }
+
+        .podium-votes {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .p-gold .podium-votes   { color: var(--haiti-gold-dark); }
+        .p-silver .podium-votes { color: #888; }
+        .p-bronze .podium-votes { color: #cd7f32; }
+
+        .podium-bar-wrap {
+            margin-top: 6px;
+            height: 4px;
+            background: #f0f2f8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .podium-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 0%;
+        }
+
+        .p-gold .podium-bar   { background: linear-gradient(90deg, #daa500, var(--haiti-gold)); }
+        .p-silver .podium-bar { background: linear-gradient(90deg, #aaa, #c0c0c0); }
+        .p-bronze .podium-bar { background: linear-gradient(90deg, #a0522d, #cd7f32); }
+
+        /* Lignes 4-10 — style épuré */
+        .lb-row {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(10,15,44,0.05);
+            gap: 14px;
+            transition: background 0.2s;
+        }
+
+        .lb-row:last-child { border-bottom: none; }
+        .lb-row:hover { background: #f8f9fc; }
+
+        .lb-rank {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            color: var(--text-secondary);
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .lb-name {
+            flex: 1;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lb-pct {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .lb-votes {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--haiti-blue);
+            min-width: 50px;
+            text-align: right;
+                }
+
+        /* ════════════════════════════════════════════════════════
+           BANNER AD — 300x250 sous le grid
+        ════════════════════════════════════════════════════════ */
+        .banner-ad-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 28px;
+            padding: 4px;
+        }
+
+        /* ════════════════════════════════════════════════════════
+           MODALES — SYSTÈME PREMIUM
+        ════════════════════════════════════════════════════════ */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(10, 15, 44, 0.85);
+            background: rgba(5, 8, 20, 0.88);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
             padding: 20px;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .modal-overlay.active { display: flex; }
@@ -459,108 +889,122 @@
         .modal {
             background: white;
             width: 100%;
-            max-width: 420px;
-            padding: 40px 28px;
-            border-radius: 28px;
-            box-shadow: 0 30px 60px rgba(10, 15, 44, 0.2);
+            max-width: 400px;
+            padding: 36px 24px 28px;
+            border-radius: 24px;
+            box-shadow: 0 40px 80px rgba(5,8,20,0.3);
             text-align: center;
-            animation: modalSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: modalEntry 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        @keyframes modalSlideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalEntry {
+            from { opacity: 0; transform: translateY(40px) scale(0.94); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-        .modal-icon { font-size: 60px; margin-bottom: 16px; }
+        .modal-icon { font-size: 54px; margin-bottom: 12px; }
 
         .modal h2 {
-            font-family: 'Montserrat', cursive;
-            font-size: 32px;
-            font-weight: 400;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
         }
 
         .modal p {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.8;
+            margin-bottom: 18px;
+            line-height: 1.7;
+        }
+
+        /* Espace publicité native — dans les modales */
+        .ad-space {
+            min-height: 10px;
+            margin: 12px 0;
+            display: flex;
+            justify-content: center;
         }
 
         .modal-btn {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
             cursor: pointer;
-            margin-bottom: 10px;
-            transition: transform 0.2s;
+            margin-bottom: 9px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .modal-btn:active { transform: scale(0.98); }
+        .modal-btn:hover { transform: translateY(-2px); }
+        .modal-btn:active { transform: scale(0.97); }
 
-        .btn-primary { background: var(--haiti-blue); color: white; }
-        .btn-success { background: #25d366; color: white; }
-        .btn-facebook { background: #1877f2; color: white; }
+        .btn-primary { background: var(--haiti-blue); color: white; box-shadow: 0 4px 16px rgba(10,15,44,0.2); }
+        .btn-success { background: #25d366; color: white; box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
+        .btn-facebook { background: #1877f2; color: white; box-shadow: 0 4px 16px rgba(24,119,242,0.3); }
         .btn-dark { background: var(--text-main); color: white; }
 
+        /* ════════════════════════════════════════════════════════
+           LEGAL OVERLAY — PROFESSIONNEL
+        ════════════════════════════════════════════════════════ */
         #legal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: #ffffff;
             z-index: 9999;
             display: none;
             flex-direction: column;
             color: var(--text-main);
             overflow-y: auto;
-            font-family: 'Lora', serif;
+            font-family: 'Open Sans', sans-serif;
         }
 
         .legal-header {
             background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
             color: white;
-            padding: 28px 20px;
+            padding: 24px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             box-shadow: var(--shadow-md);
+            z-index: 10;
         }
 
         .legal-title {
-            font-family: 'Montserrat', cursive;
-            font-size: 32px;
-            font-weight: 400;
-            letter-spacing: -1px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
         }
 
         .btn-close-legal {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.15);
             color: white;
-            border: 1px solid white;
-            padding: 10px 18px;
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 14px;
-            transition: 0.2s;
+            font-size: 13px;
+            transition: background 0.2s;
         }
 
-        .btn-close-legal:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+        .btn-close-legal:hover { background: rgba(255,255,255,0.25); }
 
         .legal-content {
-            padding: 40px 25px;
-            max-width: 900px;
+            padding: 36px 20px;
+            max-width: 800px;
             margin: 0 auto;
             line-height: 1.9;
         }
@@ -568,56 +1012,49 @@
         .legal-content h2 {
             color: var(--haiti-blue);
             border-left: 4px solid var(--haiti-gold);
-            padding-left: 16px;
-            margin-top: 32px;
-            margin-bottom: 16px;
-            font-family: 'Inter', cursive;
-            font-size: 28px;
-            font-weight: 400;
+            padding-left: 14px;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
         }
 
         .legal-content h2:first-child { margin-top: 0; }
 
         .legal-content p {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             color: var(--text-secondary);
-            text-align: justify;
+            font-size: 14px;
         }
 
-        .legal-content strong {
-            color: var(--haiti-blue);
-            font-weight: 700;
-        }
-
-        .legal-content em {
-            color: var(--haiti-gold-dark);
-            font-style: italic;
-        }
+        .legal-content strong { color: var(--haiti-blue); font-weight: 700; }
+        .legal-content em { color: var(--haiti-gold-dark); font-style: italic; }
 
         .contact-form {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, #f8fafc 100%);
-            padding: 30px;
-            border-radius: 15px;
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 16px;
             border: 2px solid var(--haiti-gold);
-            margin-top: 40px;
+            margin-top: 24px;
         }
 
         .contact-form label {
             display: block;
             font-weight: 700;
             color: var(--haiti-blue);
-            margin-top: 16px;
-            margin-bottom: 8px;
-            font-family: 'Inter', sans-serif;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            font-size: 13px;
         }
 
         .contact-input {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 16px;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            font-family: 'Lora', serif;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Open Sans', sans-serif;
             font-size: 14px;
             transition: border 0.2s;
         }
@@ -625,23 +1062,23 @@
         .contact-input:focus {
             outline: none;
             border-color: var(--haiti-gold);
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.12);
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, var(--haiti-blue) 0%, #1a2563 100%);
+            background: linear-gradient(135deg, var(--haiti-blue), #1a2563);
             color: white;
             border: none;
-            padding: 16px 30px;
-            border-radius: 10px;
+            padding: 14px 24px;
+            border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.2s;
             font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            transition: transform 0.2s;
         }
 
         .btn-submit:active { transform: scale(0.98); }
@@ -650,52 +1087,88 @@
             padding: 20px;
             text-align: center;
             color: var(--text-secondary);
-            font-size: 12px;
+            font-size: 11px;
             border-top: 1px solid var(--border-color);
-            margin-top: 40px;
+            margin-top: 32px;
         }
 
-        .haiti-bar { height: 5px; background: linear-gradient(90deg, var(--haiti-blue) 50%, var(--haiti-red) 50%); }
+        /* ════════════════════════════════════════════════════════
+           FOOTER — BARRE HAÏTIENNE
+        ════════════════════════════════════════════════════════ */
+        .haiti-bar { height: 4px; background: linear-gradient(90deg, var(--haiti-blue) 50%, var(--haiti-red) 50%); }
 
         footer {
-            background: var(--haiti-blue);
-            color: rgba(255, 255, 255, 0.5);
-            padding: 40px 20px;
+            background: linear-gradient(135deg, #060b1f, var(--haiti-blue));
+            color: rgba(255,255,255,0.45);
+            padding: 36px 20px;
             text-align: center;
             font-size: 11px;
-            line-height: 1.9;
+            line-height: 2;
         }
 
-        footer a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 600; cursor: pointer; }
+        footer a {
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
 
-        .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+        footer a:hover { color: var(--haiti-gold); }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
     </style>
 </head>
 <body>
 
+<!-- ════════════════════════════════════════════════════════
+     SPLASH SCREEN CINÉMATIQUE
+════════════════════════════════════════════════════════ -->
 <div id="splash">
-    <div class="splash-badge">🇭🇹 House of Challenge 2027</div>
-    <div class="splash-logo">HOC <span>FANDOM</span></div>
-    <div class="splash-ring">
-        <svg viewBox="0 0 100 100">
-            <circle class="ring-outer" cx="50" cy="50" r="45"/>
-            <circle class="ring-inner" cx="50" cy="50" r="40"/>
-        </svg>
+    <div class="splash-inner">
+        <div class="splash-line"></div>
+        <div class="splash-badge">🇭🇹 House of Challenge 2027</div>
+        <div class="splash-logo-wrap">
+            <div class="splash-logo">HOC <span>FANDOM</span></div>
+        </div>
+        <div class="splash-ring">
+            <svg viewBox="0 0 100 100">
+                <circle class="ring-outer" cx="50" cy="50" r="40"/>
+                <circle class="ring-inner" cx="50" cy="50" r="34"/>
+            </svg>
+        </div>
+        <div class="splash-text">Chargement en cours...</div>
+        <div class="splash-line-bottom"></div>
     </div>
-    <div class="splash-text">Chargement en cours...</div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════════════ -->
 <header>
     <div class="logo">HOC <span>FANDOM</span></div>
     <div class="live-badge"><div class="pulse"></div> LIVE</div>
 </header>
 
+<!-- ════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════ -->
 <div class="hero">
     <div class="hero-tag">🇭🇹 HOC 2027</div>
-    <h1>❤️ Ede <span>Kandida</span> Ou a Genyen</h1>
+    <h1>❤️ Ede <span>Kandida</span><br>Ou a Genyen</h1>
     <p>Bay vòt ou jodi a epi sipòte moun ou ta renmen wè reprezante Ayiti. Ansanm nou pi fò!</p>
 </div>
 
+<!-- ════════════════════════════════════════════════════════
+     STATS BAR
+════════════════════════════════════════════════════════ -->
 <div class="stats">
     <div class="stat">
         <div class="stat-num" id="total-votes">0</div>
@@ -711,11 +1184,31 @@
     </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════
+     CONTAINER PRINCIPAL
+════════════════════════════════════════════════════════ -->
 <div class="container">
     <div class="section-title">🏆 Klasman</div>
     <div class="candidates-grid" id="grid"></div>
-    <!-- Banner Ad 300x250 — sous le dernier candidat -->
-    <div style="display:flex; justify-content:center; margin-top:28px;">
+
+    <!-- Bouton Leaderboard Premium -->
+    <div class="leaderboard-btn-wrap">
+        <button class="btn-leaderboard" onclick="openLeaderboard()">
+            📊 Wè tout rezilta yo
+        </button>
+    </div>
+
+    <!-- Section Classement Général (cachée par défaut) -->
+    <div id="leaderboard-section">
+        <div class="leaderboard-header">
+            <h2>🏆 Classement Général</h2>
+            <p>RÉSULTATS OFFICIELS HOC FANDOM 2027</p>
+        </div>
+        <div class="leaderboard-body" id="leaderboard-body"></div>
+    </div>
+
+    <!-- Banner Ad 300x250 -->
+    <div class="banner-ad-wrap">
         <script>
           atOptions = {
             'key' : 'bfa34ea21f0dd2c4048fdf4cf8ddf94e',
@@ -729,34 +1222,49 @@
     </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════
+     MODALE DE VOTE
+════════════════════════════════════════════════════════ -->
 <div id="vote-modal" class="modal-overlay">
     <div class="modal">
+
+        <!-- État : Déjà voté -->
         <div id="modal-already">
             <div class="modal-icon">🚫</div>
             <h2 style="color: var(--haiti-red);">Ou Deja Vote!</h2>
-            <p>Ou ka tounen demen pou vote ankò!</p>
-            <div id="container-623647ad2d51b4896cf878366ccdd192"></div>
+            <p>Ou ka tounen demen pou vote ankò. Pataje pou ankouraje kandida ou a!</p>
+            <!-- Espace Native Ad — déjà voté -->
+            <div class="ad-space" id="ad-already-space"></div>
             <button class="modal-btn btn-primary" onclick="closeModal()">RETOUNEN</button>
         </div>
+
+        <!-- État : Vérification Turnstile -->
         <div id="modal-verify" style="display:none;">
             <div class="modal-icon">🔐</div>
             <h2>Verifikasyon</h2>
-            <p>Prouve ou se yon moun reyèl!</p>
+            <p>Prouve ou se yon moun reyèl pou vote!</p>
             <div class="cf-turnstile" data-sitekey="0x4AAAAAADCpLqQgHa8tJMGA" data-callback="onTurnstile"></div>
-            <button id="verify-btn" class="modal-btn btn-primary" style="display:none; margin-top: 16px;" onclick="submitVote()">✅ VOTE</button>
+            <button id="verify-btn" class="modal-btn btn-primary" style="display:none; margin-top: 14px;" onclick="submitVote()">✅ VOTE</button>
         </div>
+
+        <!-- État : Vote réussi -->
         <div id="modal-success" style="display:none;">
             <div class="modal-icon">🎉</div>
             <h2>Vòt Konfime!</h2>
-            <p>Mèsi! Pataje ak 10 zanmi pou double vòt!</p>
-            <div id="container-623647ad2d51b4896cf878366ccdd192"></div>
+            <p>Mèsi! Pataje ak zanmi ou yo pou ede kandida ou a!</p>
+            <!-- Espace Native Ad — vote réussi -->
+            <div class="ad-space" id="ad-success-space"></div>
             <a href="#" class="modal-btn btn-success" onclick="shareWA()">📲 WHATSAPP</a>
             <a href="#" class="modal-btn btn-facebook" onclick="shareFB()">📘 FACEBOOK</a>
             <button class="modal-btn btn-dark" onclick="closeModal()">FÈMEN</button>
         </div>
+
     </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════
+     LEGAL OVERLAY
+════════════════════════════════════════════════════════ -->
 <div id="legal-overlay">
     <div class="legal-header">
         <span class="legal-title" id="legal-title">Documents</span>
@@ -768,6 +1276,9 @@
     </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════ -->
 <div class="haiti-bar"></div>
 <footer>
     <div class="footer-links">
@@ -775,302 +1286,452 @@
         <a onclick="showLegal('privacy')">Confidentialité</a>
         <a onclick="showLegal('contact')">Contact</a>
     </div>
-    HOC FANDOM est une plateforme indépendante créée par des fans.
-Ce site n’est pas affilié, sponsorisé ni approuvé par House of Challenge ou toute organisation officielle associée.
-Les votes organisés sur cette plateforme sont uniquement à des fins de divertissement et ne sont pas liés à un concours officiel.<br>
+    HOC FANDOM est une plateforme indépendante créée par des fans.<br>
+    Ce site n'est pas affilié, sponsorisé ni approuvé par House of Challenge.<br>
+    Les votes sont uniquement à des fins de divertissement.<br>
     © 2026 HOC FANDOM
 </footer>
 
+<!-- ════════════════════════════════════════════════════════
+     CONTENEUR NATIVE AD UNIQUE — Ne jamais dupliquer
+════════════════════════════════════════════════════════ -->
+<div id="container-623647ad2d51b4896cf878366ccdd192" style="display:none;"></div>
+
 <script>
-const WORKER = "https://hoc-fandom-engine.joasleonard01.workers.dev";
-const CANDIDATES = [
-    { id: "Abigail", name: "Abigail", img: "https://i.ibb.co/fPXzFk7/Abigail.webp" },
-    { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp" },
-    { id: "mcdk", name: "MC DK", img: "https://i.ibb.co/1fDvCBvL/mc.jpg" },
-    { id: "meetch", name: "Meetch", img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg" },
-    { id: "Leila", name: "Leila", img: "https://i.ibb.co/hRN90sL8/Leila.webp" },
-    { id: "jalia", name: "Jalia", img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg" },
-    { id: "manie", name: "Manie", img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg" },
-    { id: "natha", name: "Natha", img: "https://i.ibb.co/jvRF2dqp/Natha.jpg" },
-    { id: "layouyou", name: "Layouyou", img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg" },
-    { id: "abee", name: "Abee", img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg" }
-];
+    // ════════════════════════════════════════════════════════
+    // CONFIGURATION PRINCIPALE
+    // ════════════════════════════════════════════════════════
+    const WORKER = "https://hoc-fandom-engine.joasleonard01.workers.dev";
+    const SMARTLINK = "https://penguinsincequalify.com/abgewwmh?key=d099b9f5294c955380d0e6a4917c6950";
 
-let votes = Object.fromEntries(CANDIDATES.map(c => [c.id, { votes: 0, percentage: "0.00" }]));
-let showingAll = true;
-let selectedId = null;
-let turnToken = null;
+    const CANDIDATES = [
+        { id: "Abigail",   name: "Abigail",    img: "https://i.ibb.co/fPXzFk7/Abigail.webp" },
+        { id: "chrisTell", name: "Christ-Tell", img: "https://i.ibb.co/fY444jsX/Christell.webp" },
+        { id: "mcdk",      name: "MC DK",       img: "https://i.ibb.co/1fDvCBvL/mc.jpg" },
+        { id: "meetch",    name: "Meetch",      img: "https://i.ibb.co/PZQT6ZTT/Meetch.jpg" },
+        { id: "Leila",     name: "Leila",       img: "https://i.ibb.co/hRN90sL8/Leila.webp" },
+        { id: "jalia",     name: "Jalia",       img: "https://i.ibb.co/bM88vvbQ/Jalia.jpg" },
+        { id: "manie",     name: "Manie",       img: "https://i.ibb.co/HDXY3Wsd/Manie.jpg" },
+        { id: "natha",     name: "Natha",       img: "https://i.ibb.co/jvRF2dqp/Natha.jpg" },
+        { id: "layouyou",  name: "Layouyou",    img: "https://i.ibb.co/mVm2V9sB/Layouyou.jpg" },
+        { id: "abee",      name: "Abee",        img: "https://i.ibb.co/YBvJbSJ4/Abee.jpg" }
+    ];
 
-const todayHaiti = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Port-au-Prince' });
-let hasVoted = localStorage.getItem('hoc_voted_date') === todayHaiti;
+    // État global
+    let votes = Object.fromEntries(CANDIDATES.map(c => [c.id, { votes: 0, percentage: "0.00" }]));
+    let showingAll = true;
+    let selectedId = null;
+    let turnToken = null;
+    let adNativeLoaded = false; // Flag : script native ad chargé une seule fois
 
-async function fetchVotes() {
-    try {
-        const res = await fetch(WORKER + "/results");
-        const data = await res.json();
-        
-        if (data.maintenance) {
-            document.body.innerHTML = '<div style="padding:40px; text-align:center; font-family:sans-serif;"><h1>🔧 Maintenance</h1><p>Nou revine byento!</p></div>';
-            return;
-        }
+    const todayHaiti = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Port-au-Prince' });
+    let hasVoted = localStorage.getItem('hoc_voted_date') === todayHaiti;
 
-        votes = data;
-        render();
-    } catch (e) {
-        console.error(e);
-        render();
-    } finally {
-        document.getElementById('splash').classList.add('hide');
-        setTimeout(() => document.getElementById('splash').remove(), 800);
-    }
-}
+    // ════════════════════════════════════════════════════════
+    // FETCH VOTES — CLOUDFLARE WORKER
+    // ════════════════════════════════════════════════════════
+    async function fetchVotes() {
+        try {
+            const res  = await fetch(WORKER + "/results");
+            const data = await res.json();
 
-function render() {
-    const sorted = [...CANDIDATES].sort((a, b) => (votes[b.id]?.votes || 0) - (votes[a.id]?.votes || 0));
-    const displayed = showingAll ? sorted : sorted.slice(0, 5);
-    const maxVotes = Math.max(...sorted.map(c => votes[c.id]?.votes || 0), 1);
-    const ranks = ['👑 #1', '🥈 #2', '🥉 #3'];
-    const rankClasses = ['rank-1', 'rank-2', 'rank-3'];
-    const rankStyles = ['gold', 'silver', 'bronze'];
-
-    let total = 0;
-    sorted.forEach(c => total += votes[c.id]?.votes || 0);
-
-    document.getElementById('total-votes').textContent = formatNum(total);
-    document.getElementById('grid').innerHTML = displayed.map((c, i) => {
-        const v = votes[c.id];
-        const pct = Math.round((v.votes / maxVotes) * 100);
-        return `
-            <div class="card ${rankClasses[i] || ''}">
-                <div class="card-image">
-                    <img src="${c.img}" alt="${c.name}" loading="${i < 2 ? 'eager' : 'lazy'}">
-                    <div class="card-overlay"></div>
-                    <div class="card-rank ${rankStyles[i] || ''}">${ranks[i] || '#' + (i + 1)}</div>
-                </div>
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="card-name">${c.name}</div>
-                        <div class="card-votes">
-                            <div class="votes-num">${formatNum(v.votes)}</div>
-                            <div class="votes-pct">${v.percentage}%</div>
+            if (data.maintenance) {
+                document.body.innerHTML = `
+                    <div style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0f2c,#1a2563);display:flex;align-items:center;justify-content:center;padding:20px;">
+                        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:40px;text-align:center;color:white;max-width:380px;">
+                            <div style="font-size:48px;margin-bottom:16px;">🔧</div>
+                            <div style="font-family:'League Gothic',cursive;font-size:36px;color:#ffd700;margin-bottom:8px;">HOC FANDOM</div>
+                            <h1 style="font-size:18px;font-weight:700;margin-bottom:12px;">Mizajou sistèm nan...</h1>
+                            <p style="font-size:14px;opacity:0.7;line-height:1.7;">Nou ap travay pou ofri yon pi bon eksperyans. Nou revine byento!</p>
+                            <div style="margin-top:20px;padding:8px 20px;border:1px solid rgba(255,215,0,0.5);border-radius:50px;display:inline-block;font-size:11px;letter-spacing:2px;color:#ffd700;">SIT LA AP DISPONIB ANKÒ</div>
                         </div>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${pct}%"></div>
-                    </div>
-                    <button class="btn-vote" onclick="vote('${c.id}')">Vote pou ${c.name}</button>
-                </div>
-            </div>
-        `;
-    }).join('');
+                    </div>`;
+                return;
+            }
 
-}
-
-function formatNum(n) {
-    if (!n) return '0';
-    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-    if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
-    return n;
-}
-
-function vote(id) {
-    selectedId = id;
-    if (hasVoted) {
-        document.getElementById('modal-already').style.display = 'block';
-        document.getElementById('modal-verify').style.display = 'none';
-        document.getElementById('modal-success').style.display = 'none';
-    } else {
-        document.getElementById('modal-already').style.display = 'none';
-        document.getElementById('modal-verify').style.display = 'block';
-        document.getElementById('modal-success').style.display = 'none';
-        if (typeof turnstile !== 'undefined') turnstile.reset();
+            votes = data;
+            render();
+        } catch (e) {
+            console.error('[HOC] fetchVotes error:', e);
+            render();
+        } finally {
+            const splash = document.getElementById('splash');
+            if (splash) {
+                splash.classList.add('hide');
+                setTimeout(() => splash.remove(), 1000);
+            }
+        }
     }
-    document.getElementById('vote-modal').classList.add('active');
-}
+    // ════════════════════════════════════════════════════════
+    // RENDER — CARTES CANDIDATS AVEC STAGGERED ANIMATION
+    // ════════════════════════════════════════════════════════
+    function render() {
+        const sorted     = [...CANDIDATES].sort((a, b) => (votes[b.id]?.votes || 0) - (votes[a.id]?.votes || 0));
+        const displayed  = showingAll ? sorted : sorted.slice(0, 5);
+        const maxVotes   = Math.max(...sorted.map(c => votes[c.id]?.votes || 0), 1);
+        const ranks      = ['👑 #1', '🥈 #2', '🥉 #3'];
+        const rankClasses = ['rank-1', 'rank-2', 'rank-3'];
+        const rankStyles  = ['gold', 'silver', 'bronze'];
 
-function onTurnstile(token) {
-    turnToken = token;
-    document.getElementById('verify-btn').style.display = 'block';
-}
+        let total = 0;
+        sorted.forEach(c => total += votes[c.id]?.votes || 0);
 
-async function submitVote() {
-    if (!turnToken || !selectedId) return;
-    const btn = document.getElementById('verify-btn');
-    btn.textContent = '⏳ TRAITEMENT...';
-    btn.disabled = true;
-    
-    try {
-        const res = await fetch(WORKER + "/vote", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ candidateId: selectedId, token: turnToken })
+        document.getElementById('total-votes').textContent = formatNum(total);
+
+        document.getElementById('grid').innerHTML = displayed.map((c, i) => {
+            const v   = votes[c.id];
+            const pct = Math.round((v.votes / maxVotes) * 100);
+            return `
+                <div class="card ${rankClasses[i] || ''}">
+                    <div class="card-image">
+                        <img src="${c.img}" alt="${c.name}" loading="${i < 3 ? 'eager' : 'lazy'}">
+                        <div class="card-overlay"></div>
+                        <div class="card-rank ${rankStyles[i] || ''}">${ranks[i] || '#' + (i + 1)}</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <div class="card-name">${c.name}</div>
+                            <div class="card-votes">
+                                <div class="votes-num">${formatNum(v.votes)}</div>
+                                <div class="votes-pct">${v.percentage}%</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width:${pct}%"></div>
+                        </div>
+                        <button class="btn-vote" onclick="vote('${c.id}')">Vote pou ${c.name}</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Mettre à jour le leaderboard s'il est ouvert
+        if (document.getElementById('leaderboard-section').classList.contains('visible')) {
+            buildLeaderboard(sorted, total);
+        }
+    }
+
+    // ════════════════════════════════════════════════════════
+    // FORMAT NOMBRE — K / M
+    // ════════════════════════════════════════════════════════
+    function formatNum(n) {
+        if (!n) return '0';
+        if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+        if (n >= 1000)    return (n / 1000).toFixed(1) + 'k';
+        return n.toString();
+    }
+
+    // ════════════════════════════════════════════════════════
+    // LEADERBOARD PREMIUM — CLASSEMENT GÉNÉRAL
+    // ════════════════════════════════════════════════════════
+    function openLeaderboard() {
+        // 1. Ouvre le Smartlink dans un nouvel onglet
+        window.open(SMARTLINK, '_blank');
+
+        // 2. Affiche la section Leaderboard
+        const section = document.getElementById('leaderboard-section');
+        section.classList.add('visible');
+
+        // Trigger animation au prochain frame
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                section.classList.add('animated');
+            });
         });
 
-        if (res.status === 429 || res.status === 403) {
-            hasVoted = true;
-            localStorage.setItem('hoc_voted_date', todayHaiti);
-            document.getElementById('modal-verify').style.display = 'none';
+        // 3. Construit le classement
+        const sorted = [...CANDIDATES].sort((a, b) => (votes[b.id]?.votes || 0) - (votes[a.id]?.votes || 0));
+        let total = 0;
+        sorted.forEach(c => total += votes[c.id]?.votes || 0);
+        buildLeaderboard(sorted, total);
+
+        // 4. Scroll vers la section
+        setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+
+    function buildLeaderboard(sorted, total) {
+        const maxV   = sorted[0] ? (votes[sorted[0].id]?.votes || 0) : 1;
+        const medals = ['🥇', '🥈', '🥉'];
+        const podiumClasses = ['p-gold', 'p-silver', 'p-bronze'];
+
+        let html = '';
+
+        sorted.forEach((c, i) => {
+            const v   = votes[c.id];
+            const pct = total > 0 ? ((v.votes / total) * 100).toFixed(2) : '0.00';
+            const barW = maxV > 0 ? Math.round((v.votes / maxV) * 100) : 0;
+
+            if (i < 3) {
+                // TOP 3 — Design podium
+                html += `
+                    <div class="podium-row ${podiumClasses[i]}">
+                        <div class="podium-medal">${medals[i]}</div>
+                        <div class="podium-info">
+                            <div class="podium-name">${c.name}</div>
+                            <div class="podium-pct">${pct}% des votes</div>
+                            <div class="podium-bar-wrap">
+                                <div class="podium-bar" style="width:${barW}%"></div>
+                            </div>
+                        </div>
+                        <div class="podium-votes">${formatNum(v.votes)}</div>
+                    </div>
+                `;
+            } else {
+                // RANG 4-10 — Style épuré
+                html += `
+                    <div class="lb-row">
+                        <div class="lb-rank">#${i + 1}</div>
+                        <div class="lb-name">${c.name}</div>
+                        <div class="lb-pct">${pct}%</div>
+                        <div class="lb-votes">${formatNum(v.votes)}</div>
+                    </div>
+                `;
+            }
+        });
+
+        document.getElementById('leaderboard-body').innerHTML = html;
+    }
+
+    // ════════════════════════════════════════════════════════
+    // NATIVE AD — DÉPLACEMENT DYNAMIQUE SANS DUPLICATION ID
+    // ════════════════════════════════════════════════════════
+    function showNativeAd(targetId) {
+        const adContainer = document.getElementById('container-623647ad2d51b4896cf878366ccdd192');
+        const targetSpace = document.getElementById(targetId);
+
+        if (!adContainer || !targetSpace) return;
+
+        // Déplacer le conteneur unique vers la bonne modale
+        targetSpace.appendChild(adContainer);
+        adContainer.style.display = 'block';
+
+        // Charger le script une seule fois
+        if (!adNativeLoaded) {
+            const script = document.createElement('script');
+            script.src = 'https://penguinsincequalify.com/623647ad2d51b4896cf878366ccdd192/invoke.js';
+            script.async = true;
+            script.setAttribute('data-cfasync', 'false');
+            document.body.appendChild(script);
+            adNativeLoaded = true;
+        }
+    }
+
+    // ════════════════════════════════════════════════════════
+    // SYSTÈME DE VOTE — CLOUDFLARE TURNSTILE
+    // ════════════════════════════════════════════════════════
+    function vote(id) {
+        selectedId = id;
+
+        if (hasVoted) {
+            // Utilisateur déjà voté aujourd'hui
             document.getElementById('modal-already').style.display = 'block';
-            return;
+            document.getElementById('modal-verify').style.display  = 'none';
+            document.getElementById('modal-success').style.display = 'none';
+            showNativeAd('ad-already-space'); // ← Native ad dans la bonne modale
+        } else {
+            document.getElementById('modal-already').style.display = 'none';
+            document.getElementById('modal-verify').style.display  = 'block';
+            document.getElementById('modal-success').style.display = 'none';
+            if (typeof turnstile !== 'undefined') turnstile.reset();
         }
 
-        if (res.ok) {
-            hasVoted = true;
-            localStorage.setItem('hoc_voted_date', todayHaiti);
-            document.getElementById('modal-verify').style.display = 'none';
-            document.getElementById('modal-success').style.display = 'block';
-            setTimeout(fetchVotes, 1500);
+        document.getElementById('vote-modal').classList.add('active');
+    }
+
+    function onTurnstile(token) {
+        turnToken = token;
+        document.getElementById('verify-btn').style.display = 'block';
+    }
+
+    async function submitVote() {
+        if (!turnToken || !selectedId) return;
+
+        const btn = document.getElementById('verify-btn');
+        btn.textContent = '⏳ TRAITEMENT...';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(WORKER + "/vote", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ candidateId: selectedId, token: turnToken })
+            });
+
+            if (res.status === 429 || res.status === 403) {
+                hasVoted = true;
+                localStorage.setItem('hoc_voted_date', todayHaiti);
+                document.getElementById('modal-verify').style.display  = 'none';
+                document.getElementById('modal-already').style.display = 'block';
+                showNativeAd('ad-already-space');
+                return;
+            }
+
+            if (res.ok) {
+                hasVoted = true;
+                localStorage.setItem('hoc_voted_date', todayHaiti);
+                document.getElementById('modal-verify').style.display  = 'none';
+                document.getElementById('modal-success').style.display = 'block';
+                showNativeAd('ad-success-space'); // ← Native ad vote réussi
+                setTimeout(fetchVotes, 1500);
+            }
+
+        } catch (e) {
+            alert('Erreur réseau: ' + e.message);
+        } finally {
+            btn.textContent = '✅ VOTE';
+            btn.disabled = false;
         }
-    } catch (e) {
-        alert('Erreur: ' + e.message);
-    } finally {
-        btn.textContent = '✅ VOTE';
-        btn.disabled = false;
-    }
-}
-
-// ════════════════════════════════════════════════════════
-// MODIFICATION #1: Smartlink lié au bouton "Wè tout 10"
-// ════════════════════════════════════════════════════════
-function showAll() {
-    showingAll = true;
-    render();
-}
-    
-function closeModal() { document.getElementById('vote-modal').classList.remove('active'); }
-function shareWA() { window.location.href = `whatsapp://send?text=${encodeURIComponent('Vòt pou HOC FANDOM: ' + location.href)}`; }
-function shareFB() { window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`); }
-
-function showLegal(type) {
-    const overlay = document.getElementById('legal-overlay');
-    const title = document.getElementById('legal-title');
-    const body = document.getElementById('legal-body');
-
-    if (type === 'terms') {
-        title.innerText = "Conditions d'Utilisation";
-        body.innerHTML = `
-            <h2>1. Clause de Non-Affiliation</h2>
-            <p><strong>HOC FANDOM</strong> est une plateforme de divertissement indépendante créée <em>par des fans, pour les fans</em>. <strong>Nous ne sommes ni affiliés, ni approuvés, ni sponsorisés par la production officielle de "House of Challenge".</strong></p>
-            
-            <h2>2. Utilisation Équitable & Droit à l'Image</h2>
-            <p>Les noms, les photos et références liés aux personnalités publiques et créateurs de contenu sont utilisés dans un cadre strict de <strong>"Fair Use" (Usage Loyal)</strong> à des fins de sondage d'opinion, de commentaire public et de célébration de la culture haïtienne. Tous les droits de propriété intellectuelle originaux appartiennent à leurs détenteurs respectifs.</p>
-
-            <h2>3. Valeur des Votes </h2>
-            <p>Cette plateforme agit comme un <strong>simulateur de popularité communautaire</strong>. Les votes enregistrés ici n'ont <strong>absolument aucun impact officiel</strong> sur le casting, les sélections ou les décisions réelles de la production de House of Challenge. C'est un espace de jeu et de soutien.</p>
-            
-            <h2>4. Sécurité & Modération</h2>
-            <p>L'équipe technique de HOC-FANDOM se réserve le droit de bloquer toute adresse IP tentant de manipuler les votes via des bots ou des scripts automatisés, garantissant ainsi l'intégrité de la plateforme.</p>
-        `;
-    } else if (type === 'privacy') {
-        title.innerText = "Politique de Confidentialité";
-        body.innerHTML = `
-            <h2>1. Anonymat & Collecte Minimale</h2>
-            <p>HOC FANDOM est conçu pour protéger votre vie privée. Nous ne demandons ni nom, ni numéro de téléphone, ni mot de passe pour voter. Nous n'enregistrons <strong>aucune donnée personnelle sensible</strong> sur nos serveurs.</p>
-
-            <h2>2. Sécurité Anti-Bot (Turnstile)</h2>
-            <p>Pour garantir l'intégrité des votes sans compromettre votre vie privée, nous utilisons <strong>Cloudflare Turnstile</strong>. Ce service vérifie que vous êtes un humain de manière sécurisée, sans utiliser de captchas intrusifs et sans traquer votre historique de navigation.</p>
-
-            <h2>3. Cookies et Partenaires Publicitaires</h2>
-            <p>Pour maintenir nos serveurs en fonctionnelles et performants, nous affichons des publicités via nos partenaires. Ces réseaux peuvent utiliser des cookies non-personnels pour limiter le nombre de fois que vous voyez une annonce. Nous utilisons également le stockage local de votre navigateur uniquement pour enregistrer la date de votre vote et respecter les limites journalières.</p>
-        `;
-    } else if (type === 'contact') {
-        title.innerText = "Contact & Support";
-        body.innerHTML = `
-            <p>Une question, un signalement (DMCA) ou une proposition de partenariat ou autres? L'équipe est à votre écoute.</p>
-            <p style="margin-bottom: 24px;">📧 Email direct : <strong>hocfandom@gmail.com</strong></p>
-            
-            <div class="contact-form">
-                <h3 style="color: var(--haiti-blue); font-family: 'Montserrat', sans-serif; margin-bottom: 15px;">Envoyez-nous un message</h3>
-                <form id="hoc-contact-form" onsubmit="event.preventDefault(); alert('Message envoyé avec succès ! L\\'équipe vous répondra bientôt.'); document.getElementById('hoc-contact-form').reset();">
-                    <label for="name">Nom / Pseudo (Optionnel)</label>
-                    <input type="text" id="name" class="contact-input" placeholder="Comment devons-nous vous appeler ?">
-                    
-                    <label for="email">Adresse Email (Requis)</label>
-                    <input type="email" id="email" class="contact-input" placeholder="votre@email.com" required>
-                    
-                    <label for="message">Votre Message (Requis)</label>
-                    <textarea id="message" class="contact-input" rows="4" placeholder="Tapez votre message ici..." required style="resize: vertical; font-family: 'Open Sans', sans-serif;"></textarea>
-                    
-                    <button type="submit" class="btn-submit">ENVOYER LE MESSAGE</button>
-                </form>
-            </div>
-        `;
     }
 
-    overlay.style.display = 'flex';
-    // Bloque le scroll de la page principale quand la modale légale est ouverte
-    document.body.style.overflow = 'hidden'; 
-}
+    // ════════════════════════════════════════════════════════
+    // UTILITAIRES — MODAL & PARTAGE
+    // ════════════════════════════════════════════════════════
+    function closeModal() { document.getElementById('vote-modal').classList.remove('active'); }
 
-function closeLegal() {
-    document.getElementById('legal-overlay').style.display = 'none';
-    document.body.style.overflow = 'auto'; // Réactive le scroll
-}
-    
-setInterval(fetchVotes, 60000);
-window.addEventListener('load', fetchVotes);
-
-// ════════════════════════════════════════════════════════
-// MODIFICATION #2: Pop-under retardé de 60 secondes
-// ════════════════════════════════════════════════════════
-setTimeout(function() {
-    const KEY_COUNT = 'hoc_popunder_count';
-    const KEY_DATE  = 'hoc_popunder_date';
-    const MAX_SHOWS = 1;
-
-    const todayPop  = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Port-au-Prince' });
-    const savedDate = localStorage.getItem(KEY_DATE);
-    let   showCount = parseInt(localStorage.getItem(KEY_COUNT) || '0');
-
-    // Reset compteur si nouveau jour Haiti
-    if (savedDate !== todayPop) {
-        showCount = 0;
-        localStorage.setItem(KEY_DATE, todayPop);
-        localStorage.setItem(KEY_COUNT, '0');
+    function shareWA() {
+        window.location.href = `whatsapp://send?text=${encodeURIComponent('Vòt pou HOC FANDOM 2027: ' + location.href)}`;
     }
 
-    // Charger pop-under seulement si < 3 fois aujourd'hui
-    if (showCount < MAX_SHOWS) {
-        const script = document.createElement('script');
-        script.src = 'https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js';
-        script.async = true;
-        document.body.appendChild(script);
-        localStorage.setItem(KEY_COUNT, (showCount + 1).toString());
+    function shareFB() {
+        window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`);
     }
-}, 60000); // Apparait apres 60s — max 3x par 24h (reset minuit Haiti)
+
+    // ════════════════════════════════════════════════════════
+    // PAGES LÉGALES
+    // ════════════════════════════════════════════════════════
+    function showLegal(type) {
+        const overlay = document.getElementById('legal-overlay');
+        const title   = document.getElementById('legal-title');
+        const body    = document.getElementById('legal-body');
+
+        if (type === 'terms') {
+            title.innerText = "Conditions d'Utilisation";
+            body.innerHTML = `
+                <h2>1. Clause de Non-Affiliation</h2>
+                <p><strong>HOC FANDOM</strong> est une plateforme de divertissement indépendante créée <em>par des fans, pour les fans</em>. <strong>Nous ne sommes ni affiliés, ni approuvés, ni sponsorisés par la production officielle de "House of Challenge".</strong></p>
+
+                <h2>2. Utilisation Équitable & Droit à l'Image</h2>
+                <p>Les noms, les photos et références liés aux personnalités publiques et créateurs de contenu sont utilisés dans un cadre strict de <strong>"Fair Use" (Usage Loyal)</strong> à des fins de sondage d'opinion, de commentaire public et de célébration de la culture haïtienne.</p>
+
+                <h2>3. Valeur des Votes</h2>
+                <p>Cette plateforme agit comme un <strong>simulateur de popularité communautaire</strong>. Les votes enregistrés ici n'ont <strong>absolument aucun impact officiel</strong> sur le casting ou les décisions de la production.</p>
+
+                <h2>4. Sécurité & Modération</h2>
+                <p>L'équipe technique de HOC FANDOM se réserve le droit de bloquer toute adresse IP tentant de manipuler les votes via des bots ou des scripts automatisés.</p>
+            `;
+        } else if (type === 'privacy') {
+            title.innerText = "Politique de Confidentialité";
+            body.innerHTML = `
+                <h2>1. Anonymat & Collecte Minimale</h2>
+                <p>HOC FANDOM est conçu pour protéger votre vie privée. Nous ne demandons ni nom, ni numéro de téléphone, ni mot de passe. Nous n'enregistrons <strong>aucune donnée personnelle sensible</strong>.</p>
+
+                <h2>2. Sécurité Anti-Bot (Turnstile)</h2>
+                <p>Pour garantir l'intégrité des votes, nous utilisons <strong>Cloudflare Turnstile</strong> — une vérification humaine sécurisée, sans CAPTCHA intrusif.</p>
+
+                <h2>3. Cookies et Partenaires Publicitaires</h2>
+                <p>Pour maintenir nos serveurs, nous affichons des publicités via nos partenaires. Ces réseaux peuvent utiliser des cookies non-personnels pour la pertinence des annonces.</p>
+            `;
+        } else if (type === 'contact') {
+            title.innerText = "Contact & Support";
+            body.innerHTML = `
+                <p>Une question, un signalement (DMCA) ou une proposition de partenariat ?</p>
+                <p style="margin-bottom: 20px;">📧 Email direct : <strong>hocfandom@gmail.com</strong></p>
+                <div class="contact-form">
+                    <h3 style="color:var(--haiti-blue);font-family:'Montserrat',sans-serif;font-size:15px;margin-bottom:12px;">Envoyez-nous un message</h3>
+                    <form id="hoc-contact-form" onsubmit="event.preventDefault(); alert('Message envoyé! On va répondre bientôt.'); this.reset();">
+                        <label for="c-name">Nom / Pseudo (Optionnel)</label>
+                        <input type="text" id="c-name" class="contact-input" placeholder="Comment devons-nous vous appeler ?">
+
+                        <label for="c-email">Adresse Email (Requis)</label>
+                        <input type="email" id="c-email" class="contact-input" placeholder="votre@email.com" required>
+
+                        <label for="c-message">Votre Message (Requis)</label>
+                        <textarea id="c-message" class="contact-input" rows="4" placeholder="Tapez votre message ici..." required style="resize:vertical;"></textarea>
+
+                        <button type="submit" class="btn-submit">ENVOYER LE MESSAGE</button>
+                    </form>
+                </div>
+            `;
+        }
+
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLegal() {
+        document.getElementById('legal-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // ════════════════════════════════════════════════════════
+    // DÉMARRAGE & REFRESH AUTOMATIQUE
+    // ════════════════════════════════════════════════════════
+    setInterval(fetchVotes, 60000);
+    window.addEventListener('load', fetchVotes);
+
+    // ════════════════════════════════════════════════════════
+    // POP-UNDER — RETARDÉ 60s, MAX 1x PAR 24H (HAÏTI)
+    // ════════════════════════════════════════════════════════
+    setTimeout(function () {
+        const KEY_COUNT = 'hoc_popunder_count';
+        const KEY_DATE  = 'hoc_popunder_date';
+        const MAX_SHOWS = 1;
+
+        const todayPop  = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Port-au-Prince' });
+        const savedDate = localStorage.getItem(KEY_DATE);
+        let   showCount = parseInt(localStorage.getItem(KEY_COUNT) || '0');
+
+        // Reset compteur si nouveau jour Haïti
+        if (savedDate !== todayPop) {
+            showCount = 0;
+            localStorage.setItem(KEY_DATE, todayPop);
+            localStorage.setItem(KEY_COUNT, '0');
+        }
+
+        // Injection seulement si quota non atteint
+        if (showCount < MAX_SHOWS) {
+            const s = document.createElement('script');
+            s.src   = 'https://penguinsincequalify.com/13/4b/19/134b1970caa33d9d8228aebf165e4d10.js';
+            s.async = true;
+            document.body.appendChild(s);
+            localStorage.setItem(KEY_COUNT, (showCount + 1).toString());
+        }
+    }, 60000); // Apparaît après 60s — max 1x/24h — reset minuit Haïti
+
 </script>
 
-<script async="async" data-cfasync="false" src="//penguinsincequalify.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
-
-    <script>
-(function() {
-    const AD_KEY    = 'admaven_last_shown';
-    const COOLDOWN  = 5 * 60 * 1000;
+<!-- ════════════════════════════════════════════════════════
+     AD-MAVEN — INTERSTITIEL (IntersectionObserver au 5e candidat)
+════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+    const AD_KEY   = 'admaven_last_shown';
+    const COOLDOWN = 5 * 60 * 1000; // 5 minutes
 
     function injectAdMaven() {
         const now       = Date.now();
         const lastShown = parseInt(localStorage.getItem(AD_KEY) || '0');
         if (now - lastShown < COOLDOWN) return;
 
-        const script = document.createElement('script');
-        script.src = '//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1255853';
-        script.setAttribute('data-cfasync', 'false');
-        script.async = true;
-        document.body.appendChild(script);
+        const s = document.createElement('script');
+        s.src   = '//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1255853';
+        s.setAttribute('data-cfasync', 'false');
+        s.async = true;
+        document.body.appendChild(s);
         localStorage.setItem(AD_KEY, now.toString());
     }
 
     function initObserver() {
-        // Attendre que render() génère les cards
-        const interval = setInterval(function() {
+        const interval = setInterval(function () {
             const target = document.querySelector('.candidates-grid .card:nth-child(5)');
             if (!target) return;
+            clearInterval(interval);
 
-            clearInterval(interval); // Card trouvée → stop polling
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
                         injectAdMaven();
                         observer.unobserve(entry.target);
@@ -1079,11 +1740,12 @@ setTimeout(function() {
             }, { threshold: 0.5 });
 
             observer.observe(target);
-        }, 300); // Check toutes les 300ms
+        }, 300);
     }
 
     window.addEventListener('load', initObserver);
 })();
-    </script>
+</script>
+
 </body>
 </html>
