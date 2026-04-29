@@ -1042,5 +1042,48 @@ setTimeout(function() {
 </script>
 
 <script async="async" data-cfasync="false" src="//penguinsincequalify.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
+
+    <script>
+(function() {
+    const AD_KEY    = 'admaven_last_shown';
+    const COOLDOWN  = 5 * 60 * 1000;
+
+    function injectAdMaven() {
+        const now       = Date.now();
+        const lastShown = parseInt(localStorage.getItem(AD_KEY) || '0');
+        if (now - lastShown < COOLDOWN) return;
+
+        const script = document.createElement('script');
+        script.src = '//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1255853';
+        script.setAttribute('data-cfasync', 'false');
+        script.async = true;
+        document.body.appendChild(script);
+        localStorage.setItem(AD_KEY, now.toString());
+    }
+
+    function initObserver() {
+        // Attendre que render() génère les cards
+        const interval = setInterval(function() {
+            const target = document.querySelector('.candidates-grid .card:nth-child(5)');
+            if (!target) return;
+
+            clearInterval(interval); // Card trouvée → stop polling
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        injectAdMaven();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            observer.observe(target);
+        }, 300); // Check toutes les 300ms
+    }
+
+    window.addEventListener('load', initObserver);
+})();
+    </script>
 </body>
 </html>
