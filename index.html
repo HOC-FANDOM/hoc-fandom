@@ -810,7 +810,7 @@ const CANDIDATES = [
 ];
 
 let votes = Object.fromEntries(CANDIDATES.map(c => [c.id, { votes: 0, percentage: "0.00" }]));
-let showingAll = false;
+let showingAll = true;
 let selectedId = null;
 let turnToken = null;
 
@@ -953,11 +953,10 @@ async function submitVote() {
 // MODIFICATION #1: Smartlink lié au bouton "Wè tout 10"
 // ════════════════════════════════════════════════════════
 function showAll() {
-    window.open('https://penguinsincequalify.com/abgewwmh?key=d099b9f5294c955380d0e6a4917c6950');
     showingAll = true;
     render();
 }
-
+    
 function closeModal() { document.getElementById('vote-modal').classList.remove('active'); }
 function shareWA() { window.location.href = `whatsapp://send?text=${encodeURIComponent('Vòt pou HOC FANDOM: ' + location.href)}`; }
 function shareFB() { window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`); }
