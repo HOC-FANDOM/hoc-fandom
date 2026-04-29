@@ -438,23 +438,35 @@
 
         .btn-vote:active { transform: scale(0.98); }
         .card.rank-1 .btn-vote { background: var(--haiti-gold); color: var(--haiti-blue); }
-            <div class="ad-footer-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 40px auto 20px; width: 100%; max-width: 320px; padding: 10px; background: white; border-radius: 16px; box-shadow: var(--shadow-sm);">
-        <span style="font-size: 9px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 1px; margin-bottom: 8px; font-weight: 700;">Sponsorisé</span>
-        
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'bfa34ea21f0dd2c4048fdf4cf8ddf94e',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="https://penguinsincequalify.com/bfa34ea21f0dd2c4048fdf4cf8ddf94e/invoke.js"></script>
-    </div>
 
+        .load-more-area {
+            text-align: center;
+            padding: 20px 0;
+            display: none;
+        }
 
-        
+        .load-more-area.show {
+            display: block;
+        }
+
+        .btn-more {
+            background: linear-gradient(135deg, var(--haiti-red) 0%, #b71c1c 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(210, 16, 52, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-more:active { transform: scale(0.98); }
+
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -682,8 +694,7 @@
         footer a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 600; cursor: pointer; }
 
         .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
-    </style>   
- 
+    </style>
 </head>
 <body>
 
@@ -1054,3 +1065,4 @@ setTimeout(function() {
 <script async="async" data-cfasync="false" src="//penguinsincequalify.com/623647ad2d51b4896cf878366ccdd192/invoke.js"></script>
 </body>
 </html>
+
