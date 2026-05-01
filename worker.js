@@ -1,18 +1,18 @@
 // ============================================================
-// HOC FANDOM - WORKER PROFESSIONNEL V2
-// Production-grade | Scalable 1M+ votes/jour | 99.9% uptime
+// HOC FANDOM - WORKER V5 (Complet, Plan Free <500 écritures KV/j)
+// Stratégie : échantillonnage des votes + cache + rate‑limiter en mémoire
 // ============================================================
 
 export default {
   async fetch(request, env) {
-    // Configuration optimisée
     const CONFIG = {
       PROBABILITY: parseFloat(env.PROBABILITY || "0.001"),
       WEIGHT: parseInt(env.WEIGHT || "1000"),
-      COOKIE_SECRET: env.COOKIE_SECRET || "hoc2027-secret-secure",
+      COOKIE_SECRET: env.COOKIE_SECRET || "hoc2027-secret",
       ORIGIN: "https://houseofchallengefandom.pages.dev",
       CACHE_TTL: 60,
-      CANDIDATES: ["Abigail", "chrisTell", "mcdk", "meetch", "Leila", "jalia", "manie", "natha", "layouyou", "abee"]
+      CANDIDATES: ["Abigail","chrisTell","mcdk","meetch","Leila","jalia","manie","natha","layouyou","abee"],
+      VOTE_COOLDOWN_MS: 3000
     };
 
     const corsHeaders = {
@@ -27,87 +27,86 @@ export default {
 
     const url = new URL(request.url);
 
-    // ════════════════════════════════════════════════════════
-    // 1. MAINTENANCE CHECK (avant tout)
-    // ════════════════════════════════════════════════════════
     if (env.MAINTENANCE === "true") {
       return respond({ maintenance: true }, 503, corsHeaders);
     }
 
-    // ════════════════════════════════════════════════════════
-    // 2. GET /results — Lectures KV parallèles + Cache
-    // ════════════════════════════════════════════════════════
+    // GET /results
     if (url.pathname === "/results") {
       try {
-        // Lecture KV en parallèle (ultra rapide)
         const votes = await Promise.all(
           CONFIG.CANDIDATES.map(id => env.HOC_VOTES.get(id) || "0")
         );
 
-        // Calcul scores
         let total = 0;
         const results = {};
-
         CONFIG.CANDIDATES.forEach((id, i) => {
-          const score = Math.floor(parseFloat(votes[i]) * CONFIG.WEIGHT);
+          const raw = parseFloat(votes[i]);
+          const score = Math.floor(raw * CONFIG.WEIGHT);
           results[id] = { votes: score, percentage: "0.00" };
           total += score;
         });
 
-        // Pourcentages
         if (total > 0) {
           CONFIG.CANDIDATES.forEach(id => {
             results[id].percentage = ((results[id].votes / total) * 100).toFixed(2);
           });
         }
 
-        return respond(results, 200, corsHeaders, { "Cache-Control": `public, max-age=${CONFIG.CACHE_TTL}` });
+        return respond(results, 200, corsHeaders, {
+          "Cache-Control": `public, max-age=${CONFIG.CACHE_TTL}`
+        });
       } catch (e) {
         return respond({ error: "KV read error" }, 500, corsHeaders);
       }
     }
 
-    // ════════════════════════════════════════════════════════
-    // 3. POST /vote — Vote sécurisé + HMAC Cookie
-    // ════════════════════════════════════════════════════════
+    // POST /vote
     if (url.pathname === "/vote" && request.method === "POST") {
       try {
         const body = await request.json();
         const { candidateId, token } = body;
-
-        // Validation basique
         if (!CONFIG.CANDIDATES.includes(candidateId) || !token) {
           return respond({ error: "Invalid data" }, 400, corsHeaders);
         }
 
-        // 1. Vérification Turnstile
+        // Turnstile
         const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
           method: "POST",
           body: `secret=${env.TURNSTILE_SECRET}&response=${token}`
         });
         const turnstileData = await turnstileRes.json();
-
         if (!turnstileData.success) {
           return respond({ error: "Turnstile failed" }, 403, corsHeaders);
         }
 
-        // 2. Vérification Cookie signé
-        const cookieHeader = request.headers.get("Cookie") || "";
-        const voteCookie = extractCookie(cookieHeader, "hoc_voted");
+        // Fingerprint
+        const fingerprint = await getFingerprint(request);
 
-        if (voteCookie && await verifySignature(voteCookie, CONFIG.COOKIE_SECRET)) {
-          return respond({ error: "Already voted today" }, 429, corsHeaders);
+        // Rate limit en mémoire
+        if (!inMemoryRateLimiter(fingerprint, CONFIG.VOTE_COOLDOWN_MS)) {
+          return respond({ error: "Too many requests. Please wait a few seconds." }, 429, corsHeaders);
         }
 
-        // 3. Enregistrement du vote (probabilité)
+        // Cookie check
+        const cookieHeader = request.headers.get("Cookie") || "";
+        const voteCookie = extractCookie(cookieHeader, "hoc_voted");
+        if (voteCookie) {
+          const cookieValid = await verifyCookieForFingerprint(voteCookie, fingerprint, CONFIG.COOKIE_SECRET);
+          if (cookieValid) {
+            return respond({ error: "You already voted today." }, 429, corsHeaders);
+          }
+        }
+
+        // Échantillonnage du vote
         if (Math.random() < CONFIG.PROBABILITY) {
           const current = parseFloat(await env.HOC_VOTES.get(candidateId) || "0");
           await env.HOC_VOTES.put(candidateId, (current + 1).toString());
         }
 
-        // 4. Cookie signé HMAC (expire minuit Haïti)
+        // Cookie signé
         const expiration = getMidnightHaiti();
-        const payload = `voted:${expiration.getTime()}`;
+        const payload = `voted:${fingerprint}:${expiration.getTime()}`;
         const signature = await sign(payload, CONFIG.COOKIE_SECRET);
         const cookieValue = `${payload}.${signature}`;
 
@@ -127,43 +126,87 @@ export default {
   }
 };
 
-// ════════════════════════════════════════════════════════
-// UTILITAIRES
-// ════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// RATE LIMITER EN MÉMOIRE (partagé entre requêtes du même isolat)
+// ════════════════════════════════════════════════════════════════
+const lastVoteTimestamps = new Map();
 
-async function sign(message, secret) {
-  const encoder = new TextEncoder();
-  const keyData = encoder.encode(secret);
-  const key = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(message));
-  return btoa(String.fromCharCode(...new Uint8Array(signature))).replace(/[+/=]/g, c => c === '+' ? '-' : c === '/' ? '_' : '');
+function inMemoryRateLimiter(fingerprint, cooldownMs) {
+  const now = Date.now();
+  const last = lastVoteTimestamps.get(fingerprint);
+  if (last && (now - last) < cooldownMs) {
+    return false; // trop tôt
+  }
+  lastVoteTimestamps.set(fingerprint, now);
+  return true;
 }
 
-async function verifySignature(cookieValue, secret) {
+// ════════════════════════════════════════════════════════════════
+// FINGERPRINT (IP + User‑Agent)
+// ════════════════════════════════════════════════════════════════
+async function getFingerprint(request) {
+  const ip = request.headers.get("CF-Connecting-IP") || "0.0.0.0";
+  const ua = request.headers.get("User-Agent") || "";
+  const raw = `${ip}|${ua}`;
+  const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// VÉRIFICATION COOKIE LIÉ AU FINGERPRINT
+// ════════════════════════════════════════════════════════════════
+async function verifyCookieForFingerprint(cookieValue, currentFingerprint, secret) {
   try {
     const [payload, sig] = cookieValue.split('.');
     if (!payload || !sig) return false;
-    const expected = await sign(payload, secret);
-    return expected === sig;
+    const expectedSig = await sign(payload, secret);
+    if (expectedSig !== sig) return false;
+
+    const parts = payload.split(':');
+    if (parts.length < 3 || parts[0] !== 'voted') return false;
+    const cookieFingerprint = parts[1];
+    return cookieFingerprint === currentFingerprint;
   } catch {
     return false;
   }
 }
 
+// ════════════════════════════════════════════════════════════════
+// HMAC SIGNATURE
+// ════════════════════════════════════════════════════════════════
+async function sign(message, secret) {
+  const encoder = new TextEncoder();
+  const keyData = encoder.encode(secret);
+  const key = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(message));
+  return btoa(String.fromCharCode(...new Uint8Array(signature)))
+    .replace(/[+/=]/g, c => c === '+' ? '-' : c === '/' ? '_' : '');
+}
+
+// ════════════════════════════════════════════════════════════════
+// EXTRACTION COOKIE
+// ════════════════════════════════════════════════════════════════
 function extractCookie(header, name) {
   const match = header.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`));
   return match ? decodeURIComponent(match[1]) : null;
 }
 
+// ════════════════════════════════════════════════════════════════
+// MINUIT HAÏTI (EST)
+// ════════════════════════════════════════════════════════════════
 function getMidnightHaiti() {
   const now = new Date();
   const haiti = new Date(now.toLocaleString("en-US", { timeZone: "America/Port-au-Prince" }));
   const midnight = new Date(haiti);
   midnight.setDate(midnight.getDate() + 1);
   midnight.setHours(0, 0, 0, 0);
-  return new Date(midnight.getTime() + 5 * 60 * 60 * 1000);
+  return new Date(midnight.getTime() + 5 * 60 * 60 * 1000); // UTC-5
 }
 
+// ════════════════════════════════════════════════════════════════
+// RÉPONSE JSON
+// ════════════════════════════════════════════════════════════════
 function respond(data, status, corsHeaders, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
