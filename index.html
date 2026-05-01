@@ -2,7 +2,8 @@
 <html lang="ht">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <!-- FIX: Allow user scaling for accessibility while preserving mobile layout -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>🔥 HOC FANDOM 2027 - Vote gratis</title>
     <meta name="description" content="Mezanmi 👀 genlè se li ki pral nan House of challenge 2027 la! Vote pou moun ou ta renmen al reprezante Ayiti nan House of Challenge 2027.">
     <meta property="og:title" content="🔥 Kiyès ki te panse tiktokèz sa tap pami moun yo chwazi pou House of challenge!">
@@ -13,12 +14,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="43a9ef337bc150eb93e54b66eaa5372384db4079" content="43a9ef337bc150eb93e54b66eaa5372384db4079">
-    <meta name='admaven-placement' content=Bqjs6rHa9>
+    <!-- FIX: Added quotes around attribute value -->
+    <meta name="admaven-placement" content="Bqjs6rHa9">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <!-- FIX: Use only async (remove defer) for Turnstile – async is sufficient and avoids double loading -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async></script>
 
     <style>
         /* ═══════════════════════════════════════════════════
@@ -195,8 +198,8 @@
         }
 
         @keyframes drawRing { to { stroke-dashoffset: 0; } }
-        @keyframes spinCW   { to { transform: rotate(360deg);  transform-origin: center; } }
-        @keyframes spinCCW  { to { transform: rotate(-360deg); transform-origin: center; } }
+        @keyframes spinCW   { to { transform: rotate(360deg);  } }
+        @keyframes spinCCW  { to { transform: rotate(-360deg); } }
 
         .splash-text {
             opacity: 0;
@@ -485,8 +488,7 @@
             background: linear-gradient(90deg, var(--gold), transparent);
             margin-left: 8px;
         }
-
-        /* ═══════════════════════════════════════════════════
+          /* ═══════════════════════════════════════════════════
            CARDS CANDIDATS — DARK PREMIUM
         ═══════════════════════════════════════════════════ */
         .candidates-grid {
@@ -693,7 +695,8 @@
         .card.rank-1 .btn-vote:hover {
             box-shadow: 0 8px 24px rgba(255,215,0,0.5);
         }
-                /* ═══════════════════════════════════════════════════
+
+        /* ═══════════════════════════════════════════════════
            LEADERBOARD PREMIUM
         ═══════════════════════════════════════════════════ */
         .leaderboard-btn-wrap {
@@ -1326,7 +1329,8 @@
             'params' : {}
           };
         </script>
-        <script src="https://penguinsincequalify.com/bfa34ea21f0dd2c4048fdf4cf8ddf94e/invoke.js"></script>
+        <!-- FIX: Load ad script asynchronously to prevent render‑blocking -->
+        <script async src="https://penguinsincequalify.com/bfa34ea21f0dd2c4048fdf4cf8ddf94e/invoke.js"></script>
     </div>
 </div>
 
@@ -1434,14 +1438,31 @@
     let hasVoted = localStorage.getItem('hoc_voted_date') === todayHaiti;
 
     // ════════════════════════════════════════════════════
-    // FETCH VOTES
+    // FETCH VOTES WITH TIMEOUT (network robustness)
+    // ════════════════════════════════════════════════════
+    async function fetchWithTimeout(url, options = {}, timeout = 8000) {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        try {
+            const response = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(id);
+            return response;
+        } catch (e) {
+            clearTimeout(id);
+            throw e;
+        }
+    }
+
+    // ════════════════════════════════════════════════════
+    // FETCH VOTES (from Worker)
     // ════════════════════════════════════════════════════
     async function fetchVotes() {
         try {
-            const res  = await fetch(WORKER + "/results");
+            const res  = await fetchWithTimeout(WORKER + "/results");
             const data = await res.json();
 
             if (data.maintenance) {
+                // Maintenance page (unchanged, just emergency display)
                 document.body.innerHTML = `
                     <div style="position:fixed;inset:0;background:linear-gradient(135deg,#020408,#0a0f2c);display:flex;align-items:center;justify-content:center;padding:20px;">
                         <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:40px;text-align:center;color:#f0f4ff;max-width:380px;">
@@ -1459,15 +1480,27 @@
             render();
         } catch (e) {
             console.error('[HOC] fetchVotes:', e);
+            // Render with whatever data we have (possibly empty)
             render();
         } finally {
-            const sp = document.getElementById('splash');
-            if (sp) {
-                sp.classList.add('hide');
-                setTimeout(() => sp.remove(), 1000);
-            }
+            removeSplash();
         }
     }
+
+    // ════════════════════════════════════════════════════
+    // SPLASH REMOVAL (robust, always called, with fallback)
+    // ════════════════════════════════════════════════════
+    function removeSplash() {
+        const sp = document.getElementById('splash');
+        if (!sp) return;
+        sp.classList.add('hide');
+        setTimeout(() => {
+            if (sp.parentNode) sp.parentNode.removeChild(sp);
+        }, 1000);
+    }
+
+    // Failsafe: force‑hide splash after 10s even if fetch never completes
+    setTimeout(removeSplash, 10000);
 
     // ════════════════════════════════════════════════════
     // RENDER CANDIDATS
@@ -1490,7 +1523,8 @@
             return `
                 <div class="card ${rankCls[i]||''}">
                     <div class="card-image">
-                        <img src="${c.img}" alt="${c.name}" loading="${i<3?'eager':'lazy'}">
+                        <!-- FIX: Added decoding="async" for faster image rendering -->
+                        <img src="${c.img}" alt="${c.name}" loading="${i<3?'eager':'lazy'}" decoding="async">
                         <div class="card-overlay"></div>
                         <div class="card-rank ${rankStyle[i]||''}">${ranks[i]||'#'+(i+1)}</div>
                     </div>
@@ -1520,7 +1554,7 @@
     // FORMAT NOMBRE
     // ════════════════════════════════════════════════════
     function formatNum(n) {
-        if (!n) return '0';
+        if (n == null || n === undefined) return '0'; // safety
         if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
         if (n >= 1000)    return (n/1000).toFixed(1)+'k';
         return n.toString();
@@ -1530,7 +1564,7 @@
     // LEADERBOARD + ICÔNES PARTAGE PAR CANDIDAT
     // ════════════════════════════════════════════════════
     function openLeaderboard() {
-        window.open(SMARTLINK, '_blank');
+        window.open(SMARTLINK, '_blank', 'noopener');
 
         const section = document.getElementById('leaderboard-section');
         section.classList.add('visible');
@@ -1558,7 +1592,7 @@
             const pct  = total > 0 ? ((v.votes/total)*100).toFixed(2) : '0.00';
             const barW = maxV > 0 ? Math.round((v.votes/maxV)*100) : 0;
 
-            // Texte de partage pour ce candidat
+            // Share texts per candidate
             const shareText = encodeURIComponent(`Mwen vote pou ${c.name} sou HOC FANDOM! Vote ou menm: ${SITE_URL}`);
             const waURL     = `whatsapp://send?text=${shareText}`;
             const fbURL     = `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}&quote=${encodeURIComponent('Vote pou '+c.name+' sou HOC FANDOM!')}`;
@@ -1575,10 +1609,11 @@
                                 <div class="podium-bar" style="width:${barW}%"></div>
                             </div>
                             <div class="podium-share-icons">
-                                <a href="${ttURL}" target="_blank" class="share-icon-btn share-tiktok" title="TikTok">
+                                <!-- FIX: Added rel="noopener noreferrer" for security -->
+                                <a href="${ttURL}" target="_blank" rel="noopener noreferrer" class="share-icon-btn share-tiktok" title="TikTok">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.17 8.17 0 004.77 1.52V6.7a4.85 4.85 0 01-1-.01z"/></svg>
                                 </a>
-                                <a href="${fbURL}" target="_blank" class="share-icon-btn share-fb" title="Facebook">
+                                <a href="${fbURL}" target="_blank" rel="noopener noreferrer" class="share-icon-btn share-fb" title="Facebook">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                                 </a>
                                 <a href="${waURL}" class="share-icon-btn share-wa" title="WhatsApp">
@@ -1595,10 +1630,11 @@
                         <div class="lb-rank">#${i+1}</div>
                         <div class="lb-name">${c.name}</div>
                         <div class="lb-share-icons">
-                            <a href="${ttURL}" target="_blank" class="lb-share-btn tiktok" title="TikTok">
+                            <!-- FIX: Added rel="noopener noreferrer" on external links -->
+                            <a href="${ttURL}" target="_blank" rel="noopener noreferrer" class="lb-share-btn tiktok" title="TikTok">
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.17 8.17 0 004.77 1.52V6.7a4.85 4.85 0 01-1-.01z"/></svg>
                             </a>
-                            <a href="${fbURL}" target="_blank" class="lb-share-btn fb" title="Facebook">
+                            <a href="${fbURL}" target="_blank" rel="noopener noreferrer" class="lb-share-btn fb" title="Facebook">
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                             </a>
                             <a href="${waURL}" class="lb-share-btn wa" title="WhatsApp">
@@ -1621,7 +1657,10 @@
     function showNativeAd(targetId) {
         const container = document.getElementById('container-623647ad2d51b4896cf878366ccdd192');
         const target    = document.getElementById(targetId);
-        if (!container || !target) return;
+        if (!container || !target) {
+            console.warn('Native ad placeholder or target missing');
+            return;
+        }
 
         target.appendChild(container);
         container.style.display = 'block';
@@ -1637,7 +1676,7 @@
     }
 
     // ════════════════════════════════════════════════════
-    // SYSTÈME DE VOTE
+    // SYSTÈME DE VOTE (avec timeout et gestion d'erreur)
     // ════════════════════════════════════════════════════
     function vote(id) {
         selectedId = id;
@@ -1659,27 +1698,29 @@
 
     function onTurnstile(token) {
         turnToken = token;
-        document.getElementById('verify-btn').style.display = 'block';
+        const btn = document.getElementById('verify-btn');
+        if (btn) btn.style.display = 'block';
     }
 
     async function submitVote() {
         if (!turnToken || !selectedId) return;
 
         const btn = document.getElementById('verify-btn');
+        if (!btn) return;
         btn.textContent = '⏳ TRAITEMENT...';
         btn.disabled    = true;
 
         try {
-            const res = await fetch(WORKER + "/vote", {
+            // FIX: Use fetch with timeout (10s for vote)
+            const res = await fetchWithTimeout(WORKER + "/vote", {
                 method:      'POST',
                 headers:     { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body:         JSON.stringify({ candidateId: selectedId, token: turnToken })
-            });
+            }, 10000);
 
             if (res.status === 429 || res.status === 403) {
                 hasVoted = true;
-                // Sauvegarde par DATE Haïti (harmonisé avec Worker V3)
                 localStorage.setItem('hoc_voted_date', todayHaiti);
                 document.getElementById('modal-verify').style.display  = 'none';
                 document.getElementById('modal-already').style.display = 'block';
@@ -1689,16 +1730,18 @@
 
             if (res.ok) {
                 hasVoted = true;
-                // Sauvegarde par DATE Haïti (harmonisé avec Worker V3)
                 localStorage.setItem('hoc_voted_date', todayHaiti);
                 document.getElementById('modal-verify').style.display  = 'none';
                 document.getElementById('modal-success').style.display = 'block';
                 showNativeAd('ad-success-space');
                 setTimeout(fetchVotes, 1500);
+            } else {
+                throw new Error('Server responded with ' + res.status);
             }
 
         } catch (e) {
-            alert('Erreur réseau: ' + e.message);
+            // User‑friendly error
+            alert('Yon ti pwoblèm rezo. Eseye ankò apre kèk segond.');
         } finally {
             btn.textContent = '✅ VOTE';
             btn.disabled    = false;
@@ -1715,7 +1758,7 @@
     }
 
     function shareFB() {
-        window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}`);
+        window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}`, '_blank', 'noopener');
     }
 
     // ════════════════════════════════════════════════════
@@ -1777,7 +1820,7 @@
     }
 
     // ════════════════════════════════════════════════════
-    // DÉMARRAGE
+    // DÉMARRAGE — fetch initial & polling toutes les 60s
     // ════════════════════════════════════════════════════
     setInterval(fetchVotes, 60000);
     window.addEventListener('load', fetchVotes);
@@ -1811,7 +1854,7 @@
 
 </script>
 
-<!-- AD-MAVEN — IntersectionObserver au 5e candidat -->
+<!-- AD-MAVEN — IntersectionObserver au 5e candidat (avec sécurité) -->
 <script>
 (function () {
     const AD_KEY   = 'admaven_last_shown';
@@ -1847,7 +1890,12 @@
         }, 300);
     }
 
-    window.addEventListener('load', initObserver);
+    // Attendre que la page soit prête
+    if (document.readyState === 'complete') {
+        initObserver();
+    } else {
+        window.addEventListener('load', initObserver);
+    }
 })();
 </script>
 
