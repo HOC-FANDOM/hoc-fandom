@@ -202,14 +202,10 @@ function extractCookie(header, name) {
 // MINUIT HAÏTI (EST)
 // ════════════════════════════════════════════════════════════════
 function getMidnightHaiti() {
+  // ⚠️ TEST UNIQUEMENT : cookie expire dans 1 minute au lieu de minuit
   const now = new Date();
-  const haiti = new Date(now.toLocaleString("en-US", { timeZone: "America/Port-au-Prince" }));
-  const midnight = new Date(haiti);
-  midnight.setDate(midnight.getDate() + 1);
-  midnight.setHours(0, 0, 0, 0);
-  return new Date(midnight.getTime() + 5 * 60 * 60 * 1000); // UTC-5
+  return new Date(now.getTime() + 60 * 1000); // +1 minute
 }
-
 // ════════════════════════════════════════════════════════════════
 // RÉPONSE JSON
 // ════════════════════════════════════════════════════════════════
