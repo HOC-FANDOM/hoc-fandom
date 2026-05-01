@@ -1277,8 +1277,8 @@
     <div class="hero-particles"></div>
     <div class="hero-flag">🇭🇹</div>
     <div class="hero-tag">🇭🇹 HOC 2027</div>
-    <h1>❤️ Ede <span class="word-gold">Kandida</span><br><span class="word-red">Ou a</span> Genyen</h1>
-    <p class="hero-subtitle">Bay vòt ou jodi a epi sipòte moun ou ta renmen wè reprezante Ayiti. Ansanm nou pi fò!</p>
+    <h1>❤️ Ede <span class="word-gold">Infliyanzèz</span><br><span class="word-red">ou a</span> genyen</h1>
+    <p class="hero-subtitle">bay vòt ou jodi a epi sipòte moun ou ta renmen wè reprezante Ayiti. Ansanm nou pi fò!</p>
 </div>
 
 <!-- STATS -->
@@ -1313,7 +1313,7 @@
     <div id="leaderboard-section">
         <div class="leaderboard-header">
             <h2>🏆 Classement Général</h2>
-            <p>RÉSULTATS OFFICIELS HOC FANDOM 2027</p>
+            <p>RÉSULTATS HOC FANDOM 2027</p>
         </div>
         <div class="leaderboard-body" id="leaderboard-body"></div>
     </div>
@@ -1341,7 +1341,7 @@
         <!-- Déjà voté -->
         <div id="modal-already">
             <div class="modal-icon">🚫</div>
-            <h2 style="color:var(--red);">Ou Deja Vote!</h2>
+            <h2 style="color:var(--red);">Ou deja vote!</h2>
             <p>Ou ka tounen demen pou vote ankò. Pataje pou ankouraje kandida ou a!</p>
             <div class="ad-space" id="ad-already-space"></div>
             <button class="modal-btn btn-primary" onclick="closeModal()">RETOUNEN</button>
@@ -1468,9 +1468,9 @@
                         <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:40px;text-align:center;color:#f0f4ff;max-width:380px;">
                             <div style="font-size:48px;margin-bottom:16px;">🔧</div>
                             <div style="font-family:'League Gothic',cursive;font-size:40px;color:#ffd700;margin-bottom:8px;">HOC FANDOM</div>
-                            <h1 style="font-size:18px;font-weight:700;margin-bottom:12px;">Mizajou sistèm nan...</h1>
-                            <p style="font-size:14px;opacity:0.6;line-height:1.7;">Nou ap travay pou ofri yon pi bon eksperyans. Nou revine byento!</p>
-                            <div style="margin-top:20px;padding:8px 20px;border:1px solid rgba(255,215,0,0.4);border-radius:50px;display:inline-block;font-size:10px;letter-spacing:2px;color:#ffd700;">SIT LA AP DISPONIB ANKÒ</div>
+                            <h1 style="font-size:18px;font-weight:700;margin-bottom:12px;">Chè itilizatè sit la pa disponib nan moman.</h1>
+                            <p style="font-size:14px;opacity:0.6;line-height:1.7;">Nou ap TRAVAY nan moman sa pou ofri yon pi bon eksperyans ak chak itilizatè nou yo. Rete konekte nap retounen byento!</p>
+                            <div style="margin-top:20px;padding:8px 20px;border:1px solid rgba(255,215,0,0.4);border-radius:50px;display:inline-block;font-size:10px;letter-spacing:2px;color:#ffd700;">SIT LA AP DISPONIB ANKÒ NAN KÈK MINIT</div>
                         </div>
                     </div>`;
                 return;
@@ -1509,7 +1509,7 @@
         const sorted     = [...CANDIDATES].sort((a,b) => (votes[b.id]?.votes||0) - (votes[a.id]?.votes||0));
         const displayed  = showingAll ? sorted : sorted.slice(0,5);
         const maxVotes   = Math.max(...sorted.map(c => votes[c.id]?.votes||0), 1);
-        const ranks      = ['👑 #1','🥈 #2','🥉 #3'];
+        const ranks      = ['🥇 #1','🥈 #2','🥉 #3'];
         const rankCls    = ['rank-1','rank-2','rank-3'];
         const rankStyle  = ['gold','silver','bronze'];
 
