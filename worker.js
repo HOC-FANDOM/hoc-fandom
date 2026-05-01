@@ -166,7 +166,13 @@ async function verifyCookieForFingerprint(cookieValue, currentFingerprint, secre
     const parts = payload.split(':');
     if (parts.length < 3 || parts[0] !== 'voted') return false;
     const cookieFingerprint = parts[1];
-    return cookieFingerprint === currentFingerprint;
+    if (cookieFingerprint !== currentFingerprint) return false;
+
+    // ✅ AJOUT : vérifier si la date d’expiration est dépassée
+    const expirationTime = parseInt(parts[2]);
+    if (Date.now() >= expirationTime) return false; // cookie expiré → autoriser un nouveau vote
+
+    return true;
   } catch {
     return false;
   }
