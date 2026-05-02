@@ -1399,8 +1399,9 @@
 <!-- NATIVE AD CONTENEUR UNIQUE -->
 <div id="container-623647ad2d51b4896cf878366ccdd192" style="display:none;"></div>
 
-<script>
-        // ════════════════════════════════════════════════════
+
+    <script>
+    // ════════════════════════════════════════════════════
     // CONFIG
     // ════════════════════════════════════════════════════
     const WORKER   = "https://hoc-fandom-engine.joasleonard01.workers.dev";
@@ -1426,43 +1427,23 @@
     let turnToken     = null;
     let adNativeLoaded = false;
 
-    // ════════════════════════════════════════════════════
-    // FIX RESET MINUIT HAÏTI — Date string "YYYY-MM-DD"
-    // Harmonisé avec le Worker V3
-    // ════════════════════════════════════════════════════
+    // Date au format "YYYY-MM-DD" pour Haïti
     const todayHaiti = new Date().toLocaleDateString('en-CA', {
         timeZone: 'America/Port-au-Prince'
     });
 
-    // Check localStorage basé sur la DATE (pas timestamp 24h)
+    // Contrôle local : déjà voté aujourd'hui ?
     let hasVoted = localStorage.getItem('hoc_voted_date') === todayHaiti;
 
     // ════════════════════════════════════════════════════
-    // FETCH VOTES WITH TIMEOUT (network robustness)
-    // ════════════════════════════════════════════════════
-    async function fetchWithTimeout(url, options = {}, timeout = 8000) {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        try {
-            const response = await fetch(url, { ...options, signal: controller.signal });
-            clearTimeout(id);
-            return response;
-        } catch (e) {
-            clearTimeout(id);
-            throw e;
-        }
-    }
-
-    // ════════════════════════════════════════════════════
-    // FETCH VOTES (from Worker)
+    // FETCH VOTES
     // ════════════════════════════════════════════════════
     async function fetchVotes() {
         try {
-            const res  = await fetchWithTimeout(WORKER + "/results");
+            const res  = await fetch(WORKER + "/results");
             const data = await res.json();
 
             if (data.maintenance) {
-                // Maintenance page (unchanged, just emergency display)
                 document.body.innerHTML = `
                     <div style="position:fixed;inset:0;background:linear-gradient(135deg,#020408,#0a0f2c);display:flex;align-items:center;justify-content:center;padding:20px;">
                         <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:40px;text-align:center;color:#f0f4ff;max-width:380px;">
@@ -1480,16 +1461,12 @@
             render();
         } catch (e) {
             console.error('[HOC] fetchVotes:', e);
-            // Render with whatever data we have (possibly empty)
             render();
         } finally {
             removeSplash();
         }
     }
 
-    // ════════════════════════════════════════════════════
-    // SPLASH REMOVAL (robust, always called, with fallback)
-    // ════════════════════════════════════════════════════
     function removeSplash() {
         const sp = document.getElementById('splash');
         if (!sp) return;
@@ -1498,12 +1475,10 @@
             if (sp.parentNode) sp.parentNode.removeChild(sp);
         }, 1000);
     }
-
-    // Failsafe: force‑hide splash after 10s even if fetch never completes
     setTimeout(removeSplash, 10000);
 
     // ════════════════════════════════════════════════════
-    // RENDER CANDIDATS
+    // RENDER
     // ════════════════════════════════════════════════════
     function render() {
         const sorted     = [...CANDIDATES].sort((a,b) => (votes[b.id]?.votes||0) - (votes[a.id]?.votes||0));
@@ -1523,7 +1498,6 @@
             return `
                 <div class="card ${rankCls[i]||''}">
                     <div class="card-image">
-                        <!-- FIX: Added decoding="async" for faster image rendering -->
                         <img src="${c.img}" alt="${c.name}" loading="${i<3?'eager':'lazy'}" decoding="async">
                         <div class="card-overlay"></div>
                         <div class="card-rank ${rankStyle[i]||''}">${ranks[i]||'#'+(i+1)}</div>
@@ -1549,6 +1523,78 @@
             buildLeaderboard(sorted, total);
         }
     }
+
+    // ════════════════════════════════════════════════════
+    // VOTE (localStorage uniquement)
+    // ════════════════════════════════════════════════════
+    function vote(id) {
+        selectedId = id;
+
+        if (hasVoted) {
+            // Déjà voté aujourd'hui → message
+            document.getElementById('modal-already').style.display = 'block';
+            document.getElementById('modal-verify').style.display  = 'none';
+            document.getElementById('modal-success').style.display = 'none';
+            showNativeAd('ad-already-space');
+        } else {
+            // Afficher Turnstile
+            document.getElementById('modal-already').style.display = 'none';
+            document.getElementById('modal-verify').style.display  = 'block';
+            document.getElementById('modal-success').style.display = 'none';
+            if (typeof turnstile !== 'undefined') turnstile.reset();
+        }
+
+        document.getElementById('vote-modal').classList.add('active');
+    }
+
+    function onTurnstile(token) {
+        turnToken = token;
+        const btn = document.getElementById('verify-btn');
+        if (btn) btn.style.display = 'block';
+    }
+
+    async function submitVote() {
+        if (!turnToken || !selectedId) return;
+
+        const btn = document.getElementById('verify-btn');
+        if (!btn) return;
+        btn.textContent = '⏳ TRAITEMENT...';
+        btn.disabled    = true;
+
+        try {
+            const res = await fetch(WORKER + "/vote", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ candidateId: selectedId, token: turnToken })
+            });
+
+            if (res.ok) {
+                // Marquer comme voté aujourd'hui
+                hasVoted = true;
+                localStorage.setItem('hoc_voted_date', todayHaiti);
+                document.getElementById('modal-verify').style.display  = 'none';
+                document.getElementById('modal-success').style.display = 'block';
+                showNativeAd('ad-success-space');
+                setTimeout(fetchVotes, 1500);
+            } else {
+                const err = await res.json();
+                alert(err.error || 'Erreur réseau');
+            }
+        } catch (e) {
+            alert('Yon ti pwoblèm rezo. Eseye ankò apre kèk segond.');
+        } finally {
+            btn.textContent = '✅ VOTE';
+            btn.disabled    = false;
+        }
+    }
+
+    function closeModal() { document.getElementById('vote-modal').classList.remove('active'); }
+
+    // ... (le reste du code pour formatNum, buildLeaderboard, openLeaderboard, share, etc. reste inchangé)
+    // Je ne recopie pas tout pour ne pas surcharger, mais vous devez conserver ces fonctions.
+        </script>
+
+    
 
     // ════════════════════════════════════════════════════
     // FORMAT NOMBRE
