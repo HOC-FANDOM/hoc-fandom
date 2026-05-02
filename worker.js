@@ -1,7 +1,8 @@
 // ============================================================
-// HOC FANDOM - WORKER V6 (Ultra simplifié, localStorage seul)
-// Fonctionne avec le plan Free, aucune sécurité côté serveur
-// Seule protection : Turnstile anti‑robot
+// HOC FANDOM - WORKER V7 (sans Turnstile, protection gratuite)
+// - Bot Fight Mode de Cloudflare (activé au niveau du domaine)
+// - Rate‑limit doux en mémoire (5 s entre deux votes d'un même appareil)
+// - localStorage côté frontend (1 vote/jour)
 // ============================================================
 
 export default {
@@ -11,6 +12,7 @@ export default {
       WEIGHT: parseInt(env.WEIGHT || "1000"),
       CACHE_TTL: 60,
       CANDIDATES: ["Abigail","chrisTell","mcdk","meetch","Leila","jalia","manie","natha","layouyou","abee"],
+      VOTE_COOLDOWN_MS: 5000  // 5 secondes entre deux votes du même appareil
     };
 
     const corsHeaders = {
@@ -25,7 +27,6 @@ export default {
 
     const url = new URL(request.url);
 
-    // Maintenance
     if (env.MAINTENANCE === "true") {
       return respond({ maintenance: true }, 503, corsHeaders);
     }
@@ -61,22 +62,20 @@ export default {
     if (url.pathname === "/vote" && request.method === "POST") {
       try {
         const body = await request.json();
-        const { candidateId, token } = body;
-        if (!CONFIG.CANDIDATES.includes(candidateId) || !token) {
-          return respond({ error: "Invalid data" }, 400, corsHeaders);
+        const { candidateId } = body;  // on ignore 'token'
+        if (!CONFIG.CANDIDATES.includes(candidateId)) {
+          return respond({ error: "Invalid candidate" }, 400, corsHeaders);
         }
 
-        // 1. Vérification Turnstile
-        const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-          method: "POST",
-          body: `secret=${env.TURNSTILE_SECRET}&response=${token}`
-        });
-        const turnstileData = await turnstileRes.json();
-        if (!turnstileData.success) {
-          return respond({ error: "Turnstile failed" }, 403, corsHeaders);
+        // 1. Générer une empreinte légère (IP + User‑Agent)
+        const fingerprint = await getLightFingerprint(request);
+
+        // 2. Rate‑limit doux en mémoire (5 secondes)
+        if (!inMemoryRateLimiter(fingerprint, CONFIG.VOTE_COOLDOWN_MS)) {
+          return respond({ error: "Too many requests. Wait a few seconds." }, 429, corsHeaders);
         }
 
-        // 2. Enregistrement du vote (échantillonnage pour rester dans les quotas gratuits)
+        // 3. Enregistrement du vote (échantillonnage)
         if (Math.random() < CONFIG.PROBABILITY) {
           const current = parseFloat(await env.HOC_VOTES.get(candidateId) || "0");
           await env.HOC_VOTES.put(candidateId, (current + 1).toString());
@@ -92,9 +91,36 @@ export default {
   }
 };
 
+// ═══════════════════════════════════════════════════════
+// Rate‑limiter en mémoire (par isolat, temporaire)
+// ═══════════════════════════════════════════════════════
+const lastVoteTimestamps = new Map();
+
+function inMemoryRateLimiter(fingerprint, cooldownMs) {
+  const now = Date.now();
+  const last = lastVoteTimestamps.get(fingerprint);
+  if (last && (now - last) < cooldownMs) {
+    return false;
+  }
+  lastVoteTimestamps.set(fingerprint, now);
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════
+// Empreinte légère (IP + UA)
+// ═══════════════════════════════════════════════════════
+async function getLightFingerprint(request) {
+  const ip = request.headers.get("CF-Connecting-IP") || "0.0.0.0";
+  const ua = request.headers.get("User-Agent") || "";
+  const raw = `${ip}|${ua}`;
+  const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 function respond(data, status, corsHeaders, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json", ...extraHeaders }
   });
-            }
+}
