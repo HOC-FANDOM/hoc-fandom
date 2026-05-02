@@ -1784,6 +1784,40 @@
 
 </script>
 
+    <!-- ═══════════════════════════════════════════════════ -->
+<!-- SOCIAL BAR CONTRÔLÉ – Affichage après 1 min, 1x/jour -->
+<!-- ═══════════════════════════════════════════════════ -->
+<script>
+(function() {
+    const SOCIAL_BAR_KEY = 'hoc_socialbar_shown';
+    const DELAY_MS = 90000; // 1 minute (modifiable : 30000 = 30s, 45000 = 45s, etc.)
+
+    // Vérification quotidienne (même fuseau horaire Haïti)
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Port-au-Prince' });
+    if (localStorage.getItem(SOCIAL_BAR_KEY) === today) return;
+
+    setTimeout(function() {
+        // Éviter les doublons
+        if (document.getElementById('social-bar-controlled')) return;
+
+        const barContainer = document.createElement('div');
+        barContainer.id = 'social-bar-controlled';
+        barContainer.style.cssText = 'position:fixed;bottom:0;left:0;width:100%;max-width:100vw;z-index:99998;overflow:hidden;text-align:center;pointer-events:auto;';
+        document.body.appendChild(barContainer);
+
+        // Charger le script Adsterra Social Bar
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = '//www.bestcontentnetwork.net/sd/.../?zoneid=YOUR_SOCIAL_BAR_ZONE_ID'; // ← Remplacez par votre ID
+        barContainer.appendChild(script);
+
+        // Marquer comme affiché aujourd'hui
+        localStorage.setItem(SOCIAL_BAR_KEY, today);
+    }, DELAY_MS);
+})();
+</script>
+
 <!-- AD-MAVEN — IntersectionObserver au 5e candidat -->
 <script>
 (function () {
