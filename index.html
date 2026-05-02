@@ -18,7 +18,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async></script>
 
     <style>
         /* ═══════════════════════════════════════════════════
@@ -963,7 +962,8 @@
             min-width: 46px;
             text-align: right;
         }
- /* ═══════════════════════════════════════════════════
+
+        /* ═══════════════════════════════════════════════════
            BANNER AD
         ═══════════════════════════════════════════════════ */
         .banner-ad-wrap {
@@ -1198,8 +1198,7 @@
             border-top: 1px solid var(--border);
             margin-top: 32px;
         }
-
-        /* ═══════════════════════════════════════════════════
+                /* ═══════════════════════════════════════════════════
            FOOTER
         ═══════════════════════════════════════════════════ */
         .haiti-bar {
@@ -1338,13 +1337,13 @@
             <button class="modal-btn btn-primary" onclick="closeModal()">RETOUNEN</button>
         </div>
 
-        <!-- Vérification Turnstile -->
+        <!-- Vérification (plus de Turnstile) -->
         <div id="modal-verify" style="display:none;">
             <div class="modal-icon">🔐</div>
             <h2>Verifikasyon</h2>
             <p>Prouve ou se yon moun reyèl pou vote!</p>
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAADCpLqQgHa8tJMGA" data-callback="onTurnstile"></div>
-            <button id="verify-btn" class="modal-btn btn-primary" style="display:none; margin-top:14px;" onclick="submitVote()">✅ VOTE</button>
+            <!-- Plus de Turnstile : le bouton apparaît directement -->
+            <button id="verify-btn" class="modal-btn btn-primary" style="margin-top:14px;" onclick="submitVote()">✅ VOTE</button>
         </div>
 
         <!-- Vote réussi -->
@@ -1414,7 +1413,6 @@
     let votes = Object.fromEntries(CANDIDATES.map(c => [c.id, { votes: 0, percentage: "0.00" }]));
     let showingAll    = true;
     let selectedId    = null;
-    let turnToken     = null;
     let adNativeLoaded = false;
 
     // Date Haïti (YYYY-MM-DD) pour le contrôle localStorage
@@ -1467,7 +1465,7 @@
     }
     setTimeout(removeSplash, 10000);
 
-     // ════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════
     // RENDER CANDIDATS
     // ════════════════════════════════════════════════════
     function render() {
@@ -1625,7 +1623,7 @@
     }
 
     // ════════════════════════════════════════════════════
-    // VOTE (localStorage uniquement, pas de cookies)
+    // VOTE (localStorage uniquement, plus de Turnstile)
     // ════════════════════════════════════════════════════
     function vote(id) {
         selectedId = id;
@@ -1638,19 +1636,13 @@
             document.getElementById('modal-already').style.display = 'none';
             document.getElementById('modal-verify').style.display  = 'block';
             document.getElementById('modal-success').style.display = 'none';
-            if (typeof turnstile !== 'undefined') turnstile.reset();
+            // Le bouton ✅ VOTE est déjà visible dans la modale
         }
         document.getElementById('vote-modal').classList.add('active');
     }
 
-    function onTurnstile(token) {
-        turnToken = token;
-        const btn = document.getElementById('verify-btn');
-        if (btn) btn.style.display = 'block';
-    }
-
     async function submitVote() {
-        if (!turnToken || !selectedId) return;
+        if (!selectedId) return;
         const btn = document.getElementById('verify-btn');
         if (!btn) return;
         btn.textContent = '⏳ TRAITEMENT...';
@@ -1660,7 +1652,7 @@
             const res = await fetch(WORKER + "/vote", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ candidateId: selectedId, token: turnToken })
+                body: JSON.stringify({ candidateId: selectedId }) // plus de token Turnstile
             });
 
             if (res.ok) {
@@ -1672,10 +1664,10 @@
                 setTimeout(fetchVotes, 1500);
             } else {
                 const err = await res.json().catch(() => ({}));
-                alert(err.error || 'Yon ti pwoblèm rezo. Eseye ankò.');
+                alert(err.error || 'Yon ti pwoblèm. Reesseye.');
             }
         } catch (e) {
-            alert('Yon ti pwoblèm rezo. Eseye ankò apre kèk segond.');
+            alert('Yon ti pwoblèm rezo.');
         } finally {
             btn.textContent = '✅ VOTE';
             btn.disabled    = false;
