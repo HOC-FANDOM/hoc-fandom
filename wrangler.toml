@@ -7,6 +7,6 @@ binding = "HOC_VOTES"
 id = "8cfd08ef70824196bae030d240b09501"
 
 [vars]
-PROBABILITY = "0.01"
+PROBABILITY = "0.001"
 WEIGHT = "1000"
-MAINTENANCE = "false"
+MAINTENANCE = "true"
