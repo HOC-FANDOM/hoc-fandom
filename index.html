@@ -1342,6 +1342,8 @@
             <div class="modal-icon"></div>
             <h2>Konfimasyon</h2>
             <p> Ou aksepte vote pou moun sa a!</p>
+            <!-- Champ caché anti‑bot -->
+    <input type="hidden" id="challenge" name="challenge" value="">
             <!-- Plus de Turnstile : le bouton apparaît directement -->
             <button id="verify-btn" class="modal-btn btn-primary" style="margin-top:14px;" onclick="submitVote()">✅ VOTE</button>
         </div>
@@ -1642,36 +1644,43 @@
     }
 
     async function submitVote() {
-        if (!selectedId) return;
-        const btn = document.getElementById('verify-btn');
-        if (!btn) return;
-        btn.textContent = '⏳ TRAITEMENT...';
-        btn.disabled    = true;
+    if (!selectedId) return;
+    const btn = document.getElementById('verify-btn');
+    if (!btn) return;
 
-        try {
-            const res = await fetch(WORKER + "/vote", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ candidateId: selectedId }) // plus de token Turnstile
-            });
+    // Remplir le champ caché avec la valeur secrète
+    document.getElementById('challenge').value = 'hoc2027';
 
-            if (res.ok) {
-                hasVoted = true;
-                localStorage.setItem('hoc_voted_date', todayHaiti);
-                document.getElementById('modal-verify').style.display  = 'none';
-                document.getElementById('modal-success').style.display = 'block';
-                showNativeAd('ad-success-space');
-                setTimeout(fetchVotes, 1500);
-            } else {
-                const err = await res.json().catch(() => ({}));
-                alert(err.error || 'Yon ti pwoblèm. Reesseye.');
-            }
-        } catch (e) {
-            alert('Yon ti pwoblèm rezo.');
-        } finally {
-            btn.textContent = '✅ VOTE';
-            btn.disabled    = false;
+    btn.textContent = '⏳ TRAITEMENT...';
+    btn.disabled    = true;
+
+    try {
+        const res = await fetch(WORKER + "/vote", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                candidateId: selectedId,
+                challenge: document.getElementById('challenge').value   // ← on envoie le challenge
+            })
+        });
+
+        if (res.ok) {
+            hasVoted = true;
+            localStorage.setItem('hoc_voted_date', todayHaiti);
+            document.getElementById('modal-verify').style.display  = 'none';
+            document.getElementById('modal-success').style.display = 'block';
+            showNativeAd('ad-success-space');
+            setTimeout(fetchVotes, 1500);
+        } else {
+            const err = await res.json().catch(() => ({}));
+            alert(err.error || 'Yon ti pwoblèm. Reesseye.');
         }
+    } catch (e) {
+        alert('Yon ti pwoblèm rezo.');
+    } finally {
+        btn.textContent = '✅ VOTE';
+        btn.disabled    = false;
+    }
     }
 
     function closeModal() { document.getElementById('vote-modal').classList.remove('active'); }
