@@ -1,8 +1,6 @@
 // ============================================================
-// HOC FANDOM - WORKER V7 (sans Turnstile, protection gratuite)
-// - Bot Fight Mode de Cloudflare (activé au niveau du domaine)
-// - Rate‑limit doux en mémoire (5 s entre deux votes d'un même appareil)
-// - localStorage côté frontend (1 vote/jour)
+// HOC FANDOM - WORKER V8 (Anti‑bot amélioré, sans domaine)
+// Protections : champ caché + rate‑limit 10s + vérification Origin
 // ============================================================
 
 export default {
@@ -12,7 +10,8 @@ export default {
       WEIGHT: parseInt(env.WEIGHT || "1000"),
       CACHE_TTL: 60,
       CANDIDATES: ["Abigail","chrisTell","mcdk","meetch","Leila","jalia","manie","natha","layouyou","abee"],
-      VOTE_COOLDOWN_MS: 5000  // 5 secondes entre deux votes du même appareil
+      VOTE_COOLDOWN_MS: 10000,           // 10 secondes entre deux votes d'un même appareil
+      CHALLENGE_SECRET: "hoc2027"        // valeur attendue du champ caché (changez-la si vous voulez)
     };
 
     const corsHeaders = {
@@ -62,15 +61,25 @@ export default {
     if (url.pathname === "/vote" && request.method === "POST") {
       try {
         const body = await request.json();
-        const { candidateId } = body;  // on ignore 'token'
+        const { candidateId, challenge } = body;
+
+        // 0. Vérification de l'origine (bloque les appels directs sans navigateur)
+        const origin = request.headers.get("Origin") || "";
+        if (!origin.startsWith("https://houseofchallengefandom.pages.dev")) {
+          return respond({ error: "Forbidden" }, 403, corsHeaders);
+        }
+
         if (!CONFIG.CANDIDATES.includes(candidateId)) {
           return respond({ error: "Invalid candidate" }, 400, corsHeaders);
         }
 
-        // 1. Générer une empreinte légère (IP + User‑Agent)
-        const fingerprint = await getLightFingerprint(request);
+        // 1. Vérification du champ caché (anti‑bot)
+        if (challenge !== CONFIG.CHALLENGE_SECRET) {
+          return respond({ error: "Blocked" }, 403, corsHeaders);
+        }
 
-        // 2. Rate‑limit doux en mémoire (5 secondes)
+        // 2. Rate‑limit par empreinte (IP + User‑Agent)
+        const fingerprint = await getLightFingerprint(request);
         if (!inMemoryRateLimiter(fingerprint, CONFIG.VOTE_COOLDOWN_MS)) {
           return respond({ error: "Too many requests. Wait a few seconds." }, 429, corsHeaders);
         }
@@ -92,7 +101,7 @@ export default {
 };
 
 // ═══════════════════════════════════════════════════════
-// Rate‑limiter en mémoire (par isolat, temporaire)
+// Rate‑limiter en mémoire
 // ═══════════════════════════════════════════════════════
 const lastVoteTimestamps = new Map();
 
@@ -123,4 +132,4 @@ function respond(data, status, corsHeaders, extraHeaders = {}) {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json", ...extraHeaders }
   });
-}
+                                 }
